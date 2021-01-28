@@ -27,20 +27,26 @@ class Variable {
   }
 }
 
-// let study = new Study();
-// let variable = new Variable();
-// console.log(variable.getVar());
-// document.write(study.getIV());
 
-let addIndependentVariable = () => {
+let addIndependentVariable = (e) => {
   let variable = new Variable();
-  variable.setVar("ordinal", "independent Variable a");
+  let name = $("#variable-name").val();
+  let type = $("#variable-form input[type='radio']:checked").val();
+  variable.setVar(type, name);
   console.log("This is good");
+  console.log(variable.getVar());
   $("#independentText").append(variable.getVar());
+
+  $(".modal").modal("hide");
 }
 
-document.getElementById("dependentID").onclick = addIndependentVariable;
+$("#variableBtn").on("click", addIndependentVariable);
 
-$(document).ready(function(){
-    $('.modal').modal('show');
-});
+
+
+$(document).ready(function() {
+  $('.modal').on('hidden.bs.modal', function(e)
+  { 
+      $(this).find('form').trigger('reset');
+  }) ;
+})
