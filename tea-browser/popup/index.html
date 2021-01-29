@@ -19,7 +19,7 @@
         <div class="form-group mb-3">
           <div id="study-design" class="form-inline">
             <div class="form-group">
-              <label class="form-label" for="studyDesignLabel">Study Design</label>
+              <label class="form-label" for="studyDesignLabel">Study Type</label>
             </div>
             <div class="form-group">
               <div class="form-check">
@@ -66,10 +66,12 @@
         <!-- Hypothesis -->
         <div class="form-group mb-3">
           <label class="form-label" for="hypothesisLabel">Hypothesis</label>
-          <p><b>Need to generate a playground to communicate with variables; hypothesis declaration</b></p>
+          <p><b>Placeholder: Need to figure out hypothesis grammar</b></p>
+          <textarea class="form-control" id="hypothesisInput"></textarea>
         </div>
-
       </form>
+      <button type="submit" class="btn btn-success" id="formBtn">Submit</button>
+
     </div>
 
     <div class="modal fade" id="variableInput" tabindex="-1" role="dialog" aria-labelledby="variableInformationLabel" aria-hidden="true">
@@ -120,7 +122,7 @@
 
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" type="submit" class="btn btn-primary" id="variableBtn" name="variableBtn">OK</button>
+                <button type="button" class="btn btn-primary" id="variableBtn" name="variableBtn">OK</button>
               </div>
             </form>
           </div>
