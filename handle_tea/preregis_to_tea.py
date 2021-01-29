@@ -1,9 +1,16 @@
+import logging
 import tea
 import sys
 from io import StringIO
 
 def process_to_tea(study_type, independent_variables, dependent_variables, hypothesis):
-    variables = independent_variables.extend(dependent_variables)
+    # hard code. wait for Eunice's revision.
+    data_path = "http://127.0.0.1:5000/data/df.csv"
+    tea.data(data_path)
+
+    variables = independent_variables
+    variables.extend(dependent_variables)
+    logging.warning(variables)
     tea.define_variables(variables)
 
     study_design = {
@@ -20,6 +27,7 @@ def process_to_tea(study_type, independent_variables, dependent_variables, hypot
 
     tea.assume(assumptions)
 
+    logging.warning(hypothesis)
     tea.hypothesize(hypothesis)
 
     result = StringIO()
