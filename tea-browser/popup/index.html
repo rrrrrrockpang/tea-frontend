@@ -17,19 +17,19 @@
       <form class="border" action="index.html" method="post">
         <!--- Study Design Row --->
         <div class="form-group mb-3">
-          <div class="form-inline">
+          <div id="study-design" class="form-inline">
             <div class="form-group">
               <label class="form-label" for="studyDesignLabel">Study Design</label>
             </div>
             <div class="form-group">
               <div class="form-check">
-                <input class="form-check-input" type="radio" name="experimentLabel" value="Experiment">
+                <input class="form-check-input" type="radio" name="studyLabel" value="Experiment">
                 <label class="form-check-label" for="experiment">Experiment</label>
               </div>
             </div>
             <div class="form-group">
               <div class="form-check">
-                <input class="form-check-input" type="radio" name="observationalStudyLabel" value="Observational Study">
+                <input class="form-check-input" type="radio" name="studyLabel" value="Observational Study">
                 <label class="form-check-label" for="observationalStudy">Observational Study</label>
               </div>
             </div>
@@ -40,12 +40,12 @@
         <div class="form-group mb-3">
             <div class="form-inline">
               <label class="form-label" for="dependentVar">Dependent Variable</label>
-              <button id="dependentID" class="addVar btn btn-success" type="button">Add A Variable</button>
+              <button id="addDependent" class="addVar btn btn-success" data-toggle="modal" data-target="#variableInput" type="button">Add A Variable</button>
             </div>
         </div>
 
         <div class="form-group mb-3">
-          <div id="independentText" class="varText">
+          <div id="dependentText" class="varText">
             <b>Display the input variables</b>
           </div>
         </div>
@@ -53,7 +53,7 @@
         <div class="form-group mb-3">
           <div class="form-inline">
             <label class="form-label" for="independentVar">Independent Variable</label>
-            <button id="independentID" class="addVar btn btn-success" data-toggle="modal" data-target="#variableInput" type="button">Add A Variable</button>
+            <button id="addIndependent" class="addVar btn btn-success" data-toggle="modal" data-target="#variableInput" type="button">Add A Variable</button>
           </div>
         </div>
 
@@ -72,20 +72,20 @@
       </form>
     </div>
 
-    <div class="modal fade" id="variableInput" tabindex="-1" role="dialog" aria-labelledby="variableInputLabel" aria-hidden="true">
+    <div class="modal fade" id="variableInput" tabindex="-1" role="dialog" aria-labelledby="variableInformationLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="variableInputLabel">Variable Information</h5>
+            <h5 class="modal-title" id="variableInformationLabel"></h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
           <div class="modal-body">
-            <form id="variable-form">
+            <form id="variable-form" method="post">
               <!-- Variable Name Input Textarea -->
               <div class="form-group">
-                <label for="varriable-name" class="col-form-label">Name:</label>
+                <label for="variable-name" class="col-form-label">Name:</label>
                 <input type="text" class="form-control" id="variable-name">
               </div>
 
@@ -111,18 +111,20 @@
                   </label>
                 </div>
                 <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="variableTypeRadios" id="ratioRadio" value="nominal">
+                  <input class="form-check-input" type="radio" name="variableTypeRadios" id="ratioRadio" value="ratio">
                   <label class="form-check-label" for="ratioRadio">
                     Ratio
                   </label>
                 </div>
               </div>
+
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" type="submit" class="btn btn-primary" id="variableBtn" name="variableBtn">OK</button>
+              </div>
             </form>
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" id="variableBtn">OK</button>
-          </div>
+
         </div>
       </div>
     </div>
