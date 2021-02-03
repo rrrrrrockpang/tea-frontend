@@ -1,27 +1,11 @@
 import json, http
-from flask import Flask, request, jsonify, Response, send_from_directory
+from flask import Flask, request, jsonify, send_from_directory
 import logging
+import global_vals
 
 from handle_tea.preregis_to_tea import process_to_tea
 
 app = Flask(__name__)
-
-# @app.route('/')
-# def hello():
-#     return "Hello World"
-#
-# @app.route('/', methods=["GET", "POST"])
-# def submit():
-#     if request.method == "POST":
-#         data = json.loads(request.data)
-#         type, name, dependentOrIndependent = data['type'], data['name'], data['variable']
-#         if len(name) != 0 and len(type) != 0:
-#             # logging.info("Type is: " + type)
-#             # logging.info("Name is: " + name)
-#             logging.warning(type + " ,," + name + ".. " + dependentOrIndependent)
-#             # add Tea logic
-#             return Response("Success", http.HTTPStatus.OK)
-#         return Response("Bad Request", http.HTTPStatus.BAD_REQUEST)
 
 @app.route('/data/<path:path>')
 def upload(path):
@@ -31,20 +15,14 @@ def upload(path):
 def submit_study():
     logging.warning("Hi")
     if request.method == "POST":
-        logging.warning(request.data)
+        logging.info("Study Information (Tea) POSTed ...")
         data = json.loads(request.data)
-        logging.warning(data)
-        study_type = data['study_type']
-        dependent_variables = data['dependent_variables']
-        independent_variables = data['independent_variables']
-        hypothesis = data['hypothesis']
+        study_type = data[global_vals.STUDY_TYPE]
+        dependent_variables = data[global_vals.DEPENDENT_VARS]
+        independent_variables = data[global_vals.INDEPENDENT_VARS]
+        hypothesis = data[global_vals.HYPOTHESIS]
 
-        logging.warning(study_type)
-        logging.warning(dependent_variables)
-        logging.warning(independent_variables)
-        logging.warning(hypothesis)
-
-        if study_type == "Experiment" or study_type == "Observational Study":
+        if study_type == global_vals.EXPERIMENT or study_type == global_vals.OBSERVATIONAL:
             if len(dependent_variables) > 0 and len(independent_variables) > 0:
                 if len(hypothesis) > 0:
                     result = process_to_tea(study_type, dependent_variables, independent_variables, hypothesis)
@@ -52,7 +30,11 @@ def submit_study():
                         'res': result
                     }), http.HTTPStatus.OK
                 else:
+                    logging.warning("Hypothesis should not be empty.")
                     return "Bad Request: Hypothesis Input Bad", http.HTTPStatus.BAD_REQUEST
             else:
+                logging.warning("Dependent or independent variables should not be empty.")
                 return "Bad Request: Variable Input Bad", http.HTTPStatus.BAD_REQUEST
+        logging.warning("Study Type Input should be 'Experiment' or 'Observational Study'")
         return "Bad Request: Study Type Input Bad", http.HTTPStatus.BAD_REQUEST
+
