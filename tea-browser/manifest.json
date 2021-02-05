@@ -30,7 +30,7 @@
         "js/utils.js",
         "js/ready.js",
         "js/study.js",
-        "js/dependentVariable.js",
+        "js/handle.js",
         "js/content.js"
       ]
     }
