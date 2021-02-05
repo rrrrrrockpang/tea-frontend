@@ -19,6 +19,12 @@ const INDEPENDENT_PLUGIN_AREA_ID_JQUERY_SELECTOR = "#" + INDEPENDENT_PLUGIN_AREA
 const INDEPENDENT_VARIABLE_BUTTON_ID = "addIndependent";
 const INDEPENDENT_VARIABLE_TEXTDISPLAY_ID = "independentText";
 
+const HYPOTHESIS_PLUGIN_AREA_ID = "hypothesis_plugin_area";
+const HYPOTHESIS_PLUGIN_AREA_ID_JQUERY_SELECTOR = "#" + HYPOTHESIS_PLUGIN_AREA_ID;
+const HYPOTHESIS_BUTTON_ID = "addHypothesis";
+const HYPOTHESIS_TEXT_DISPLAY_ID = "hypothesisText";
+// Hypothesis we just input text for now.
+
 const addVarToLst = (dependentOrIndependent) => {
     let variable = new Variable();
     let name = $("#variable-name").val();

@@ -67,15 +67,16 @@ const handleClickEvent = (is_mouse_in_section, event, sectionNode, plugin_select
 $(document).ready(function()
 {
     // determine where the mouse is
-    hypothesisNode.hover(() => {mouse_in_hypothesis = true;}, () => {mouse_in_hypothesis = false;});
-    dependentVariableNode.hover(() => {mouse_in_dependent_variable=true;}, () => {mouse_in_dependent_variable=false;});
-    independentVariableNode.hover(() => {mouse_in_independent_variable = true;}, () => { mouse_in_independent_variable = false;});
-    analysisNode.hover(() => {mouse_in_analysis = true;}, () => {mouse_in_analysis = false;});
-    exclusionNode.hover(() => {mouse_in_exclusion = true;}, () => {mouse_in_exclusion = false;});
-    sampleSizeNode.hover(() => {mouse_in_sample_size = true;}, () => {mouse_in_sample_size = false;});
-    otherNode.hover(() => {mouse_in_other = true;}, () => {mouse_in_other = false;});
+    hypothesisNode.parent().hover(() => {mouse_in_hypothesis = true;}, () => {mouse_in_hypothesis = false;});
+    dependentVariableNode.parent().hover(() => {mouse_in_dependent_variable=true;}, () => {mouse_in_dependent_variable=false;});
+    independentVariableNode.parent().hover(() => {mouse_in_independent_variable = true;}, () => { mouse_in_independent_variable = false;});
+    analysisNode.parent().hover(() => {mouse_in_analysis = true;}, () => {mouse_in_analysis = false;});
+    exclusionNode.parent().hover(() => {mouse_in_exclusion = true;}, () => {mouse_in_exclusion = false;});
+    sampleSizeNode.parent().hover(() => {mouse_in_sample_size = true;}, () => {mouse_in_sample_size = false;});
+    otherNode.parent().hover(() => {mouse_in_other = true;}, () => {mouse_in_other = false;});
 
     $("body").mouseup((event) => {
+        handleClickEvent(mouse_in_hypothesis, event, hypothesisNode, HYPOTHESIS_PLUGIN_AREA_ID_JQUERY_SELECTOR, handleHypothesis);
         handleClickEvent(mouse_in_dependent_variable, event, dependentVariableNode, DEPENDENT_PLUGIN_AREA_ID_JQUERY_SELECTOR, handleDependentVariable);
         handleClickEvent(mouse_in_independent_variable, event, independentVariableNode, INDEPENDENT_PLUGIN_AREA_ID_JQUERY_SELECTOR, handleIndependentVariable);
     });

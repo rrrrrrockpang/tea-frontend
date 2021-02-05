@@ -8,14 +8,27 @@ const addTextDisplay = (textDisplayId) => {
              "</div>")
 }
 
-const addPlugin = (parentContainerNode, pluginContainerNode, buttonId=null, textDisplayId=null) => {
+const addTextarea = (textareaId) => {
+    return $("<textarea id=\"" + textareaId + "\"></textarea>")
+}
+
+const addPlugin = (parentContainerNode, pluginContainerNode, elementMap) => {
+    /*** elementMap.
+     * key: element type (button, textarea, textdisplay)
+     * value: element ID (buttonID, textareaID, textdisplayID)
+    ***/
     parentContainerNode.append(pluginContainerNode);
     pluginContainerNode.css(PLUGIN_CONTAINER_CSS);
-    if(buttonId != null) {
-        pluginContainerNode.append(addButton(buttonId));
+    if("button" in elementMap) {
+        console.log("Hi");
+        pluginContainerNode.append(addButton(elementMap["button"]));
     }
 
-    if(textDisplayId != null) {
-        pluginContainerNode.append(addTextDisplay(textDisplayId));
+    if("textarea" in elementMap) {
+        pluginContainerNode.append(addTextarea(elementMap["textarea"]));
+    }
+
+    if("textdisplay" in elementMap) {
+        pluginContainerNode.append(addTextDisplay(elementMap["textdisplay"]));
     }
 }
