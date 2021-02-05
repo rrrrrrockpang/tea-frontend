@@ -107,7 +107,6 @@ let addVariable = (dependentOrIndependent) => {
 
 $("#addDependent").off().on("click", function(){
   addVariable("dependent");
-
 });
 
 $("#addIndependent").off().on("click", function(){

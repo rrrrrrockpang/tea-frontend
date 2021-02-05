@@ -106,11 +106,25 @@ $(document).ready(function()
     });
 
 
-    $("body").mouseup((event) => {
 
-        handleClickEvent(mouse_in_hypothesis, event, hypothesisNode, HYPOTHESIS_PLUGIN_AREA_ID_JQUERY_SELECTOR, handleHypothesis);
-        handleClickEvent(mouse_in_dependent_variable, event, dependentVariableNode, DEPENDENT_PLUGIN_AREA_ID_JQUERY_SELECTOR, handleDependentVariable);
-        handleClickEvent(mouse_in_independent_variable, event, independentVariableNode, INDEPENDENT_PLUGIN_AREA_ID_JQUERY_SELECTOR, handleIndependentVariable);
+
+    $(".center1").on("click", (event) => {
+
+        // $("#addDependent").off().on("click", function(){
+        //     alert("Hi");
+        // });
+        // if(event.target.className !== "center1") return;
+
+        if(!$("#variableInput").hasClass("in")){
+            handleClickEvent(mouse_in_hypothesis, event, hypothesisNode, HYPOTHESIS_PLUGIN_AREA_ID_JQUERY_SELECTOR, handleHypothesis);
+            handleClickEvent(mouse_in_dependent_variable, event, dependentVariableNode, DEPENDENT_PLUGIN_AREA_ID_JQUERY_SELECTOR, handleDependentVariable);
+            handleClickEvent(mouse_in_independent_variable, event, independentVariableNode, INDEPENDENT_PLUGIN_AREA_ID_JQUERY_SELECTOR, handleIndependentVariable);
+            handleVariable();
+            handleModal();
+        }
+
     });
 });
+
+
 
