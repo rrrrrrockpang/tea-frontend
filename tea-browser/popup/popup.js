@@ -81,14 +81,6 @@ const postRequest = async (study_type, dependentVarLst, independentVarLst, hypot
     })
   };
 
-  console.log({
-      'study_type': study_type,
-      'dependent_variables': dependentVarLst,
-      'independent_variables': independentVarLst,
-      'hypothesis': hypothesis
-  });
-  console.log(setting)
-
   try {
     const response = await fetch('http://127.0.0.1:5000/submit', setting);
     const status = await response.status();

@@ -1,0 +1,56 @@
+<div class="modal fade" id="variableInput" tabindex="-1" role="dialog" aria-labelledby="variableInformationLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="variableInformationLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="variable-form" method="post">
+                    <!-- Variable Name Input Textarea -->
+                    <div class="form-group">
+                        <label for="variable-name" class="col-form-label">Name:</label>
+                        <input type="text" class="form-control" id="variable-name">
+                    </div>
+
+                    <!-- Variable Type Ratio Options -->
+                    <div class="form-group">
+                        <label for="variable-type" class="col-form-label">Type:</label>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="variableTypeRadios" id="nominalRadio" value="nominal">
+                            <label class="form-check-label" for="nominalRadio">
+                                Nominal
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="variableTypeRadios" id="ordinalRadio" value="ordinal">
+                            <label class="form-check-label" for="ordinalRadio">
+                                Ordinal
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="variableTypeRadios" id="intervalRadio" value="interval">
+                            <label class="form-check-label" for="intervalRadio">
+                                Interval
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="variableTypeRadios" id="ratioRadio" value="ratio">
+                            <label class="form-check-label" for="ratioRadio">
+                                Ratio
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="variableBtn" name="variableBtn">OK</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
