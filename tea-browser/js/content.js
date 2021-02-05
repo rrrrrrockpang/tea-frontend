@@ -53,6 +53,17 @@ let mouse_in_exclusion = false;
 let mouse_in_sample_size = false;
 let mouse_in_other = false;
 
+const handleClickEvent = (is_mouse_in_section, event, sectionNode, plugin_selector, create_plugin_func) => {
+    if(is_mouse_in_section) {
+        let isAttached = sectionNode.parent().find(plugin_selector).length;
+        if(isAttached)
+            $(plugin_selector).show();
+        else
+            create_plugin_func(event);
+    } else
+        $(plugin_selector).hide();
+}
+
 $(document).ready(function()
 {
     // determine where the mouse is
@@ -65,26 +76,8 @@ $(document).ready(function()
     otherNode.hover(() => {mouse_in_other = true;}, () => {mouse_in_other = false;});
 
     $("body").mouseup((event) => {
-        // Dependent Variable
-        if(mouse_in_dependent_variable) {
-            let isAttached = dependentVariableNode.parent().find(DEPENDENT_PLUGIN_AREA_ID_JQUERY_SELECTOR).length;
-            if(isAttached)
-                $(DEPENDENT_PLUGIN_AREA_ID_JQUERY_SELECTOR).show();
-            else
-                handleDependentVariable(event);
-        } else
-            $(DEPENDENT_PLUGIN_AREA_ID_JQUERY_SELECTOR).hide(); // could potentially add a check statement
-
-        // Independent Variable
-        if(mouse_in_independent_variable) {
-            let isAttached = independentVariableNode.parent().find(INDEPENDENT_PLUGIN_AREA_ID_JQUERY_SELECTOR).length;
-            if(isAttached)
-                $(INDEPENDENT_PLUGIN_AREA_ID_JQUERY_SELECTOR).show();
-            else
-                handleIndependentVariable(event);
-        } else
-            $(INDEPENDENT_PLUGIN_AREA_ID_JQUERY_SELECTOR).hide(); // could potentially add a check statement
-
+        handleClickEvent(mouse_in_dependent_variable, event, dependentVariableNode, DEPENDENT_PLUGIN_AREA_ID_JQUERY_SELECTOR, handleDependentVariable);
+        handleClickEvent(mouse_in_independent_variable, event, independentVariableNode, INDEPENDENT_PLUGIN_AREA_ID_JQUERY_SELECTOR, handleIndependentVariable);
     });
 });
 
