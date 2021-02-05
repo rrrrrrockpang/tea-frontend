@@ -25,3 +25,6 @@ const HYPOTHESIS_BUTTON_ID = "addHypothesis";
 const HYPOTHESIS_TEXT_DISPLAY_ID = "hypothesisText";
 // Hypothesis we just input text for now.
 
+const ANALYSIS_PLUGIN_AREA_ID = "analysis_plugin_area";
+const ANALYSIS_PLUGIN_AREA_ID_JQUERY_SELECTOR = "#" + ANALYSIS_PLUGIN_AREA_ID;
+const ANALYSIS_BUTTON_ID = "analysisBtn";

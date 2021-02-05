@@ -7,6 +7,12 @@ const addButton = (buttonId) => {
     return $("<button id=\"" + buttonId + "\" class=\"addVar btn btn-success\" data-toggle=\"modal\" data-target=\"#variableInput\" type=\"button\">Add A Variable</button>\n");
 }
 
+const addSubmit = (buttonId) => {
+    return $("<button type=\"submit\" class=\"btn btn-success\" id=\"" +
+                buttonId +
+            "\">Submit</button>")
+}
+
 const addTextDisplay = (textDisplayId) => {
     return $("<div id=" + textDisplayId + " class=\"varText\">\n" +
                 "<b>Display the input variables</b>\n" +
@@ -14,7 +20,7 @@ const addTextDisplay = (textDisplayId) => {
 }
 
 const addTextarea = (textareaId) => {
-    return $("<textarea id=\"" + textareaId + "\"></textarea>")
+    return $("<textarea id=\"" + textareaId + "\"></textarea>");
 }
 
 const addPlugin = (parentContainerNode, pluginContainerNode, elementMap) => {
@@ -35,6 +41,10 @@ const addPlugin = (parentContainerNode, pluginContainerNode, elementMap) => {
 
     if("textdisplay" in elementMap) {
         pluginContainerNode.append(addTextDisplay(elementMap["textdisplay"]));
+    }
+
+    if("button2"  in elementMap) {
+        pluginContainerNode.append(addSubmit(elementMap["button2"]));
     }
 }
 

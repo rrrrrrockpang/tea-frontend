@@ -119,8 +119,10 @@ $(document).ready(function()
             handleClickEvent(mouse_in_hypothesis, event, hypothesisNode, HYPOTHESIS_PLUGIN_AREA_ID_JQUERY_SELECTOR, handleHypothesis);
             handleClickEvent(mouse_in_dependent_variable, event, dependentVariableNode, DEPENDENT_PLUGIN_AREA_ID_JQUERY_SELECTOR, handleDependentVariable);
             handleClickEvent(mouse_in_independent_variable, event, independentVariableNode, INDEPENDENT_PLUGIN_AREA_ID_JQUERY_SELECTOR, handleIndependentVariable);
+            handleClickEvent(mouse_in_analysis, event, analysisNode, ANALYSIS_PLUGIN_AREA_ID_JQUERY_SELECTOR, handleAnalysis)
             handleVariable();
             handleModal();
+            handleGetAnalysisResult();
         }
 
     });

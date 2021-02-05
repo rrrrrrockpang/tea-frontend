@@ -6,5 +6,5 @@ INDEPENDENT_VARS = 'independent_variables'
 HYPOTHESIS = 'hypothesis'
 
 # Study Types
-EXPERIMENT = 'Experiment'
-OBSERVATIONAL = 'Observational Study'
+EXPERIMENT = 'experiment'
+OBSERVATIONAL = 'observational study'

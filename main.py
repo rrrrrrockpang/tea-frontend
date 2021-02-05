@@ -20,12 +20,15 @@ def submit_study():
         study_type = data[global_vals.STUDY_TYPE]
         dependent_variables = data[global_vals.DEPENDENT_VARS]
         independent_variables = data[global_vals.INDEPENDENT_VARS]
+        logging.warning(independent_variables)
+        logging.warning(independent_variables[0].keys())
+        logging.warning(independent_variables[0]['categories'])
         hypothesis = data[global_vals.HYPOTHESIS]
 
         if study_type == global_vals.EXPERIMENT or study_type == global_vals.OBSERVATIONAL:
             if len(dependent_variables) > 0 and len(independent_variables) > 0:
                 if len(hypothesis) > 0:
-                    result = process_to_tea(study_type, dependent_variables, independent_variables, hypothesis)
+                    result = process_to_tea(study_type, independent_variables, dependent_variables, hypothesis)
                     return jsonify({
                         'res': result
                     }), http.HTTPStatus.OK

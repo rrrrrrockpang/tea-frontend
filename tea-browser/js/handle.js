@@ -21,8 +21,18 @@ const handleHypothesis = (event) => {
     console.log("handleHypothesis Called");
     const parentContainerNode = $(event.target).parent();
     const pluginContainerNode = $("<div>", {id: HYPOTHESIS_PLUGIN_AREA_ID, class: "plugin"});
+    parentContainerNode.css(FORM_GROUP_CONTAINER_CSS);
     addPlugin(parentContainerNode, pluginContainerNode,
-        {"textarea": HYPOTHESIS_TEXT_DISPLAY_ID})
+        {"textarea": HYPOTHESIS_TEXT_DISPLAY_ID});
+}
+
+const handleAnalysis = (event) => {
+    console.log("handleAnalysis Called.");
+    const parentContainerNode = $(event.target).parent();
+    const pluginContainerNode = $("<div>", {id: ANALYSIS_PLUGIN_AREA_ID, class: "plugin"});
+    parentContainerNode.css(FORM_GROUP_CONTAINER_CSS);
+    addPlugin(parentContainerNode, pluginContainerNode,
+        {"button2": ANALYSIS_BUTTON_ID});
 }
 
 
@@ -41,4 +51,15 @@ const handleModal = () => {
       $(this).find('#variable-form').trigger("reset");
       $(this).find('#variableInformationLabel').empty();
     }) ;
+}
+
+const handleGetAnalysisResult = () => {
+    $("#" + ANALYSIS_BUTTON_ID).off().on("click", function() {
+        const study_type = "experiment"; //$("input[name='studyLabel']:checked").val();
+        const hypothesis = "['condition', 'wtp_final'], ['condition: SE > SD']";//$("#hypothesisInput").val();
+
+        postRequest(study_type, dependentVarLst, independentVarLst, hypothesis).then(res => {
+            console.log(res);
+        });
+    })
 }

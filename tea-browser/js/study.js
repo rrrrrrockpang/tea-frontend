@@ -36,6 +36,13 @@ class Variable {
     }
 
     toJSON() {
+        if(this.type === "nominal") {
+            return {
+                "name": this.name,
+                "data type": this.type,
+                "categories": ['SE', 'SD'],
+            }
+        }
         return {
             "name": this.name,
             "data type": this.type,
