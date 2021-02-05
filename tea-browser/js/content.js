@@ -52,8 +52,11 @@ let mouse_in_analysis = false;
 let mouse_in_exclusion = false;
 let mouse_in_sample_size = false;
 let mouse_in_other = false;
+let mouse_in_modal = false;
 
-const handleClickEvent = (is_mouse_in_section, event, sectionNode, plugin_selector, create_plugin_func) => {
+
+const handleClickEvent = (mouse_in_modal, is_mouse_in_section, event, sectionNode, plugin_selector, create_plugin_func) => {
+    if(mouse_in_modal) return;
     if(is_mouse_in_section) {
         let isAttached = sectionNode.parent().find(plugin_selector).length;
         if(isAttached)
@@ -67,18 +70,50 @@ const handleClickEvent = (is_mouse_in_section, event, sectionNode, plugin_select
 $(document).ready(function()
 {
     // determine where the mouse is
-    hypothesisNode.parent().hover(() => {mouse_in_hypothesis = true;}, () => {mouse_in_hypothesis = false;});
-    dependentVariableNode.parent().hover(() => {mouse_in_dependent_variable=true;}, () => {mouse_in_dependent_variable=false;});
-    independentVariableNode.parent().hover(() => {mouse_in_independent_variable = true;}, () => { mouse_in_independent_variable = false;});
-    analysisNode.parent().hover(() => {mouse_in_analysis = true;}, () => {mouse_in_analysis = false;});
-    exclusionNode.parent().hover(() => {mouse_in_exclusion = true;}, () => {mouse_in_exclusion = false;});
-    sampleSizeNode.parent().hover(() => {mouse_in_sample_size = true;}, () => {mouse_in_sample_size = false;});
-    otherNode.parent().hover(() => {mouse_in_other = true;}, () => {mouse_in_other = false;});
+    hypothesisNode.parent().hover(() => {
+        mouse_in_hypothesis = true;
+    }, () => {
+        mouse_in_hypothesis = false;
+    });
+    dependentVariableNode.parent().hover(() => {
+        mouse_in_dependent_variable = true;
+    }, () => {
+        mouse_in_dependent_variable = false;
+    });
+    independentVariableNode.parent().hover(() => {
+        mouse_in_independent_variable = true;
+    }, () => {
+        mouse_in_independent_variable = false;
+    });
+    analysisNode.parent().hover(() => {
+        mouse_in_analysis = true;
+    }, () => {
+        mouse_in_analysis = false;
+    });
+    exclusionNode.parent().hover(() => {
+        mouse_in_exclusion = true;
+    }, () => {
+        mouse_in_exclusion = false;
+    });
+    sampleSizeNode.parent().hover(() => {
+        mouse_in_sample_size = true;
+    }, () => {
+        mouse_in_sample_size = false;
+    });
+    otherNode.parent().hover(() => {
+        mouse_in_other = true;
+    }, () => {
+        mouse_in_other = false;
+    });
 
     $("body").mouseup((event) => {
-        handleClickEvent(mouse_in_hypothesis, event, hypothesisNode, HYPOTHESIS_PLUGIN_AREA_ID_JQUERY_SELECTOR, handleHypothesis);
-        handleClickEvent(mouse_in_dependent_variable, event, dependentVariableNode, DEPENDENT_PLUGIN_AREA_ID_JQUERY_SELECTOR, handleDependentVariable);
-        handleClickEvent(mouse_in_independent_variable, event, independentVariableNode, INDEPENDENT_PLUGIN_AREA_ID_JQUERY_SELECTOR, handleIndependentVariable);
+        // TODO: need to take care of the plugin after modal is hidden
+        if(($("#variableInput").data('bs.modal') || {}).isShown)
+            mouse_in_modal = true;
+        console.log("mouse_in_modal" + mouse_in_modal);
+        handleClickEvent(mouse_in_modal, mouse_in_hypothesis, event, hypothesisNode, HYPOTHESIS_PLUGIN_AREA_ID_JQUERY_SELECTOR, handleHypothesis);
+        handleClickEvent(mouse_in_modal, mouse_in_dependent_variable, event, dependentVariableNode, DEPENDENT_PLUGIN_AREA_ID_JQUERY_SELECTOR, handleDependentVariable);
+        handleClickEvent(mouse_in_modal, mouse_in_independent_variable, event, independentVariableNode, INDEPENDENT_PLUGIN_AREA_ID_JQUERY_SELECTOR, handleIndependentVariable);
     });
 });
 
