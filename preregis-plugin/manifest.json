@@ -1,13 +1,13 @@
 {
   "name": "Preregister with Tea Code",
-  "version": "0.1",
+  "version": "0.2",
   "description": "This extension prompts users to input necessary information of a study,
                   such as the variables and hypothesis. It will generate Tea code and a preregistration form",
   "manifest_version": 2,
 
   "background": {
     "scripts": [
-      "js/jquery-3.5.1.min.js",
+      "lib/jquery-3.5.1.min.js",
       "background.js"
     ],
     "persistent": false
@@ -19,25 +19,21 @@
         "https://aspredicted.org/create.php?active=1&self_destruct=0"
       ],
       "css": [
-        "bootstrap-3.4.1-dist/css/bootstrap-theme.min.css",
-        "bootstrap-3.4.1-dist/css/bootstrap.min.css"
+        "lib/bootstrap-3.4.1-dist/css/bootstrap-theme.min.css",
+        "lib/bootstrap-3.4.1-dist/css/bootstrap.min.css"
       ],
       "js": [
-        "js/jquery-3.5.1.min.js",
-        "bootstrap-3.4.1-dist/js/bootstrap.min.js",
+        "lib/jquery-3.5.1.min.js",
+        "lib/bootstrap-3.4.1-dist/js/bootstrap.min.js",
         "js/settings.js",
         "js/variable.js",
-        "js/utils.js",
-        "js/ready.js",
         "js/study.js",
+        "js/utils.js",
         "js/handle.js",
         "js/content.js"
       ]
     }
   ],
-  "browser_action": {
-    "default_popup": "./popup/index.html"
-  },
   "permissions": [
     "tabs",
     "*://*/*",

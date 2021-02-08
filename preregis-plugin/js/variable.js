@@ -1,13 +1,18 @@
 const dependentVarLst = [];
 const independentVarLst = [];
 
-const hypothesisNode = $("[name='text1']");
-const dependentVariableNode = $("[name='text2']");
-const independentVariableNode = $("[name='text3']"); // conditions
-const analysisNode = $("[name=text4]");
-const exclusionNode = $("[name=text5]");
-const sampleSizeNode = $("[name=text6]");
-const otherNode = $("[name=text7]");
+const hypothesisTextAreaNode = $("[name='text1']");
+const dependentVariableTextAreaNode = $("[name='text2']");
+const independentVariableTextAreaNode = $("[name='text3']"); // conditions
+const analysisTextAreaNode = $("[name=text4]");
+const exclusionTextAreaNode = $("[name=text5]");
+const sampleSizeTextAreaNode = $("[name=text6]");
+const otherNodeTextArea = $("[name=text7]");
+
+const hypothesisSectionNode = hypothesisTextAreaNode.parent().parent();
+const dependentVariableSectionNode = dependentVariableTextAreaNode.parent().parent();
+const independentVariableSectionNode = independentVariableTextAreaNode.parent().parent();
+const analysisSectionNode = analysisTextAreaNode.parent().parent();
 
 const DEPENDENT_PLUGIN_AREA_ID = "dependent_variable_plugin_area";
 const DEPENDENT_PLUGIN_AREA_ID_JQUERY_SELECTOR = "#" + DEPENDENT_PLUGIN_AREA_ID;
