@@ -67,3 +67,11 @@ const adjustHeight = (parentNode) => {
     });
     parentNode.find("textarea").attr('rows', row);
 };
+
+/**
+ * Add list from clicking a button
+ */
+const addList = (iframeNode, text) => {
+    newLiNode = $("<li class='list-item'>" + text + "</li>")
+    iframeNode.append(newLiNode);
+}
