@@ -73,3 +73,14 @@ const addList = (iframeNode, text) => {
     newLiNode = $("<li class='list-item'>" + text + "</li>")
     iframeNode.append(newLiNode);
 }
+
+
+
+/**
+ * Element in the popover box
+ */
+const addClose = (button) => {
+    $("#popover-close").on("click", function(){
+        button.popover("hide");
+    });
+}

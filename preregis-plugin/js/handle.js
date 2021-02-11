@@ -10,12 +10,8 @@ const handleDependentVariableGrid = function() {
     adjustHeight(dependentVariableSectionNode.parent());
     // Add popover effect
     //https://stackoverflow.com/questions/13413057/how-to-insert-close-button-in-popover-for-bootstrap/13413660
-    DVBtn.popover(POPOVER_EFFECT).on('shown.bs.popover', function() {
-        var $popup = $(this);
-        $(this).next('.popover').find('.btn-secondary').click(function (e) {
-            $popup.popover('hide');
-        });
-    });
+    DVBtn.popover(POPOVER_EFFECT);
+    addClose(DVBtn);
 }
 
 const handleIndependentVariableGrid = () => {
