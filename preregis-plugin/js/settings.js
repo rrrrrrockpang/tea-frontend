@@ -11,3 +11,15 @@ PLUGIN_CONTAINER_CSS = {
     "background": "green",
     "display": "block"
 }
+
+POPOVER_EFFECT = {
+    html: true,
+    sanitize: false,
+    container: 'body',
+    title: function() {
+        return $("#popoverTitle").html();
+    },
+    content: function() {
+        return $("#PopoverContent").html();
+    }
+}

@@ -20,16 +20,14 @@ const createTeaDiv = (id, domLst) => {
  * @param text
  * @returns {*|Window.jQuery|HTMLElement}
  */
-const createButton = (id, text) => {
+function createButton (id, text) {
     let buttonNode = $("<button id = '" + id + "' " +
                         "class = 'btn btn-success' " +
-                        "data-toggle = 'modal' " +
-                        "data-target = '#variableInput' " +
-                        "type='button'>" + text + "</button>");
+                        ">" + text + "</button>");
     buttonNode.text(text);
     console.log(buttonNode);
     return buttonNode;
-};
+}
 
 /**
  * Text section that display information

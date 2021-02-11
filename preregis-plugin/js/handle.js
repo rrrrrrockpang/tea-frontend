@@ -1,36 +1,32 @@
-const handleDependentVariableGrid = () => {
+const handleDependentVariableGrid = function() {
     // dependentVariableSectionNode.attr("class", "col-sm-4");
     dependentVariableSectionNode.hide();
     dependentVariableSectionNode.parent().append("<div class='col-sm-4'><div id=\"text_area\" style='height: 200px; overflow: scroll' contentEditable=\"true\"><ol></ol></div>");
     const DVBtn = createButton("addDependent", "Add a DV");
-    // Add popover effect
-    DVBtn.popover({
-        html: true,
-        title: function() {
-            return $("#popover-head").html();
-        },
-        content: function() {
-            return $("#popover-content").html();
-        }
-    })
-    DVBtn.on("click", function () {
-        addList($('ol').append("Hi"));
-    });
     const DVDisplay = createTextDisplay("dependentText", "Tea");
     const teaSection = createTeaDiv("dependent_variable_div", [DVBtn, DVDisplay]);
     dependentVariableSectionNode.parent().append(teaSection);
     dependentVariableSectionNode.parent().append("<div class='col-sm-4 panel panel-default'>Formal Text</div>");
     adjustHeight(dependentVariableSectionNode.parent());
+    // Add popover effect
+    //https://stackoverflow.com/questions/13413057/how-to-insert-close-button-in-popover-for-bootstrap/13413660
+    DVBtn.popover(POPOVER_EFFECT).on('shown.bs.popover', function() {
+        var $popup = $(this);
+        $(this).next('.popover').find('.btn-secondary').click(function (e) {
+            $popup.popover('hide');
+        });
+    });
 }
 
 const handleIndependentVariableGrid = () => {
     independentVariableSectionNode.attr("class", "col-sm-4");
-    // const IVBtn = createButton("addIndependent", "Add a IV");
+    const IVBtn = createButton("addIndependent", "Add a IV");
     const IVDisplay = createTextDisplay("independentText", "Tea");
-    const teaSection = createTeaDiv("dependent_variable_div", [IVDisplay]);
+    const teaSection = createTeaDiv("dependent_variable_div", [IVBtn, IVDisplay]);
     independentVariableSectionNode.parent().append(teaSection);
     independentVariableSectionNode.parent().append("<div class='col-sm-4 panel panel-default'>Formal Text</div>");
     adjustHeight(independentVariableSectionNode.parent());
+    IVBtn.popover(POPOVER_EFFECT);
 }
 
 const handleAnalysisGrid = () => {

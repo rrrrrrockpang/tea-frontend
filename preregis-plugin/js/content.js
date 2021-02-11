@@ -1,3 +1,5 @@
+
+
 $(document).ready(() => {
     $.get(chrome.runtime.getURL('/html/inputBox.html'), (data) => {
         $(data).appendTo('body');
