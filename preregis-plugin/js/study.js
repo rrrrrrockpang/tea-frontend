@@ -15,12 +15,14 @@ class Variable {
     constructor() {
         this.type = "nominal";
         this.name = "abc";
+        this.addenda = "addenda";
 //    this.addenda = {};
     }
 
-    setVar(type, name) {
+    setVar(type, name, addenda = {}) {
         this.type = type;
         this.name = name;
+        this.addenda = addenda;
     }
 
     getType() {

@@ -1,17 +1,46 @@
+const handlePopover = function(button) {
+    const id = button.attr('id');
+    console.log(id);
+    button.popover(POPOVER_EFFECT);
+    // Add Variable
+    if (id === "addDependent") {
+        console.log("I found dependent")
+    }
+    // Cancel button
+    $(document).on('click', '#popover-close', function(){
+        button.popover('hide');
+    });
+
+    $(document).on('click', '#variableBtn', function() {
+        let variable = new Variable();
+
+        let name = $(".popover-content").find('#variable-name').val();
+        console.log(name);
+        let type = $(".popover-content").find("#variable-form input[type='radio']:checked").val();
+        variable.setVar(type, name);
+        if(id === 'addDependent') { //TODO: Change to formal FINAL variable
+            dependentVarLst.push(variable.toJSON());
+            console.log(dependentVarLst);
+        } else if (id === "addIndependent") {
+            independentVarLst.push(variable.toJSON());
+            console.log(independentVarLst);
+        }
+
+        let selector = "#dependentText";
+        $(selector).append(variable.toString());
+        button.popover('hide');
+    });
+}
+
 const handleDependentVariableGrid = function() {
-    // dependentVariableSectionNode.attr("class", "col-sm-4");
-    dependentVariableSectionNode.hide();
-    dependentVariableSectionNode.parent().append("<div class='col-sm-4'><div id=\"text_area\" style='height: 200px; overflow: scroll' contentEditable=\"true\"><ol></ol></div>");
+    createEditableDiv(dependentVariableSectionNode);
     const DVBtn = createButton("addDependent", "Add a DV");
     const DVDisplay = createTextDisplay("dependentText", "Tea");
     const teaSection = createTeaDiv("dependent_variable_div", [DVBtn, DVDisplay]);
     dependentVariableSectionNode.parent().append(teaSection);
     dependentVariableSectionNode.parent().append("<div class='col-sm-4 panel panel-default'>Formal Text</div>");
     adjustHeight(dependentVariableSectionNode.parent());
-    // Add popover effect
-    //https://stackoverflow.com/questions/13413057/how-to-insert-close-button-in-popover-for-bootstrap/13413660
-    DVBtn.popover(POPOVER_EFFECT);
-    addClose(DVBtn);
+    handlePopover(DVBtn);
 }
 
 const handleIndependentVariableGrid = () => {

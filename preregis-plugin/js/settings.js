@@ -12,10 +12,16 @@ PLUGIN_CONTAINER_CSS = {
     "display": "block"
 }
 
+PARENT_HEIGHT_FLEX = {
+    display: 'flex',
+    'min-height': '150px'
+}
+
 POPOVER_EFFECT = {
     html: true,
     sanitize: false,
     container: 'body',
+    placement: 'top',
     title: function() {
         return $("#popoverTitle").html();
     },

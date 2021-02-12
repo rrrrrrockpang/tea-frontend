@@ -1,4 +1,13 @@
 /**
+ * Section div
+ */
+const createEditableDiv = (textareaNode) => {
+    textareaNode.hide();
+    textareaNode.parent().append("<div class='col-sm-4' style='display: flex; max-width: 100%; word-break: break-all' contentEditable=\"true\"><ol></ol></div>");
+}
+
+
+/**
  * This function creates the middle section of a preregistration question.
  * It prompts users to input necessary information for tea
  * @param id
@@ -8,6 +17,7 @@
 const createTeaDiv = (id, domLst) => {
     let middleTeaDivNode = $("<div id = '" + id + "' " +
                              "class='tea-div col-sm-4 panel panel-default'></div>");
+    middleTeaDivNode.css("position: relative")
     for(let i = 0; i < domLst.length; i++) {
         middleTeaDivNode.append(domLst[i]);
     }
@@ -23,9 +33,9 @@ const createTeaDiv = (id, domLst) => {
 function createButton (id, text) {
     let buttonNode = $("<button id = '" + id + "' " +
                         "class = 'btn btn-success' " +
+                        "style = 'position: absolute; right: 0; bottom: 0' " +
                         ">" + text + "</button>");
     buttonNode.text(text);
-    console.log(buttonNode);
     return buttonNode;
 }
 
@@ -50,20 +60,21 @@ const createTextDisplay = (id, text) => {
  * @param parentNode
  */
 const adjustHeight = (parentNode) => {
-    let maxHeight = -1;
-    parentNode.children("div").each(function(){
-        maxHeight = maxHeight > $(this).height() ? maxHeight : $(this).height();
-    });
-    // you can get from dependentVariableTextAreaNode.css("line-height")
-    // but I don't want to bother with text processing "20px" to "20"
-    let lineHeight = 20;  // line height.
-    console.log(lineHeight);
-    let row = Math.ceil(maxHeight / lineHeight);
-    maxHeight = row * 20;
-    parentNode.children("div").each(function() {
-        $(this).height(maxHeight);
-    });
-    parentNode.find("textarea").attr('rows', row);
+    parentNode.css(PARENT_HEIGHT_FLEX);
+    // let maxHeight = -1;
+    // parentNode.children("div").each(function(){
+    //     maxHeight = maxHeight > $(this).height() ? maxHeight : $(this).height();
+    // });
+    // // you can get from dependentVariableTextAreaNode.css("line-height")
+    // // but I don't want to bother with text processing "20px" to "20"
+    // let lineHeight = 20;  // line height.
+    // console.log(lineHeight);
+    // let row = Math.ceil(maxHeight / lineHeight);
+    // maxHeight = row * 20;
+    // parentNode.children("div").each(function() {
+    //     $(this).height(maxHeight);
+    // });
+    // parentNode.find("textarea").attr('rows', row);
 };
 
 /**
@@ -79,8 +90,15 @@ const addList = (iframeNode, text) => {
 /**
  * Element in the popover box
  */
-const addClose = (button) => {
-    $("#popover-close").on("click", function(){
-        button.popover("hide");
-    });
+function addClose (button) {
+    $(document).on('click', '#popover-close', function(){
+        button.popover('hide');
+    })
+    // $("#addDependent").on('shown.bs.popover', function () {
+    //     console.log("Hi")
+    //     $("#popover-close").on("click", function(){
+    //         console.log("?");
+    //     });
+    // })
+
 }
