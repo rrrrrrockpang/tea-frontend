@@ -2,41 +2,54 @@ const handlePopover = function(button) {
     const id = button.attr('id');
     console.log(id);
     button.popover(POPOVER_EFFECT);
-    // Add Variable
-    if (id === "addDependent") {
-        console.log("I found dependent")
-    }
-    // Cancel button
-    $(document).on('click', '#popover-close', function(){
-        button.popover('hide');
-    });
 
-    $(document).on('click', '#variableBtn', function() {
-        let variable = new Variable();
+    let selector = "";
 
-        let name = $(".popover-content").find('#variable-name').val();
-        console.log(name);
-        let type = $(".popover-content").find("#variable-form input[type='radio']:checked").val();
-        variable.setVar(type, name);
-        if(id === 'addDependent') { //TODO: Change to formal FINAL variable
-            dependentVarLst.push(variable.toJSON());
+    button.on('shown.bs.popover', function() {
+        // Cancel button
+        $('body').on('click', '#popover-close', function(){
+            button.popover('hide');
+        });
+        console.log("button clicked");
+
+        $('body').off("click", '#variableBtn').on('click', '#variableBtn', function(e) {
+            console.log('document clicked');
+            let variable = new Variable();
+            let name = $(".popover-content").find('#variable-name').val();
+            let type = $(".popover-content").find("#variable-form input[type='radio']:checked").val();
+            variable.setVar(type, name);
+            if(id === DEPENDENT_VARIABLE_BUTTON_ID) {
+                dependentVarLst.push(variable.toJSON());
+                selector = "#" + DEPENDENT_VARIABLE_TEXT_DISPLAY_ID;
+                $(selector + '> ol').append("<li>" + variable.toString() + "</li>");
+            } else if (id === INDEPENDENT_VARIABLE_BUTTON_ID) {
+                independentVarLst.push(variable.toJSON());
+                console.log()
+                selector = "#" + INDEPENDENT_VARIABLE_TEXTDISPLAY_ID;
+                $(selector + '> ol').append("<li>" + variable.toString() + "</li>");
+            }
+            console.log("?");
             console.log(dependentVarLst);
-        } else if (id === "addIndependent") {
-            independentVarLst.push(variable.toJSON());
             console.log(independentVarLst);
-        }
-
-        let selector = "#dependentText";
-        $(selector).append(variable.toString());
-        button.popover('hide');
+            button.popover('hide');
+        });
     });
+
+    button.on('hidden.bs.popover', function() {
+        $('body').off('#variableBtn');
+    })
+
+
+
+
+
 }
 
 const handleDependentVariableGrid = function() {
     createEditableDiv(dependentVariableSectionNode);
-    const DVBtn = createButton("addDependent", "Add a DV");
-    const DVDisplay = createTextDisplay("dependentText", "Tea");
-    const teaSection = createTeaDiv("dependent_variable_div", [DVBtn, DVDisplay]);
+    const DVBtn = createButton(DEPENDENT_VARIABLE_BUTTON_ID, "Add a DV");
+    const DVDisplay = createTextDisplay(DEPENDENT_VARIABLE_TEXT_DISPLAY_ID, "Tea");
+    const teaSection = createTeaDiv(DEPENDENT_PLUGIN_AREA_ID, [DVBtn, DVDisplay]);
     dependentVariableSectionNode.parent().append(teaSection);
     dependentVariableSectionNode.parent().append("<div class='col-sm-4 panel panel-default'>Formal Text</div>");
     adjustHeight(dependentVariableSectionNode.parent());
@@ -44,14 +57,14 @@ const handleDependentVariableGrid = function() {
 }
 
 const handleIndependentVariableGrid = () => {
-    independentVariableSectionNode.attr("class", "col-sm-4");
-    const IVBtn = createButton("addIndependent", "Add a IV");
-    const IVDisplay = createTextDisplay("independentText", "Tea");
-    const teaSection = createTeaDiv("dependent_variable_div", [IVBtn, IVDisplay]);
+    createEditableDiv(independentVariableSectionNode);
+    const IVBtn = createButton(INDEPENDENT_VARIABLE_BUTTON_ID, "Add a IV");
+    const IVDisplay = createTextDisplay(INDEPENDENT_VARIABLE_TEXTDISPLAY_ID, "Tea");
+    const teaSection = createTeaDiv(INDEPENDENT_PLUGIN_AREA_ID, [IVBtn, IVDisplay]);
     independentVariableSectionNode.parent().append(teaSection);
     independentVariableSectionNode.parent().append("<div class='col-sm-4 panel panel-default'>Formal Text</div>");
     adjustHeight(independentVariableSectionNode.parent());
-    IVBtn.popover(POPOVER_EFFECT);
+    handlePopover(IVBtn);
 }
 
 const handleAnalysisGrid = () => {

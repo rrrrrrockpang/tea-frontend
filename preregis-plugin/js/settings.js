@@ -22,9 +22,7 @@ POPOVER_EFFECT = {
     sanitize: false,
     container: 'body',
     placement: 'top',
-    title: function() {
-        return $("#popoverTitle").html();
-    },
+    title: " ",
     content: function() {
         return $("#PopoverContent").html();
     }

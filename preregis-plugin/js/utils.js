@@ -47,8 +47,9 @@ function createButton (id, text) {
  */
 const createTextDisplay = (id, text) => {
     let textDisplayNode =$("<div id = '" + id + "' " +
-                           "class='tea-div col-sm-4 panel panel-default'>" + text + "</div>");
-    textDisplayNode.text(text);
+                           "class='tea-div col-sm-4 panel panel-default' style='width: 80%'>" + text + "</div>");
+    textDisplayNode.append($('<ol></ol>'))
+    // textDisplayNode.text(text);
     return textDisplayNode;
 };
 
@@ -83,22 +84,4 @@ const adjustHeight = (parentNode) => {
 const addList = (iframeNode, text) => {
     newLiNode = $("<li class='list-item'>" + text + "</li>")
     iframeNode.append(newLiNode);
-}
-
-
-
-/**
- * Element in the popover box
- */
-function addClose (button) {
-    $(document).on('click', '#popover-close', function(){
-        button.popover('hide');
-    })
-    // $("#addDependent").on('shown.bs.popover', function () {
-    //     console.log("Hi")
-    //     $("#popover-close").on("click", function(){
-    //         console.log("?");
-    //     });
-    // })
-
 }

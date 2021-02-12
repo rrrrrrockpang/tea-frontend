@@ -16,13 +16,13 @@ const analysisSectionNode = analysisTextAreaNode.parent().parent();
 
 const DEPENDENT_PLUGIN_AREA_ID = "dependent_variable_plugin_area";
 const DEPENDENT_PLUGIN_AREA_ID_JQUERY_SELECTOR = "#" + DEPENDENT_PLUGIN_AREA_ID;
-const DEPENDENT_VARIABLE_BUTTON_ID = "addDependent";
-const DEPENDENT_VARIABLE_TEXT_DISPLAY_ID = "dependentText";
+const DEPENDENT_VARIABLE_BUTTON_ID = "dependent_variable_button";
+const DEPENDENT_VARIABLE_TEXT_DISPLAY_ID = "dependent_variable_text_display";
 
 const INDEPENDENT_PLUGIN_AREA_ID = "independent_variable_plugin_area";
 const INDEPENDENT_PLUGIN_AREA_ID_JQUERY_SELECTOR = "#" + INDEPENDENT_PLUGIN_AREA_ID;
-const INDEPENDENT_VARIABLE_BUTTON_ID = "addIndependent";
-const INDEPENDENT_VARIABLE_TEXTDISPLAY_ID = "independentText";
+const INDEPENDENT_VARIABLE_BUTTON_ID = "independent_variable_button";
+const INDEPENDENT_VARIABLE_TEXTDISPLAY_ID = "independent_variable_text_display";
 
 const HYPOTHESIS_PLUGIN_AREA_ID = "hypothesis_plugin_area";
 const HYPOTHESIS_PLUGIN_AREA_ID_JQUERY_SELECTOR = "#" + HYPOTHESIS_PLUGIN_AREA_ID;
