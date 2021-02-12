@@ -50,6 +50,14 @@ const handleDependentVariableGrid = function() {
     dependentVariableSectionNode.parent().append("<div class='col-sm-4 panel panel-default'>Formal Text</div>");
     adjustHeight(dependentVariableSectionNode.parent());
     handlePopover(DVBtn);
+
+    DVDisplay.on('DOMSubtreeModified', function() {
+        console.log(dependentVarLst);
+        console.log(dependentVariableSectionNode.parent().children('div').eq(1).html())
+        console.log(dependentVariableSectionNode.parent().eq(1).html());
+        dependentVariableSectionNode.parent().children().eq(1).append(dependentVarLst.length);
+    });
+    console.log(dependentVarLst)
 }
 
 const handleIndependentVariableGrid = () => {

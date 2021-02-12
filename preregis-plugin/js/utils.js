@@ -3,7 +3,7 @@
  */
 const createEditableDiv = (textareaNode) => {
     textareaNode.hide();
-    textareaNode.parent().append("<div class='col-sm-4' style='display: flex; max-width: 100%; word-break: break-all' contentEditable=\"true\"><ol></ol></div>");
+    textareaNode.parent().append("<div class='editable col-sm-4' style='display: flex; max-width: 100%; word-break: break-all' contentEditable=\"true\"><ol></ol></div>");
 }
 
 
