@@ -21,12 +21,12 @@ const handlePopover = function(button) {
             if(id === DEPENDENT_VARIABLE_BUTTON_ID) {
                 dependentVarLst.push(variable.toJSON());
                 selector = "#" + DEPENDENT_VARIABLE_TEXT_DISPLAY_ID;
-                $(selector + '> ol').append("<li>" + variable.toString() + "</li>");
+                $(selector + '> ol').append(addCard(variable.getName()));
             } else if (id === INDEPENDENT_VARIABLE_BUTTON_ID) {
                 independentVarLst.push(variable.toJSON());
                 console.log()
                 selector = "#" + INDEPENDENT_VARIABLE_TEXTDISPLAY_ID;
-                $(selector + '> ol').append("<li>" + variable.toString() + "</li>");
+                $(selector + '> ol').append(addCard(variable.getName()));
             }
             console.log("?");
             console.log(dependentVarLst);
@@ -38,10 +38,6 @@ const handlePopover = function(button) {
     button.on('hidden.bs.popover', function() {
         $('body').off('#variableBtn');
     })
-
-
-
-
 
 }
 

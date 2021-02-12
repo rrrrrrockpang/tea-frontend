@@ -53,6 +53,20 @@ const createTextDisplay = (id, text) => {
     return textDisplayNode;
 };
 
+/**
+ * Display variables
+ */
+const addCard = (text) => {
+    const selector =
+            "<div class='alert alert-success' role='alert'>" +
+                "<strong>"+ text + "</strong>" +
+                "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>" +
+                    "<span aria-hidden='true'>×</span>" +
+                "</button>" +
+            "</div>";
+    return $(selector);
+}
+
 
 ///// Post-facto adjust the html
 
@@ -62,20 +76,6 @@ const createTextDisplay = (id, text) => {
  */
 const adjustHeight = (parentNode) => {
     parentNode.css(PARENT_HEIGHT_FLEX);
-    // let maxHeight = -1;
-    // parentNode.children("div").each(function(){
-    //     maxHeight = maxHeight > $(this).height() ? maxHeight : $(this).height();
-    // });
-    // // you can get from dependentVariableTextAreaNode.css("line-height")
-    // // but I don't want to bother with text processing "20px" to "20"
-    // let lineHeight = 20;  // line height.
-    // console.log(lineHeight);
-    // let row = Math.ceil(maxHeight / lineHeight);
-    // maxHeight = row * 20;
-    // parentNode.children("div").each(function() {
-    //     $(this).height(maxHeight);
-    // });
-    // parentNode.find("textarea").attr('rows', row);
 };
 
 /**
