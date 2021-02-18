@@ -2,8 +2,12 @@
  * Section div
  */
 const createEditableDiv = (textareaNode) => {
-    textareaNode.hide();
-    textareaNode.parent().append("<div class='editable col-sm-4' style='display: flex; max-width: 100%; word-break: break-all' contentEditable=\"true\"><ol></ol></div>");
+    // textareaNode.hide();
+    textareaNode.attr('class', 'col-sm-4');
+    console.log(textareaNode.find('textarea'));
+    textareaNode.find('textarea').css('min-height', "150px");
+    // textareaNode.find('area')
+    // textareaNode.parent().append("<div class='editable col-sm-4' style='display: flex; max-width: 100%; word-break: break-all' contentEditable=\"true\"><ol></ol></div>");
 }
 
 
@@ -47,7 +51,7 @@ function createButton (id, text) {
  */
 const createTextDisplay = (id, text) => {
     let textDisplayNode =$("<div id = '" + id + "' " +
-                           "class='tea-div col-sm-4 panel panel-default' style='width: 80%'>" + text + "</div>");
+                           "class='tea-div col-sm-4 panel panel-default' style='width: 65%'>" + text + "</div>");
     textDisplayNode.append($('<ol></ol>'))
     // textDisplayNode.text(text);
     return textDisplayNode;
