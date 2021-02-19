@@ -4,6 +4,7 @@ class Component {
         this.name = name;
         this.type = type;
         this.addenda = addenda;
+        this.bubble = null;
     }
 
     toJson() {
@@ -15,7 +16,7 @@ class Component {
     }
 
     dotInPlayground(svg, x, y) {
-        svg.append("circle")
+        this.bubble = svg.append("circle")
             .attr("class", "bubbles")
             .attr("cx", x)
             .attr("cy", y)
@@ -24,5 +25,9 @@ class Component {
             .on("mouseover", showTooltip)
             .on("mousemove", moveTooltip)
             .on("mouseleave", hideTooltip)
+    }
+
+    removeBubble(svg) {
+        this.bubble.remove();
     }
 }

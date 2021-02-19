@@ -4,3 +4,6 @@ component.dotInPlayground(svg, 100, 100);
 const component2 = new Component("hi", "2");
 component2.dotInPlayground(svg, 200, 200);
 
+$("#btn").on("click", function(){
+    component2.removeBubble();
+})
