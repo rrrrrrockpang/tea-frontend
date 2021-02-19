@@ -1,7 +1,0 @@
-{
-"version": 3,
-"mappings": "AAEA,YAAY;EACV,OAAO,EAHM,KAAK",
-"sources": ["popover.sass"],
-"names": [],
-"file": "popover.css"
-}
