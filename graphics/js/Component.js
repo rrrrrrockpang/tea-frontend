@@ -15,11 +15,12 @@ class Component {
     }
 
     dotInPlayground(svg, x, y) {
-        svg.append("circle")
+        svg.append("rect")
             .attr("class", "bubbles")
-            .attr("cx", x)
-            .attr("cy", y)
-            .attr("r", 100 )
+            .attr("x", x)
+            .attr("y", y)
+            .attr("width", 100)
+            .attr("height", 100)
             .style("fill", "green")
             .on("mouseover", showTooltip)
             .on("mousemove", moveTooltip)
