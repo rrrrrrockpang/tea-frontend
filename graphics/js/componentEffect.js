@@ -7,13 +7,13 @@ var tooltip = d3.select("#playground")
     .style("padding", "10px")
     .style("color", "white")
 
-var showTooltip = function(hi) {
+var showTooltip = function(d) {
     tooltip
         .transition()
         .duration(200)
     tooltip
         .style("opacity", 1)
-        .html(hi)
+        .html("hey")
         .style("left", (d3.mouse(this)[0]+30) + "px")
         .style("top", (d3.mouse(this)[1]+30) + "px")
 }
