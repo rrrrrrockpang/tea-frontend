@@ -13,6 +13,7 @@
     <script src="https://d3js.org/d3.v4.js"></script>
     <link rel="stylesheet" href="./css/playground.css"/>
     <link rel="stylesheet" href="./css/component.css"/>
+    <link rel="stylesheet" href="./css/product.css"/>
     <link rel="stylesheet" href="./css/bootstrap.min.css"/>
     <link rel="stylesheet" href="./css/bootstrap-theme.min.css"/>
 </head>
@@ -21,15 +22,27 @@
     <script src="js/app.js"></script>
     <!-- Controller-->
     <script src="js/controllers/MainController.js"></script>
-    <div id="preregisContainer">
-        <div class="container">
+    <div class="container-fluid h-100">
+        <div class="row vh-100" style="display: flex; flex-wrap: wrap">
+            <div class="col-md-3" >
+                <div id="preregisContainer">
+                    <div class="container"></div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div id="paperContainer">
+                    <div class="container"></div>
+                </div>
+            </div>
         </div>
     </div>
+
 
     <!-- Others -->
     <script src="js/componentEffect.js"></script>
     <script src="js/variable.js"></script>
     <script src="js/Component.js"></script>
+    <script src="js/Product.js"></script>
     <script src="js/graphics.js"></script>
 </body>
 </html>
