@@ -8,6 +8,7 @@ class Component {
         this.addenda = addenda;
         this.wrapper = null;
         this.componentNode = null;
+        this.product = null;
         // this.formHTML = this.generateTooltipForm();
     }
 

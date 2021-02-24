@@ -65,10 +65,22 @@ $(document).ready(function(){
     independent_variable_product_container.addProduct(paper_container);
     independent_variable_product_container.showToolTipForm();
 
+    independent_variable_product_container.preregisComponent = independent_container;
+
+
     var myline = new LeaderLine(
-        dependent_container.componentNode[0],
-        independent_variable_product_container.productNode[0]
+        independent_variable_product_container.preregisComponent.componentNode[0],
+        independent_variable_product_container.productNode[0],
+        {
+            path: "fluid",
+            startSocket: "right",
+            endSocket: "left"
+        }
     );
+
+    var paper = new Paper();
+    paper.addPaper($("#paperTextContainer .container"));
+    $("#sentence_2").css("background", "green")
 })
 
 

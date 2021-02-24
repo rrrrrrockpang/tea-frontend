@@ -4,6 +4,7 @@ class Product {
         this.id = this.section;
         this.description = description;
         this.productNode = null;
+        this.preregisComponent = null;
     }
 
     addProduct(div) {
