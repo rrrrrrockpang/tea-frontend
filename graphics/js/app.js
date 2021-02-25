@@ -1,1 +1,1 @@
-let app = angular.module('ToDoList', []);
+let app = angular.module('teaPlayground', []);

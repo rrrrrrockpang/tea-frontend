@@ -13,7 +13,7 @@ var showTooltip = function(d) {
         .duration(200)
     tooltip
         .style("opacity", 1)
-        .html("hi")
+        .html("hey")
         .style("left", (d3.mouse(this)[0]+30) + "px")
         .style("top", (d3.mouse(this)[1]+30) + "px")
 }
