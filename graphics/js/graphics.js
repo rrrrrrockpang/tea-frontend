@@ -81,33 +81,33 @@ $(document).ready(function(){
     }
 
 
-    independent_variable_product_container.preregisComponent = independent_container;
-
-
-    var myline = new LeaderLine(
-        independent_variable_product_container.preregisComponent.componentNode[0],
-        independent_variable_product_container.productNode[0],
-        {
-            path: "fluid",
-            startSocket: "right",
-            endSocket: "left"
-        }
-    );
+    // independent_variable_product_container.preregisComponent = independent_container;
+    //
+    //
+    // var myline = new LeaderLine(
+    //     independent_variable_product_container.preregisComponent.componentNode[0],
+    //     independent_variable_product_container.productNode[0],
+    //     {
+    //         path: "fluid",
+    //         startSocket: "right",
+    //         endSocket: "left"
+    //     }
+    // );
 
     var paper = new Paper();
     paper.addPaper($("#paperTextContainer .container"));
 
 
-    var myline2 = new LeaderLine(
-        independent_variable_product_container.productNode[0],
-        $("#sentence_0").get(0),
-        {
-            hide: true
-        });
-
-    $("#sentence_0").on('mouseenter', function (){
-        myline2.show();
-    })
+    // var myline2 = new LeaderLine(
+    //     independent_variable_product_container.productNode[0],
+    //     $("#sentence_0").get(0),
+    //     {
+    //         hide: true
+    //     });
+    //
+    // $("#sentence_0").on('mouseenter', function (){
+    //     myline2.show();
+    // })
 })
 
 

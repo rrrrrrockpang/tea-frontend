@@ -24,6 +24,11 @@ html, body {
   background: #d58512;
 }
 
+#paperTextContainer {
+  max-height: 100vh;
+  overflow: auto;
+}
+
 .container {
   height: 100%;
   max-width: 100%;

@@ -8,7 +8,7 @@ class Sentence {
     }
 
     addSentence(div) {
-        this.element = $("<span id='" + this.id + "'>" + this.text + "</span>");
+        this.element = $("<span id='" + this.id + "' style='white-space: pre-line'>" + this.text + "</span>");
         div.append(this.element);
         // this.addHighlightEffect(this.element);
     }
