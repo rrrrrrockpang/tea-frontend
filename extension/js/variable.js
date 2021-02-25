@@ -39,13 +39,13 @@ const OTHER_ID = "other";
 
 
 const IDS = [
-    "hypothesis",
-    "dv",
-    "conditions",
-    "analysis",
-    "outlier",
-    "sampleSize",
-    "other"
+    HYPOTHESIS_ID,
+    DV_ID,
+    CONDITION_ID,
+    ANALYSIS_ID,
+    OUTLIER_ID,
+    SAMPLESIZE_ID,
+    OTHER_ID
 ]
 
 const TEXTAREA_NODES = [

@@ -2,8 +2,11 @@ class Element {
     constructor(id, node) {
         this.id = id;
         this.node = node;
-        this.createInitialLayout(this.node);
-        this.handleInitialBtn();
+        // this.createInitialLayout(this.node);
+        // this.handleInitialBtn();
+        this.middle = null;
+        this.paper = null;
+        this.isOpen = false;
     }
 
     /**
@@ -12,31 +15,53 @@ class Element {
      * @param textareaNode
      */
     createInitialLayout(textareaNode) {
-        // Find the container for a specific question
-        const sectionContainer = textareaNode.parent().parent().parent().parent();
-        const textareaSection = textareaNode.parent().parent().parent();
+        if(this.textareaSection != null && this.middle != null && this.paper != null) {
+            if(this.isOpen) {
+                this.middle.hide();
+                this.paper.hide();
+                $(".counter").css("display", "block");
+                this.textareaSection.attr('class', 'col-sm-12');
+            } else {
+                this.middle.show();
+                this.paper.show();
+                $(".counter").css("display", "none");
+                this.textareaSection.attr('class', 'col-sm-4');
+            }
+            this.isOpen = !this.isOpen;
+        } else {
+            // Find the container for a specific question
+            const sectionContainer = textareaNode.parent().parent().parent().parent();
+            const textareaSection = textareaNode.parent().parent().parent();
 
-        // shrink textarea node
-        sectionContainer.find(".form-group").css("height", "100%");
-        sectionContainer.find(".wrapper").css("height", "100%");
-        textareaNode.css("height", "100%");
-        $(".counter").css("display", "none");   // The counter is tricky to handle in the aspredicted website
-        textareaSection.attr('class', 'col-sm-4');
-        textareaSection.css('margin-bottom', "10px");
+            // shrink textarea node
+            sectionContainer.find(".form-group").css("height", "100%");
+            sectionContainer.find(".wrapper").css("height", "100%");
+            textareaNode.css("height", "100%");
+            $(".counter").css("display", "none");   // The counter is tricky to handle in the aspredicted website
+            textareaSection.attr('class', 'col-sm-4');
+            textareaSection.css('margin-bottom', "10px");
 
-        // Add Tea input
-        let middle = $("<div id = '" + this.id + "' " +
-            "class='tea-div col-sm-4' style='border: solid; margin-bottom: 10px'></div>");
-        middle.css("position: relative");
-        middle.append(this.createInitialBtn());
-        sectionContainer.append(middle);
+            // Add Tea input
+            let middle = $("<div id = '" + this.id + "' " +
+                "class='tea-div col-sm-4' style='border: solid; margin-bottom: 10px'></div>");
+            middle.css("position: relative");
+            middle.append(this.createInitialBtn());
+            sectionContainer.append(middle);
 
-        // Add paper text
-        let paper = $("<div id=" + this.id + "_paper" + " class='col-sm-4' style='border: solid; margin-bottom: 10px'>Need to Insert something here</div>")
-        sectionContainer.append(paper);
+            // Add paper text
+            let paper = $("<div id=" + this.id + "_paper" + " class='col-sm-4' style='border: solid; margin-bottom: 10px'>Need to Insert something here</div>")
+            sectionContainer.append(paper);
 
-        adjustHeight(sectionContainer);
-        console.log("!!")
+            adjustHeight(sectionContainer);
+
+            this.sectionContainer = sectionContainer;
+            this.textareaSection = textareaSection;
+            this.middle = middle;
+            this.paper = paper;
+
+            this.createInitialBtn();
+            this.isOpen = true;
+        }
     }
 
     createInitialBtn() {

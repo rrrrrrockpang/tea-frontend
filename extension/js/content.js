@@ -12,15 +12,8 @@ $(document).ready(function() {
         let box_width = node.width();
         let wrapper = $("<div class='wrapper'></div>").css({
             position: "relative",
-            // "box-sizing": "content-box",
-            // left: "16px",
             overflow: "auto",
             width: "100%",
-            // position: "relative",
-            // overflow: "hidden",
-            // border: "0px",
-            // margin: "0px",
-            // "padding-bottom": "20px",
         });
         node.wrap(wrapper);
 
@@ -33,8 +26,9 @@ $(document).ready(function() {
         });
         node.parent().append(icon);
 
+        let element = new Element(node_id, node);
         icon.on("click", function() {
-            var element = new Element(node_id, node);
+            element.createInitialLayout(node);
         })
     }
 });

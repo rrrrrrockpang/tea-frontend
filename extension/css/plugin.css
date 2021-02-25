@@ -1,3 +1,6 @@
-
+textarea {
+  overflow: hidden;
+  height: auto;
+}
 
 /*# sourceMappingURL=plugin.css.map */
