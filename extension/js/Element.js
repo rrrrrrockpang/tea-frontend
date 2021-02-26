@@ -45,6 +45,7 @@ class Element {
             let middle = $("<div id = '" + this.id + "' " +
                 "class='tea-div col-sm-4' style='border: solid; margin-bottom: 10px'></div>");
             middle.css("position: relative");
+            middle.append(this.createDisplayArea());            // variable and hypothesis is different
             middle.append(this.createInitialBtn());
             sectionContainer.append(middle);
 
@@ -59,7 +60,7 @@ class Element {
             this.middle = middle;
             this.paper = paper;
 
-            this.createInitialBtn();
+            this.handleInitialBtn();
             this.isOpen = true;
         }
     }
@@ -88,6 +89,13 @@ class Element {
         return buttonNode;
     }
 
+    createDisplayArea() {
+        let displayArea = $("<div id = '" + this.id + "_displayarea" + "' " +
+            "class='tea-div col-sm-4 panel panel-default' style='width: 65%'>" + this.id + "</div>");
+        this.displayArea = displayArea;
+        return displayArea;
+    }
+
     handleInitialBtn() {
         let button = this.initialButton;
         const btn_id = button.attr('id');
@@ -105,22 +113,22 @@ class Element {
                 }
             });
 
-            button.on('shown.bs.popover', function() {
-
-            })
         }
     }
 
     getpopoverContentForm(popoverBtn) {
+        const id = this.id;
+        const displayArea = this.displayArea;
+
         const formTemplate = $(`
-            <form class='extension_popover_form' id='${this.id + "_form"}'>
+            <form class='extension_popover_form' id='${id + "_form"}'>
                 <div class="form-group">
                     <label htmlFor='name' className='col-form-label'>Name:
-                    <input type='text' class='form-control' id='${this.id + "_name"}'>
+                    <input type='text' class='form-control' id='${id + "_name"}'>
                     </label>
                 </div>
                 
-                <div class='form-group'>
+                <div class='form-group var-type'>
                     <div class='row'><label for='type' class='col-form-label'>Type:</label></div>
                     <div class="row">
                         <div class='radio-inline'>
@@ -133,7 +141,7 @@ class Element {
                         </div>
                         <div class='radio-inline'>
                             <input class='form-check-input' type='radio' name='variableTypeRadios' id='intervalRadio' value='interval'>
-                            <label class='form-check-label' for='intervalRadio'>Nominal</label>
+                            <label class='form-check-label' for='intervalRadio'>Interval</label>
                         </div>
                         <div class='radio-inline'>
                             <input class='form-check-input' type='radio' name='variableTypeRadios' id='ratioRadio' value='ratio'>
@@ -144,12 +152,45 @@ class Element {
             </form>
         `);
 
+        formTemplate.find("#nominalRadio").change(function() {
+            if($(this).is(':checked')) {
+                // clear the area first (clicked and unclicked)
+                alert("nominal checked");
+            }
+        });
+
+        formTemplate.find("#ordinalRadio").change(function() {
+            if($(this).is(':checked')) {
+                alert("ordinal checked");
+            }
+        })
+
+
         let cancelBtn = $("<button type='button' class='btn btn-secondary'>Close</button>");
-        let changeBtn = $("<button type='button' class='btn btn-success'>Change</button>");
+        let changeBtn = $("<button type='button' class='btn btn-success'>Add</button>");
         formTemplate.append(cancelBtn, changeBtn);
         cancelBtn.on('click', function() {
             popoverBtn.popover('hide');
         });
+
+        changeBtn.on('click', function() {
+            // Add to array
+            // Display to the display area
+            console.log(id);
+            console.log(DV_ID);
+            if(id === DV_ID) {
+                alert("??")
+
+                let variable = new Variable();
+                let name = formTemplate.find(`${id + "_name"}`).val();
+                let type = formTemplate.find(".var-type input[type='radio']:checked").val();
+                alert(name + type);
+                variable.setVar(type, name);
+                dependentVarLst.push(variable.toJSON());
+                displayArea.append(addCard(variable.getName()));
+                console.log(dependentVarLst);
+            }
+        })
         return formTemplate;
     }
 }
