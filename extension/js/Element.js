@@ -152,18 +152,104 @@ class Element {
             </form>
         `);
 
-        formTemplate.find("#nominalRadio").change(function() {
-            if($(this).is(':checked')) {
-                // clear the area first (clicked and unclicked)
-                alert("nominal checked");
-            }
-        });
+        formTemplate.find(".var-type input[type='radio']").on("change", function() {
+            let selected = $(`#${id + '_form'} input[type='radio']:checked`);
+            let nominal_area = formTemplate.find("#nominal-category");
+            let ordinal_area = formTemplate.find("#ordinal-category");
 
-        formTemplate.find("#ordinalRadio").change(function() {
-            if($(this).is(':checked')) {
-                alert("ordinal checked");
+            // handle nominal
+            if(selected.val() === "nominal") {
+                if(ordinal_area.length !== 0) {
+                    ordinal_area.hide();
+                }
+
+                if(nominal_area.length !== 0) {
+                    nominal_area.show();
+                } else {
+                    let addenda = $(`
+                    <div class="form-group" id="nominal-category">
+                        <div class='row'><label for='type' class='col-form-label'>Categories:</label></div>
+                        <div class="form-row align-items-center">
+                            <div class="col-auto">
+                                <input type="text" class='form-control'>
+                            </div>
+                            <div class="col-auto">
+                                <button type="submit" class="btn btn-success mb-2">Add</button>
+                            </div>
+                        </div>
+                    </div>
+                `   );
+                    addenda.insertAfter(formTemplate.find(".var-type"));
+                }
+            }
+
+            if(selected.val() === "ordinal") {
+                if(nominal_area.length !== 0) {
+                    nominal_area.hide();
+                }
+
+                if(ordinal_area.length !== 0) {
+                    ordinal_area.show();
+                } else {
+                    let addenda = $(`
+                    <div class="form-group" id="ordinal-category">
+                        <div class='row'><label for='type' class='col-form-label'>Orders:</label></div>
+                        <div class="form-row align-items-center">
+                            <div class="col-auto">
+                                <input type="text" class='form-control'>
+                            </div>
+                            <div class="col-auto">
+                                <button type="submit" class="btn btn-success mb-2">Add</button>
+                            </div>
+                        </div>
+                    </div>
+                `   );
+                    addenda.insertAfter(formTemplate.find(".var-type"));
+                }
+            }
+
+            if(selected.val() === "interval" || selected.val() === "ratio") {
+                nominal_area.hide();
+                ordinal_area.hide();
             }
         })
+
+        // formTemplate.find("#nominalRadio").change(function() {
+        //     let radio = $(this);
+        //     let nominal_area = formTemplate.has("#nominal-category");
+        //
+        //     if(nominal_area.length === 0) {
+        //         if(radio.is(':checked')) {
+        //             let addenda = $(`
+        //             <div class="form-group" id="nominal-category">
+        //                 <div class='row'><label for='type' class='col-form-label'>Categories:</label></div>
+        //                 <div class="form-row align-items-center">
+        //                     <div class="col-auto">
+        //                         <input type="text" class='form-control'>
+        //                     </div>
+        //                     <div class="col-auto">
+        //                         <button type="submit" class="btn btn-success mb-2">Add</button>
+        //                     </div>
+        //                 </div>
+        //             </div>
+        //         `   );
+        //             addenda.insertAfter(formTemplate.find(".var-type"));
+        //         }
+        //     } else {
+        //         if(radio.is(':checked')) {
+        //             nominal_area.show();
+        //         } else {
+        //             console.log("??????")
+        //             nominal_area.hide();
+        //         }
+        //     }
+        // });
+        //
+        // formTemplate.find("#ordinalRadio").change(function() {
+        //     if($(this).is(':checked')) {
+        //         alert("ordinal checked");
+        //     }
+        // })
 
 
         let cancelBtn = $("<button type='button' class='btn btn-secondary'>Close</button>");
