@@ -268,15 +268,17 @@ class Element {
             console.log(id);
             console.log(DV_ID);
             if(id === DV_ID) {
-                alert("??")
-
                 let variable = new Variable();
-                let name = formTemplate.find(`${id + "_name"}`).val();
+                let name = formTemplate.find("input[type='text']").val();
                 let type = formTemplate.find(".var-type input[type='radio']:checked").val();
-                alert(name + type);
                 variable.setVar(type, name);
-                dependentVarLst.push(variable.toJSON());
-                displayArea.append(addCard(variable.getName()));
+                dependentVarLst.push(variable);
+                let pos = dependentVarLst.length - 1;
+                let card = addCard(variable.getName());
+                card.find(".delete").on("click", function() {
+                    dependentVarLst.splice(pos, 1);
+                })
+                displayArea.append(card);
                 console.log(dependentVarLst);
             }
         })

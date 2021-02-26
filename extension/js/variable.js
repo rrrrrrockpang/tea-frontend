@@ -1,5 +1,5 @@
-const dependentVarLst = [];
-const independentVarLst = [];
+let dependentVarLst = [];
+let independentVarLst = [];
 
 const hypothesisTextAreaNode = $("[name='text1']");
 const dependentVariableTextAreaNode = $("[name='text2']");
