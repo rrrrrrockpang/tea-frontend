@@ -92,6 +92,46 @@ class Element {
     createDisplayArea() {
         let displayArea = $("<div id = '" + this.id + "_displayarea" + "' " +
             "class='tea-div col-sm-4 panel panel-default' style='width: 65%'>" + this.id + "</div>");
+
+        // hypothesis selector
+        if(this.id === ANALYSIS_ID) {
+
+            displayArea = $(`
+                <div class="container" style="width: 100%">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="dropdown show">
+                                <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    DV    
+                                </button>
+                            
+                               <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                               </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">Hello</div>
+                    </div>
+                </div>
+            `);
+
+            displayArea.find(".btn").on("click", function() {
+                let count = $(".dropdown-menu .dropdown-item").length;
+                console.log(dependentVarLst);
+                if(dependentVarLst.length === 0) {
+                    alert("Please add some variables");
+                    return;
+                }
+                if(count !== dependentVarLst.length) {
+                    for(let i = 0; i < dependentVarLst.length; i++) {
+                        $(`<a class="dropdown-item" href="#">${dependentVarLst[i]}</a>`).appendTo(".dropdown-menu");
+                    }
+                }
+            });
+
+
+
+        }
+
         this.displayArea = displayArea;
         return displayArea;
     }
@@ -213,43 +253,6 @@ class Element {
                 ordinal_area.hide();
             }
         })
-
-        // formTemplate.find("#nominalRadio").change(function() {
-        //     let radio = $(this);
-        //     let nominal_area = formTemplate.has("#nominal-category");
-        //
-        //     if(nominal_area.length === 0) {
-        //         if(radio.is(':checked')) {
-        //             let addenda = $(`
-        //             <div class="form-group" id="nominal-category">
-        //                 <div class='row'><label for='type' class='col-form-label'>Categories:</label></div>
-        //                 <div class="form-row align-items-center">
-        //                     <div class="col-auto">
-        //                         <input type="text" class='form-control'>
-        //                     </div>
-        //                     <div class="col-auto">
-        //                         <button type="submit" class="btn btn-success mb-2">Add</button>
-        //                     </div>
-        //                 </div>
-        //             </div>
-        //         `   );
-        //             addenda.insertAfter(formTemplate.find(".var-type"));
-        //         }
-        //     } else {
-        //         if(radio.is(':checked')) {
-        //             nominal_area.show();
-        //         } else {
-        //             console.log("??????")
-        //             nominal_area.hide();
-        //         }
-        //     }
-        // });
-        //
-        // formTemplate.find("#ordinalRadio").change(function() {
-        //     if($(this).is(':checked')) {
-        //         alert("ordinal checked");
-        //     }
-        // })
 
 
         let cancelBtn = $("<button type='button' class='btn btn-secondary'>Close</button>");
