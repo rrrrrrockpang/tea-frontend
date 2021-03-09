@@ -5,7 +5,7 @@ class Element {
         // this.createInitialLayout(this.node);
         // this.handleInitialBtn();
         this.middle = null;
-        this.paper = null;
+        // this.paper = null;
         this.isOpen = false;
     }
 
@@ -15,17 +15,17 @@ class Element {
      * @param textareaNode
      */
     createInitialLayout(textareaNode) {
-        if(this.textareaSection != null && this.middle != null && this.paper != null) {
+        if(this.textareaSection != null && this.middle != null) {
             if(this.isOpen) {
                 this.middle.hide();
-                this.paper.hide();
+                // this.paper.hide();
                 $(".counter").css("display", "block");
                 this.textareaSection.attr('class', 'col-sm-12');
             } else {
                 this.middle.show();
-                this.paper.show();
+                // this.paper.show();
                 $(".counter").css("display", "none");
-                this.textareaSection.attr('class', 'col-sm-4');
+                this.textareaSection.attr('class', 'col-sm-6');
             }
             this.isOpen = !this.isOpen;
         } else {
@@ -38,27 +38,27 @@ class Element {
             sectionContainer.find(".wrapper").css("height", "100%");
             textareaNode.css("height", "100%");
             $(".counter").css("display", "none");   // The counter is tricky to handle in the aspredicted website
-            textareaSection.attr('class', 'col-sm-4');
-            textareaSection.css('margin-bottom', "10px");
+            textareaSection.attr('class', 'col-sm-6');
+            // textareaSection.css('margin-bottom', "10px");
 
             // Add Tea input
             let middle = $("<div id = '" + this.id + "' " +
-                "class='tea-div col-sm-4' style='border: solid; margin-bottom: 10px'></div>");
+                "class='tea-div col-sm-6' style='border: solid'></div>");
             middle.css("position: relative");
             middle.append(this.createDisplayArea());            // variable and hypothesis is different
             middle.append(this.createInitialBtn());
             sectionContainer.append(middle);
 
             // Add paper text
-            let paper = $("<div id=" + this.id + "_paper" + " class='col-sm-4' style='border: solid; margin-bottom: 10px'>Need to Insert something here</div>")
-            sectionContainer.append(paper);
+            // let paper = $("<div id=" + this.id + "_paper" + " class='col-sm-4' style='border: solid; margin-bottom: 10px'>Need to Insert something here</div>")
+            // sectionContainer.append(paper);
 
             adjustHeight(sectionContainer);
 
             this.sectionContainer = sectionContainer;
             this.textareaSection = textareaSection;
             this.middle = middle;
-            this.paper = paper;
+            // this.paper = paper;
 
             this.handleInitialBtn();
             this.isOpen = true;
@@ -68,16 +68,16 @@ class Element {
     createInitialBtn() {
         const btn_id = this.id + "_initial_btn";
         let buttonNode = $("<button id = '" + btn_id + "' " +
-            "class = 'btn btn-success' " +
+            "class = 'btn btn-success btn-sm initial_btn' " +
             "style = 'position: absolute; right: 0; bottom: 0'" +
             "></button>");
 
         if(this.id === DV_ID) {
-            buttonNode.text("Add a Dependent Variable");
+            buttonNode.text("Add a Variable");
         } else if (this.id === CONDITION_ID) {
-            buttonNode.text("Add an Independent Variable");
+            buttonNode.text("Add a Variable");
         } else if (this.id === HYPOTHESIS_ID) {
-            buttonNode.text("Operationalize your construct");
+            buttonNode.text("Define a construct");
         } else if (this.id === ANALYSIS_ID) {
             buttonNode.text("Find the right statistical test with Tea");
         } else if(this.id === SAMPLESIZE_ID) {
@@ -91,45 +91,53 @@ class Element {
 
     createDisplayArea() {
         let displayArea = $("<div id = '" + this.id + "_displayarea" + "' " +
-            "class='tea-div col-sm-4 panel panel-default' style='width: 65%'>" + this.id + "</div>");
+            "class='tea-div h-100'>" + this.id + "</div>");
 
         // hypothesis selector
+        // if(this.id === ANALYSIS_ID) {
+        //     displayArea = $(`
+        //         <div class="container" style="width: 100%; display: flex; flex-direction: column">
+        //             <div class="row">
+        //                 <div class="col-sm-6">
+        //                     <div class="dropdown show">
+        //                         <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        //                             DV
+        //                         </button>
+        //
+        //                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+        //                        </div>
+        //                     </div>
+        //                 </div>
+        //                 <div class="col-sm-6">Hello</div>
+        //             </div>
+        //         </div>
+        //     `);
+        //
+        //     displayArea.find(".btn").on("click", function() {
+        //         let count = $(".dropdown-menu .dropdown-item").length;
+        //         console.log(dependentVarLst);
+        //         if(dependentVarLst.length === 0) {
+        //             alert("Please add some variables");
+        //             return;
+        //         }
+        //         if(count !== dependentVarLst.length) {
+        //             for(let i = 0; i < dependentVarLst.length; i++) {
+        //                 $(`<a class="dropdown-item" href="#">${dependentVarLst[i]}</a>`).appendTo(".dropdown-menu");
+        //             }
+        //         }
+        //     });
+        // }
         if(this.id === ANALYSIS_ID) {
-
-            displayArea = $(`
-                <div class="container" style="width: 100%">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="dropdown show">
-                                <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    DV    
-                                </button>
-                            
-                               <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                               </div>
-                            </div>
+            displayArea.append(`
+                <div class='container h-100'>
+                    <div class="row h-100">
+                        <div class="col-sm-6 h-100 hypothesis-dv">
                         </div>
-                        <div class="col-sm-6">Hello</div>
+                        <div class="col-sm-6 h-100 hypothesis-iv">
+                        </div>
                     </div>
                 </div>
             `);
-
-            displayArea.find(".btn").on("click", function() {
-                let count = $(".dropdown-menu .dropdown-item").length;
-                console.log(dependentVarLst);
-                if(dependentVarLst.length === 0) {
-                    alert("Please add some variables");
-                    return;
-                }
-                if(count !== dependentVarLst.length) {
-                    for(let i = 0; i < dependentVarLst.length; i++) {
-                        $(`<a class="dropdown-item" href="#">${dependentVarLst[i]}</a>`).appendTo(".dropdown-menu");
-                    }
-                }
-            });
-
-
-
         }
 
         this.displayArea = displayArea;
@@ -160,128 +168,122 @@ class Element {
         const id = this.id;
         const displayArea = this.displayArea;
 
-        const formTemplate = $(`
-            <form class='extension_popover_form' id='${id + "_form"}'>
-                <div class="form-group">
-                    <label htmlFor='name' className='col-form-label'>Name:
-                    <input type='text' class='form-control' id='${id + "_name"}'>
-                    </label>
-                </div>
-                
-                <div class='form-group var-type'>
-                    <div class='row'><label for='type' class='col-form-label'>Type:</label></div>
-                    <div class="row">
-                        <div class='radio-inline'>
-                            <input class='form-check-input' type='radio' name='variableTypeRadios' id='nominalRadio' value='nominal'>
-                            <label class='form-check-label' for='nominalRadio'>Nominal</label>
-                        </div>
-                        <div class='radio-inline'>
-                            <input class='form-check-input' type='radio' name='variableTypeRadios' id='ordinalRadio' value='ordinal'>
-                            <label class='form-check-label' for='ordinalRadio'>Ordinal</label>
-                        </div>
-                        <div class='radio-inline'>
-                            <input class='form-check-input' type='radio' name='variableTypeRadios' id='intervalRadio' value='interval'>
-                            <label class='form-check-label' for='intervalRadio'>Interval</label>
-                        </div>
-                        <div class='radio-inline'>
-                            <input class='form-check-input' type='radio' name='variableTypeRadios' id='ratioRadio' value='ratio'>
-                            <label class='form-check-label' for='ratioRadio'>Ratio</label>
+
+        if(id === DV_ID || id === CONDITION_ID) {
+            const formTemplate = createForm(id);
+
+            formTemplate.find(".var-type input[type='radio']").on("change", function () {
+                let selected = $(`#${id + '_form'} input[type='radio']:checked`);
+                let nominal_area = formTemplate.find("#nominal-category");
+                let ordinal_area = formTemplate.find("#ordinal-category");
+
+                // handle nominal
+                if (selected.val() === "nominal") {
+                    if (ordinal_area.length !== 0) {
+                        ordinal_area.hide();
+                    }
+
+                    if (nominal_area.length !== 0) {
+                        nominal_area.show();
+                    } else {
+                        let addenda = $(`
+
+                    <div class="form-group add-category" id="nominal-category">
+                        <label for='name' class='col-form-label'>Categories:</label>
+                        
+                        <div class="form-inline">
+                            <input type='text' class='form-control'>
+                            <button type="submit" class="btn btn-success mb-2">Add</button>
                         </div>
                     </div>
-                </div>
-            </form>
-        `);
+                `);
+                        addenda.insertAfter(formTemplate.find(".var-type"));
+                    }
+                }
 
-        formTemplate.find(".var-type input[type='radio']").on("change", function() {
-            let selected = $(`#${id + '_form'} input[type='radio']:checked`);
-            let nominal_area = formTemplate.find("#nominal-category");
-            let ordinal_area = formTemplate.find("#ordinal-category");
+                if (selected.val() === "ordinal") {
+                    if (nominal_area.length !== 0) {
+                        nominal_area.hide();
+                    }
 
-            // handle nominal
-            if(selected.val() === "nominal") {
-                if(ordinal_area.length !== 0) {
+                    if (ordinal_area.length !== 0) {
+                        ordinal_area.show();
+                    } else {
+                        let addenda = $(`
+                    <div class="form-group add-category" id="ordinal-category">
+                        <label for='name' class='col-form-label'>Categories:</label>
+                        
+                        <div class="form-inline">
+                            <input type='text' class='form-control'>
+                            <button type="submit" class="btn btn-success mb-2">Add</button>
+                        </div>
+                    </div>
+                `);
+                        addenda.insertAfter(formTemplate.find(".var-type"));
+                    }
+                }
+
+                if (selected.val() === "interval" || selected.val() === "ratio") {
+                    nominal_area.hide();
                     ordinal_area.hide();
                 }
+            })
 
-                if(nominal_area.length !== 0) {
-                    nominal_area.show();
-                } else {
-                    let addenda = $(`
-                    <div class="form-group" id="nominal-category">
-                        <div class='row'><label for='type' class='col-form-label'>Categories:</label></div>
-                        <div class="form-row align-items-center">
-                            <div class="col-auto">
-                                <input type="text" class='form-control'>
-                            </div>
-                            <div class="col-auto">
-                                <button type="submit" class="btn btn-success mb-2">Add</button>
-                            </div>
-                        </div>
-                    </div>
-                `   );
-                    addenda.insertAfter(formTemplate.find(".var-type"));
+            // cancel and submit btn
+            let cancelBtn = $("<button type='button' class='btn btn-secondary'>Close</button>");
+            let submitBtn = $("<button type='button' class='btn btn-success'>Add</button>");
+            formTemplate.append(cancelBtn, submitBtn);
+            cancelBtn.on('click', function() {
+                popoverBtn.popover('hide');
+            });
+
+            submitBtn.on('click', function() {
+                // Add to array
+                // Display to the display area
+                if(id === DV_ID || id === CONDITION_ID) {
+                    let variable = new Variable();
+                    let name = formTemplate.find("input[type='text']").val();
+                    let type = formTemplate.find(".var-type input[type='radio']:checked").val();
+                    variable.setVar(type, name);
+                    let card = addCard(variable.getName());
+
+                    if (id === DV_ID) {
+                        dependentVarLst.push(variable);
+                        card.find(".delete").on("click", function () {
+                            let pos = 0;
+                            for(let i = 0; i < dependentVarLst.length; i++) {
+                                if($(this).parent().parent().find(".col-sm-10 p").text() === dependentVarLst[i]) {
+                                    pos = i;
+                                    break
+                                }
+                            }
+                            $(this).parent().parent().parent().parent().remove();
+                            dependentVarLst.splice(pos, 1);
+                            console.log(dependentVarLst);
+                        });
+                        dvListener.dv = dependentVarLst;
+                    } else if (id === CONDITION_ID) {
+                        independentVarLst.push(variable);
+                        card.find(".delete").on("click", function () {
+                            $(this).parent().parent().parent().parent().remove();
+                            let pos = 0;
+                            for(let i = 0; i < dependentVarLst.length; i++) {
+                                if($(this).parent().parent().find(".col-sm-10 p").text() === dependentVarLst[i]) {
+                                    pos = i;
+                                    break
+                                }
+                            }
+                            independentVarLst.splice(pos, 1);
+                            console.log(independentVarLst)
+                        });
+                        ivListener.iv = independentVarLst;
+                    }
+                    displayArea.append(card);
                 }
-            }
-
-            if(selected.val() === "ordinal") {
-                if(nominal_area.length !== 0) {
-                    nominal_area.hide();
-                }
-
-                if(ordinal_area.length !== 0) {
-                    ordinal_area.show();
-                } else {
-                    let addenda = $(`
-                    <div class="form-group" id="ordinal-category">
-                        <div class='row'><label for='type' class='col-form-label'>Orders:</label></div>
-                        <div class="form-row align-items-center">
-                            <div class="col-auto">
-                                <input type="text" class='form-control'>
-                            </div>
-                            <div class="col-auto">
-                                <button type="submit" class="btn btn-success mb-2">Add</button>
-                            </div>
-                        </div>
-                    </div>
-                `   );
-                    addenda.insertAfter(formTemplate.find(".var-type"));
-                }
-            }
-
-            if(selected.val() === "interval" || selected.val() === "ratio") {
-                nominal_area.hide();
-                ordinal_area.hide();
-            }
-        })
+            })
+            return formTemplate;
+        }
 
 
-        let cancelBtn = $("<button type='button' class='btn btn-secondary'>Close</button>");
-        let changeBtn = $("<button type='button' class='btn btn-success'>Add</button>");
-        formTemplate.append(cancelBtn, changeBtn);
-        cancelBtn.on('click', function() {
-            popoverBtn.popover('hide');
-        });
-
-        changeBtn.on('click', function() {
-            // Add to array
-            // Display to the display area
-            console.log(id);
-            console.log(DV_ID);
-            if(id === DV_ID) {
-                let variable = new Variable();
-                let name = formTemplate.find("input[type='text']").val();
-                let type = formTemplate.find(".var-type input[type='radio']:checked").val();
-                variable.setVar(type, name);
-                dependentVarLst.push(variable);
-                let pos = dependentVarLst.length - 1;
-                let card = addCard(variable.getName());
-                card.find(".delete").on("click", function() {
-                    dependentVarLst.splice(pos, 1);
-                })
-                displayArea.append(card);
-                console.log(dependentVarLst);
-            }
-        })
-        return formTemplate;
     }
 }
