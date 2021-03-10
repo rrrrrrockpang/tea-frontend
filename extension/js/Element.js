@@ -93,43 +93,9 @@ class Element {
         let displayArea = $("<div id = '" + this.id + "_displayarea" + "' " +
             "class='tea-div h-100'>" + this.id + "</div>");
 
-        // hypothesis selector
-        // if(this.id === ANALYSIS_ID) {
-        //     displayArea = $(`
-        //         <div class="container" style="width: 100%; display: flex; flex-direction: column">
-        //             <div class="row">
-        //                 <div class="col-sm-6">
-        //                     <div class="dropdown show">
-        //                         <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        //                             DV
-        //                         </button>
-        //
-        //                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-        //                        </div>
-        //                     </div>
-        //                 </div>
-        //                 <div class="col-sm-6">Hello</div>
-        //             </div>
-        //         </div>
-        //     `);
-        //
-        //     displayArea.find(".btn").on("click", function() {
-        //         let count = $(".dropdown-menu .dropdown-item").length;
-        //         console.log(dependentVarLst);
-        //         if(dependentVarLst.length === 0) {
-        //             alert("Please add some variables");
-        //             return;
-        //         }
-        //         if(count !== dependentVarLst.length) {
-        //             for(let i = 0; i < dependentVarLst.length; i++) {
-        //                 $(`<a class="dropdown-item" href="#">${dependentVarLst[i]}</a>`).appendTo(".dropdown-menu");
-        //             }
-        //         }
-        //     });
-        // }
         if(this.id === ANALYSIS_ID) {
             displayArea.append(`
-                <div class='container h-100'>
+                <div class='container h-100 w-100'>
                     <div class="row h-100">
                         <div class="col-sm-6 h-100 hypothesis-dv">
                         </div>
@@ -147,21 +113,18 @@ class Element {
     handleInitialBtn() {
         let button = this.initialButton;
         const btn_id = button.attr('id');
-        const popoverContentForm = this.getpopoverContentForm(button);
+        let popoverContentForm = this.getpopoverContentForm(button);
 
-        if(this.id !== ANALYSIS_ID) {
-            button.popover({
-                html: true,
-                sanitize: false,
-                container: 'body',
-                placement: 'top',
-                title: " ",
-                content: function () {
-                    return popoverContentForm;
-                }
-            });
-
-        }
+        button.popover({
+            html: true,
+            sanitize: false,
+            container: 'body',
+            placement: 'top',
+            title: " ",
+            content: function () {
+                return popoverContentForm;
+            }
+        });
     }
 
     getpopoverContentForm(popoverBtn) {
@@ -252,14 +215,14 @@ class Element {
                         card.find(".delete").on("click", function () {
                             let pos = 0;
                             for(let i = 0; i < dependentVarLst.length; i++) {
-                                if($(this).parent().parent().find(".col-sm-10 p").text() === dependentVarLst[i]) {
+                                if($(this).parent().parent().find(".col-sm-10 p").text() === dependentVarLst[i].getName()) {
                                     pos = i;
                                     break
                                 }
                             }
                             $(this).parent().parent().parent().parent().remove();
                             dependentVarLst.splice(pos, 1);
-                            console.log(dependentVarLst);
+                            dvListener.dv = dependentVarLst;
                         });
                         dvListener.dv = dependentVarLst;
                     } else if (id === CONDITION_ID) {
@@ -267,14 +230,15 @@ class Element {
                         card.find(".delete").on("click", function () {
                             $(this).parent().parent().parent().parent().remove();
                             let pos = 0;
-                            for(let i = 0; i < dependentVarLst.length; i++) {
-                                if($(this).parent().parent().find(".col-sm-10 p").text() === dependentVarLst[i]) {
+                            for(let i = 0; i < independentVarLst.length; i++) {
+                                if($(this).parent().parent().find(".col-sm-10 p").text() === independentVarLst[i].getName()) {
                                     pos = i;
                                     break
                                 }
                             }
                             independentVarLst.splice(pos, 1);
-                            console.log(independentVarLst)
+                            console.log(independentVarLst);
+                            ivListener.iv = independentVarLst;
                         });
                         ivListener.iv = independentVarLst;
                     }
@@ -282,6 +246,8 @@ class Element {
                 }
             })
             return formTemplate;
+        } else if(id === ANALYSIS_ID) {
+            return createForm(id, "nominal")
         }
 
 

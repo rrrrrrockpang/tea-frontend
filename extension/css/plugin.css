@@ -46,4 +46,8 @@ textarea {
   max-width: 100%;
 }
 
+#analysis_displayarea .variable-card {
+  width: 100%;
+}
+
 /*# sourceMappingURL=plugin.css.map */

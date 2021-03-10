@@ -57,3 +57,11 @@ const TEXTAREA_NODES = [
     sampleSizeTextAreaNode,
     otherNodeTextArea
 ];
+
+analysisConditionClicked = false;
+analysisCondition = "";
+analysisConditionElement = null;
+
+analysisDVClicked = false;
+analysisDV = "";
+analysisDVElement = null;

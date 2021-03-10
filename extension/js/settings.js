@@ -21,13 +21,18 @@ const addCard = (text, id) => {
             </div>
         </div>
     `);
+}
 
-    // const selector =
-    //     "<div class='alert alert-success' role='alert'>" +
-    //     "<strong>"+ text + "</strong>" +
-    //     "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>" +
-    //     "<span class='delete' aria-hidden='true'>×</span>" +
-    //     "</button>" +
-    //     "</div>";
-    // return $(selector);
+const addHypothesisCard = (text, id) => {
+    return $(`
+        <div class="variable-card" id="${id}">
+            <div class="container">
+                <div class="row w-100">
+                    <div class="col-sm-12">
+                        <p>${text}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `);
 }
