@@ -35,4 +35,10 @@ const addHypothesisCard = (text, id) => {
             </div>
         </div>
     `);
-}
+};
+
+const addhypothesisPopupCard = (text) => {
+    return $(`
+        <p>${text}</p>
+    `);
+};

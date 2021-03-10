@@ -49,10 +49,10 @@ const createForm = (id, type="") => {
             return $(`
                 <form class='extension_popover_form' id='${id + "_form"}'>
                     <div class="form-group">
-                        <label for='name' class='col-form-label'>Variable Name:
+                        <label for='name' class='col-form-label'>Hypothesis:
                         <div class="form-inline">
                             <label>The mean value of</label>
-                            <div class="dv-in-form"></div>
+                            <label class="dv-in-form mr-sm-2"></label>
                             <label>in</label>
                             <select class="custom-select my-1 mr-sm-2">
                                 <option value="CI" selected>CI</option>
@@ -70,6 +70,26 @@ const createForm = (id, type="") => {
                                 <option value="CI" selected>CI</option>
                                 <option value="PI">PI</option>
                             </select>
+                        </div>
+                    </div>
+                </form>
+            `);
+        } else {
+            return $(`
+                <form class='extension_popover_form' id='${id + "_form"}'>
+                    <div class="form-group">
+                        <label for='name' class='col-form-label'>Hypothesis:
+                        <div class="form-inline" style="display: inline-block;">
+                            <label>The greater value of</label>
+                            <label class="dv-in-form mr-sm-2"></label>
+                            <label>will lead to</label>
+                            <select class="custom-select my-1 mr-sm-2">
+                                <option value="greater" selected>greater</option>
+                                <option value="less">less</option>
+                                <option value="different">different</option>
+                                <option value="same">the same</option>
+                            </select>
+                            <label class="dv-in-form mr-sm-2"></label>
                         </div>
                     </div>
                 </form>

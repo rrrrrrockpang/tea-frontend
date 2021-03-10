@@ -100,29 +100,7 @@ $(document).ready(function() {
                     analysisConditionElement = $(this).parent().parent().parent();
                     analysisCondition = variable.getName();
                 }
-                console.log(analysisConditionClicked);
-                console.log(analysisConditionElement);
-                console.log(analysisCondition);
-            })
-            // let clicked = false;
-            // card.find(".col-sm-10").on("click", function() {
-            //     if(!clicked) {
-            //         $(this).parent().parent().css("background", "grey");
-            //         if(analysisConditionClicked) {
-            //             analysisConditionElement.css("background", "none");
-            //         } else {
-            //             analysisConditionClicked = true;
-            //             analysisConditionElement = $(this).parent().parent();
-            //             analysisCondition = variable.getName();
-            //         }
-            //     } else {
-            //         analysisConditionClicked = false;
-            //         analysisConditionElement = null;
-            //         analysisCondition = "";
-            //         $(this).parent().parent().css("background", "none");
-            //     }
-            //     clicked = !clicked;
-            //     console.log(analysisCondition);
+            });
 
             hypothesis_iv.push(card);
         }

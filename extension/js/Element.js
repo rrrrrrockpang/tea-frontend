@@ -125,6 +125,13 @@ class Element {
                 return popoverContentForm;
             }
         });
+
+        if(this.id === ANALYSIS_ID){
+            //TODO: Check independent variable type "nominal"/others
+            button.on("click", function() {
+                $(".dv-in-form.mr-sm-2").text(analysisDV);
+            });
+        }
     }
 
     getpopoverContentForm(popoverBtn) {
@@ -247,7 +254,10 @@ class Element {
             })
             return formTemplate;
         } else if(id === ANALYSIS_ID) {
-            return createForm(id, "nominal")
+            let form = createForm(id, "nominal");
+            // console.log(analysisDV);
+            // form.find(".dv-in-form").append(addhypothesisPopupCard(analysisDV));
+            return form;
         }
 
 
