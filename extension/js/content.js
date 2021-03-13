@@ -107,7 +107,7 @@ $(document).ready(function() {
         $(`.hypothesis-iv`).append(hypothesis_iv);
     })
      
-    // Append the icons
+    // Append the icons and create initial layout
     for(let i = 0; i < TEXTAREA_NODES.length; i++) {
         let node_id = IDS[i];
         let node = TEXTAREA_NODES[i];
@@ -131,11 +131,15 @@ $(document).ready(function() {
         node.parent().append(icon);
 
         let element = new Element(node_id, node);
-        if(node_id === ANALYSIS_ID) {
-            element.createInitialLayout(node);
-        }
+        element.createInitialLayout(node);
         icon.on("click", function() {
-            element.createInitialLayout(node);
-        })
+            element.toggleTeaSection();
+        });
+        // if(node_id === ANALYSIS_ID) {
+        //     element.createInitialLayout(node);
+        // }
+        // icon.on("click", function() {
+        //     element.createInitialLayout(node);
+        // })
     }
 });
