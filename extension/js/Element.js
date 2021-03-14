@@ -144,23 +144,18 @@ class Element {
                     alert("Please select a dependent variable!");
                     return;
                 }
-                // let selectedDVName = $('.hypothesis-dv').filter(function() {
-                //     var matched = "grey";
-                //     console.log($(this)[0].outerHTML)
-                //     return ($(this).css('background') === matched);
-                // }).find("p").text();
+
                 console.log(dependentVarLst);
                 for(let i = 0; i < dependentVarLst.length; i++) {
                     if(analysisDV === dependentVarLst[i].name) {
                         const selectedType = dependentVarLst[i].type;
                         console.log(selectedType);
                         popoverContentForm = createForm(id, button, displayArea, selectedType);
-                        console.log(popoverContentForm);
-                        alert(popoverContentForm);
                         break;
                     }
                 }
-                $(".dv-in-form.mr-sm-2").text(analysisDV);
+
+                popoverContentForm.find(".dv-in-form").text(analysisDV);
 
                 button.popover({
                     html: true,
@@ -172,8 +167,8 @@ class Element {
                         return popoverContentForm;
                     }
                 });
-
             });
+
         }
 
         button.popover({

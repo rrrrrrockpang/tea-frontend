@@ -16,10 +16,12 @@
  2. [x] have a recommended area
  3. [ ] clear up the pipeline between variables and hypothesis
     * [x] introduce dictionaries for varirables to avoid deplicates
-    * [ ] generate hypothesis text based on the dv variable type
+    * [x] generate hypothesis text based on the dv variable type
     * [ ] dictionary. key: var_name, value: variable object 
+    * [ ] Improve performance above by avoiding going through the list. can implement later on
  4. [ ] functionality to edit variables
-    [ ] handle nominal and ordinal
+    * [ ] Must add at list two nominal groups
+ 5. [ ] handle nominal and ordinal
     
     
  construct(construct_name: string, variable: Variable);

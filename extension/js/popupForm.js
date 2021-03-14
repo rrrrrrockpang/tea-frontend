@@ -223,23 +223,23 @@ const createForm = (id, popoverbtn, displayArea, type="") => {
                         <label for='name' class='col-form-label'>Hypothesis:
                         <div class="form-inline">
                             <label>The mean value of</label>
-                            <label class="dv-in-form mr-sm-2"></label>
+                            <label class="dv-in-form"></label>
                             <label>in</label>
-                            <select class="custom-select my-1 mr-sm-2">
-                                <option value="CI" selected>CI</option>
-                                <option value="PI">PI</option>
+                            <select class="iv-group-custom-select-1">
+<!--                                <option value="CI" selected>CI</option>-->
+<!--                                <option value="PI">PI</option>-->
                             </select>
                             <label>group will be</label>
-                            <select class="custom-select my-1 mr-sm-2">
+                            <select class="custom-select">
                                 <option value="greater" selected>greater than</option>
                                 <option value="less">less than</option>
                                 <option value="different">different from</option>
                                 <option value="same">same as</option>
                             </select>
                             <label>than that in</label>
-                            <select class="custom-select my-1 mr-sm-2">
-                                <option value="CI" selected>CI</option>
-                                <option value="PI">PI</option>
+                            <select class="iv-group-custom-select-2">
+<!--                                <option value="CI" selected>CI</option>-->
+<!--                                <option value="PI">PI</option>-->
                             </select>
                         </div>
                     </div>
@@ -252,7 +252,7 @@ const createForm = (id, popoverbtn, displayArea, type="") => {
                         <label for='name' class='col-form-label'>Hypothesis:
                         <div class="form-inline" style="display: inline-block;">
                             <label>The greater value of</label>
-                            <label class="dv-in-form mr-sm-2"></label>
+                            <label class="iv-in-form mr-sm-2"></label>
                             <label>will lead to</label>
                             <select class="custom-select my-1 mr-sm-2">
                                 <option value="greater" selected>greater</option>
