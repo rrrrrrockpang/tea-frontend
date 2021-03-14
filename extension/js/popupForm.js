@@ -1,3 +1,12 @@
+const addCategoryBtn = (addenda) => {
+    addenda.find("button").on("click", function(){
+        // add categories
+        const text = addenda.find('input[type=text]').val();
+        localCategories.push(text);
+        addenda.find('.categories').append(addCategoryCard(text));
+    })
+}
+
 const handleNominalandOrdinal = (id, formTemplate) => {
     formTemplate.find(".var-type input[type='radio']").on("change", function () {
             let selected = $(`#${id + '_form'} input[type='radio']:checked`);
@@ -16,16 +25,21 @@ const handleNominalandOrdinal = (id, formTemplate) => {
                     nominal_area.show();
                 } else {
                     let addenda = $(`
-
-                <div class="form-group add-category" id="nominal-category">
-                    <label for='name' class='col-form-label'>Categories:</label>
-                    
-                    <div class="form-inline">
-                        <input type='text' class='form-control'>
-                        <button type="submit" class="btn btn-success mb-2">Add</button>
-                    </div>
-                </div>
-            `);
+                        <div class="form-group add-category" id="nominal-category">
+                            <div class="container w-100">
+                                <div class="row">
+                                    <label for='name' class='col-form-label'>Categories:</label>
+                                    
+                                    <div class="form-inline">
+                                        <input type='text' class='form-control'>
+                                        <button type="button" class="btn btn-success mb-2">Add</button>
+                                    </div>
+                                </div>
+                                <div class="row categories"></div>
+                            </div>
+                        </div>
+                    `);
+                    addCategoryBtn(addenda);
                     addenda.insertAfter(formTemplate.find(".var-type"));
                 }
             }
@@ -77,7 +91,12 @@ const handleSubmitVariableBtn = (submitBtn, id, formTemplate, displayArea, popov
 
 
             let type = formTemplate.find(".var-type input[type='radio']:checked").val();
-            variable.setVar(type, name);
+            if(localCategories.length > 0) {
+               variable.setVar(type, name, localCategories);
+               localCategories = [];
+            } else {
+               variable.setVar(type, name);
+            }
             let card = addCard(variable.getName());
             varNameSet.add(name);
 
@@ -91,15 +110,16 @@ const handleSubmitVariableBtn = (submitBtn, id, formTemplate, displayArea, popov
                             break
                         }
                     }
-                    $(this).parent().parent().parent().parent().remove();
                     dependentVarLst.splice(pos, 1);
+                    varNameSet.delete($(this).parent().parent().find(".col-sm-10 p").text());
                     dvListener.dv = dependentVarLst;
+                    $(this).parent().parent().parent().parent().remove();
                 });
                 dvListener.dv = dependentVarLst;
+                console.log(dependentVarLst);
             } else if (id === CONDITION_ID) {
                 independentVarLst.push(variable);
                 card.find(".delete").on("click", function () {
-                    $(this).parent().parent().parent().parent().remove();
                     let pos = 0;
                     for(let i = 0; i < independentVarLst.length; i++) {
                         if($(this).parent().parent().find(".col-sm-10 p").text() === independentVarLst[i].getName()) {
@@ -107,9 +127,11 @@ const handleSubmitVariableBtn = (submitBtn, id, formTemplate, displayArea, popov
                             break
                         }
                     }
+                    varNameSet.delete($(this).parent().parent().find(".col-sm-10 p").text());
                     independentVarLst.splice(pos, 1);
-                    console.log(independentVarLst);
                     ivListener.iv = independentVarLst;
+                    $(this).parent().parent().parent().parent().remove();
+                    console.log(independentVarLst);
                 });
                 ivListener.iv = independentVarLst;
             }
@@ -236,7 +258,7 @@ const createForm = (id, popoverbtn, displayArea, type="") => {
                                 <option value="different">different from</option>
                                 <option value="same">same as</option>
                             </select>
-                            <label>than that in</label>
+                            <label>that in</label>
                             <select class="iv-group-custom-select-2">
 <!--                                <option value="CI" selected>CI</option>-->
 <!--                                <option value="PI">PI</option>-->

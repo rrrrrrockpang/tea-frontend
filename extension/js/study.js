@@ -20,10 +20,11 @@ class Variable {
 //    this.addenda = {};
     }
 
-    setVar(type, name, addenda = {}) {
+    setVar(type, name, addenda = []) {
         this.type = type;
         this.name = name;
         this.addenda = addenda;
+        if((type === "nominal" || type === "ordinal") && addenda.length === 0) console.error("You need to define categories");
     }
 
     getType() {

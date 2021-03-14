@@ -133,67 +133,62 @@ class Element {
 
         if(this.id !== ANALYSIS_ID) {
             popoverContentForm = createForm(id, button, displayArea);
+            button.popover({
+                html: true,
+                sanitize: false,
+                container: 'body',
+                placement: 'top',
+                title: " ",
+                content: function () {
+                    return popoverContentForm;
+                }
+            });
         } else {
             //TODO: Check independent variable type "nominal"/others
             button.on("click", function() {
                 const variables = $(".hypothesis-dv").find(".variable-card");
                 if(variables.length <= 0) {
                     alert("Please add variables!");
-                    return;
                 } else if (analysisDV === "") {
                     alert("Please select a dependent variable!");
-                    return;
-                }
-
-                console.log(dependentVarLst);
-                for(let i = 0; i < dependentVarLst.length; i++) {
-                    if(analysisDV === dependentVarLst[i].name) {
-                        const selectedType = dependentVarLst[i].type;
-                        console.log(selectedType);
-                        popoverContentForm = createForm(id, button, displayArea, selectedType);
-                        break;
+                } else {
+                    // Determine the dependent variable
+                    let variable = null;
+                    for(let i = 0; i < independentVarLst.length; i++) {
+                        if(analysisCondition === independentVarLst[i].name) {
+                            variable = independentVarLst[i];
+                            const selectedType = variable.type;
+                            popoverContentForm = createForm(id, button, displayArea, selectedType);
+                            break;
+                        }
                     }
-                }
 
-                popoverContentForm.find(".dv-in-form").text(analysisDV);
-
-                button.popover({
-                    html: true,
-                    sanitize: false,
-                    container: 'body',
-                    placement: 'top',
-                    title: " ",
-                    content: function () {
-                        return popoverContentForm;
+                    // populate the form based on the selected variables
+                    var categories = [];
+                    var categories2 = [];
+                    popoverContentForm.find(".dv-in-form").text(analysisDV);
+                    for(let i = 0; i < variable.addenda.length; i++) {
+                        const option = $(`<option value="${variable.addenda[i]}">${variable.addenda[i]}</option>`);
+                        if(i === 0) option.prop("selected", true);
+                        categories.push(option);
+                        categories2.push(option.clone())
                     }
-                });
+                    popoverContentForm.find(".iv-group-custom-select-1").append(categories);
+                    popoverContentForm.find(".iv-group-custom-select-2").append(categories2);
+
+                    button.popover({
+                        html: true,
+                        sanitize: false,
+                        container: 'body',
+                        placement: 'top',
+                        title: " ",
+                        content: function () {
+                            return popoverContentForm;
+                        }
+                    });
+                }
             });
 
         }
-
-        button.popover({
-            html: true,
-            sanitize: false,
-            container: 'body',
-            placement: 'top',
-            title: " ",
-            content: function () {
-                return popoverContentForm;
-            }
-        });
-    }
-
-    getpopoverContentForm(popoverBtn, type="") {
-        if(this.id === HYPOTHESIS_ID) return;
-        const displayArea = this.displayArea;
-        return createForm(this.id, popoverBtn, displayArea)
-
-        // TODO: pass in the right hypothesis form based on the dv variable type
-        // else if(id === ANALYSIS_ID) {
-        //     let form = createForm(id, "nominal");
-        //     // console.log(analysisDV);
-        //     // form.find(".dv-in-form").append(addhypothesisPopupCard(analysisDV));
-        //     return form;
-        //
     }
 }

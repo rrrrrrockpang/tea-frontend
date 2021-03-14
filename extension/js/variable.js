@@ -3,7 +3,7 @@ let independentVarLst = [];
 let constructLst = [];
 let variableLst = []; // included defined and undefined variables
 let varNameSet = new Set(); // set of variable name
-
+let localCategories = []; // this stores categories of a nominal variable
 
 const hypothesisTextAreaNode = $("[name='text1']");
 const dependentVariableTextAreaNode = $("[name='text2']");

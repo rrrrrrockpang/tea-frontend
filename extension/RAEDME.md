@@ -14,7 +14,7 @@
  Goal today:
  1. [x] Introduce construct
  2. [x] have a recommended area
- 3. [ ] clear up the pipeline between variables and hypothesis
+ 3. [x] clear up the pipeline between variables and hypothesis
     * [x] introduce dictionaries for varirables to avoid deplicates
     * [x] generate hypothesis text based on the dv variable type
     * [ ] dictionary. key: var_name, value: variable object 
@@ -22,8 +22,10 @@
  4. [ ] functionality to edit variables
     * [ ] Must add at list two nominal groups
  5. [ ] handle nominal and ordinal
-    
-    
+    * [ ] add ability to delete categories
+    * [ ] check duplicate for categories    
+ 6. [ ] remove nominal for dependent variable
+ 7. [ ] analysisCondition switch to `variable` instead of `string`
  construct(construct_name: string, variable: Variable);
 
 1. hypothesis: 
