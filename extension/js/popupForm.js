@@ -10,20 +10,36 @@ const cloneFormTemplate = (id, variable, formTemplate, card) => {
     let pos = 0;
     for(let i = 0; i < dependentVarLst.length; i++) {
         const temp = dependentVarLst[i];
-        if(editableTemplate.find('#dv_name').text() === temp.name) {
+        if(editableTemplate.find('.variable-name').text() === temp.name) {
             pos = i;
             break
         }
     }
-    editableTemplate.find('.btn-secondary').on("click", function(){
-        card.popover('hide');
-    })
-    editableTemplate.find('.btn-success').text('Change').on("click", function() {
+    editableTemplate.find('.submit').text('Change').on("click", function() {
         let name = editableTemplate.find("input[type='text']").val();
         if(varNameSet.has(name) && name !== variable.name) {
             alert("Please choose a different name for your variable!");
             return;
         }
+
+        let type = editableTemplate.find(".var-type input[type='radio']:checked").val();
+        // TODO: create a function to refactor with the handleSubmitVariableBtn
+        let categories = [];
+        editableTemplate.find('.add-category span').each(function(){
+            if($(this).is(":visible")) categories.push($(this).text());
+        })
+        console.log(categories);
+
+        let isVariableSuccessfullySet = false;
+        if(categories.length > 0) {
+            isVariableSuccessfullySet = variable.setVar(type, name, categories);
+        } else {
+            isVariableSuccessfullySet = variable.setVar(type, name);
+        }
+
+        if(!isVariableSuccessfullySet) return;
+        console.log(variable);
+
         card.popover('hide');
         // change the variable in the Study.js
         // TODO: finish this tomorrow
@@ -130,12 +146,17 @@ const handleSubmitVariableBtn = (submitBtn, id, formTemplate, displayArea, popov
 
 
             let type = formTemplate.find(".var-type input[type='radio']:checked").val();
+            let isVariableSuccessfullySet = false;
             if(localCategories.length > 0) {
-               variable.setVar(type, name, localCategories);
-               localCategories = [];
+               isVariableSuccessfullySet = variable.setVar(type, name, localCategories);
             } else {
-               variable.setVar(type, name);
+               isVariableSuccessfullySet = variable.setVar(type, name);
             }
+
+            if(!isVariableSuccessfullySet) {
+                return;
+            }
+            localCategories = [];
             let card = addCard(variable.getName());
             varNameSet.add(name);
 
@@ -253,18 +274,14 @@ const createForm = (id, popoverbtn, displayArea, type="") => {
         formtemplate = $(`<form class='extension_popover_form' id='${id + "_form"}'>
                 <div class="form-group">
                     <label for='name' class='col-form-label'>Variable Name:
-                    <input type='text' class='form-control' id='${id + "_name"}'>
+                    <input type='text' class='form-control variable-name' id='${id + "_name"}'>
                     </label>
                 </div>
 
                 <div class='form-group var-type'>
                     <label class="radio control-label">Variable Type:</label>
 
-                    <div class="form-inline">
-                        <label class='form-check-label' for='nominalRadio'>
-                            <input class='form-check-input' type='radio' name='variableTypeRadios' id='nominalRadio' value='nominal'>
-                            Nominal
-                        </label>
+                    <div class="form-inline type-radio">
                         <label class='form-check-label' for='ordinalRadio'>
                             <input class='form-check-input' type='radio' name='variableTypeRadios' id='ordinalRadio' value='ordinal'>
                             Ordinal
@@ -280,10 +297,19 @@ const createForm = (id, popoverbtn, displayArea, type="") => {
                     </div>
                 </div>
             </form>`);
+
+        if(this.id === CONDITION_ID) {
+            formtemplate.find(".form-inline.type-radio").prepend($(`
+                <label class='form-check-label' for='nominalRadio'>
+                    <input class='form-check-input' type='radio' name='variableTypeRadios' id='nominalRadio' value='nominal'>
+                    Nominal
+                </label>
+            `))
+        }
         handleNominalandOrdinal(id + '_form', formtemplate);
 
         let cancelBtn = $("<button type='button' class='btn btn-secondary'>Close</button>");
-        let submitBtn = $("<button type='button' class='btn btn-success'>Add</button>");
+        let submitBtn = $("<button type='button' class='btn btn-success submit'>Add</button>");
         formtemplate.append(cancelBtn, submitBtn);
         handleCancelBtn(cancelBtn, popoverbtn);
         handleSubmitVariableBtn(submitBtn, id, formtemplate, displayArea, popoverbtn);

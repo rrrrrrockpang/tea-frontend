@@ -19,10 +19,10 @@
     * [x] generate hypothesis text based on the dv variable type
     * [ ] dictionary. key: var_name, value: variable object 
     * [ ] Improve performance above by avoiding going through the list. can implement later on
- 4. [ ] functionality to edit variables
-    * [ ] Must add at list two nominal groups
+ 4. [x] functionality to edit variables
+    * [x] Must add at list two nominal groups
     * [x] Editable template from formTemplate
-    * [ ] update variable data
+    * [x] update variable data
  5. [ ] handle nominal and ordinal
     * [ ] add ability to delete categories
     * [ ] check duplicate for categories    

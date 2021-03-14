@@ -21,11 +21,21 @@ class Variable {
     }
 
     setVar(type, name, addenda = []) {
+        if((type === "nominal") && addenda.length <= 1) {
+            alert("You need to define more than two categories");
+            return false;
+        } // TODO: need to handle ordinal
         this.type = type;
         this.name = name;
         this.addenda = addenda;
-        if((type === "nominal" || type === "ordinal") && addenda.length === 0) console.error("You need to define categories");
+        return true
     }
+
+    // editVar(type, name, addenda = []){
+    //     // interval previously and switch to nominal
+    //
+    //     // nominal previously and switch to interval
+    // }
 
     getType() {
         return this.type;
