@@ -298,7 +298,7 @@ const createForm = (id, popoverbtn, displayArea, type="") => {
                 </div>
             </form>`);
 
-        if(this.id === CONDITION_ID) {
+        if(id === CONDITION_ID) {
             formtemplate.find(".form-inline.type-radio").prepend($(`
                 <label class='form-check-label' for='nominalRadio'>
                     <input class='form-check-input' type='radio' name='variableTypeRadios' id='nominalRadio' value='nominal'>
