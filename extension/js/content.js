@@ -106,6 +106,8 @@ $(document).ready(function() {
         }
         $(`.hypothesis-iv`).append(hypothesis_iv);
     })
+
+
      
     // Append the icons and create initial layout
     for(let i = 0; i < TEXTAREA_NODES.length; i++) {

@@ -64,21 +64,6 @@ class Element {
         }
         this.isOpen = !this.isOpen;
     }
-         // if(this.textareaSection != null && this.middle != null) {
-         //     if (this.isOpen) {
-         //         this.middle.hide();
-         //         // this.paper.hide();
-         //         $(".counter").css("display", "block");
-         //         this.textareaSection.attr('class', 'col-sm-12');
-         //     } else {
-         //         this.middle.show();
-         //         // this.paper.show();
-         //         $(".counter").css("display", "none");
-         //         this.textareaSection.attr('class', 'col-sm-6');
-         //     }
-         //     this.isOpen = !this.isOpen;
-         // }
-    // }
 
     /**
      * Because it's hard to find the container in aspredicted.
@@ -208,128 +193,129 @@ class Element {
     getpopoverContentForm(popoverBtn) {
         const id = this.id;
         const displayArea = this.displayArea;
+        return createForm(id, popoverBtn, displayArea)
 
-
-        if(id === DV_ID || id === CONDITION_ID) {
-            const formTemplate = createForm(id);
-
-            formTemplate.find(".var-type input[type='radio']").on("change", function () {
-                let selected = $(`#${id + '_form'} input[type='radio']:checked`);
-                let nominal_area = formTemplate.find("#nominal-category");
-                let ordinal_area = formTemplate.find("#ordinal-category");
-
-                // handle nominal
-                if (selected.val() === "nominal") {
-                    if (ordinal_area.length !== 0) {
-                        ordinal_area.hide();
-                    }
-
-                    if (nominal_area.length !== 0) {
-                        nominal_area.show();
-                    } else {
-                        let addenda = $(`
-
-                    <div class="form-group add-category" id="nominal-category">
-                        <label for='name' class='col-form-label'>Categories:</label>
-                        
-                        <div class="form-inline">
-                            <input type='text' class='form-control'>
-                            <button type="submit" class="btn btn-success mb-2">Add</button>
-                        </div>
-                    </div>
-                `);
-                        addenda.insertAfter(formTemplate.find(".var-type"));
-                    }
-                }
-
-                if (selected.val() === "ordinal") {
-                    if (nominal_area.length !== 0) {
-                        nominal_area.hide();
-                    }
-
-                    if (ordinal_area.length !== 0) {
-                        ordinal_area.show();
-                    } else {
-                        let addenda = $(`
-                    <div class="form-group add-category" id="ordinal-category">
-                        <label for='name' class='col-form-label'>Categories:</label>
-                        
-                        <div class="form-inline">
-                            <input type='text' class='form-control'>
-                            <button type="submit" class="btn btn-success mb-2">Add</button>
-                        </div>
-                    </div>
-                `);
-                        addenda.insertAfter(formTemplate.find(".var-type"));
-                    }
-                }
-
-                if (selected.val() === "interval" || selected.val() === "ratio") {
-                    nominal_area.hide();
-                    ordinal_area.hide();
-                }
-            })
-
-            // cancel and submit btn
-            let cancelBtn = $("<button type='button' class='btn btn-secondary'>Close</button>");
-            let submitBtn = $("<button type='button' class='btn btn-success'>Add</button>");
-            formTemplate.append(cancelBtn, submitBtn);
-            cancelBtn.on('click', function() {
-                popoverBtn.popover('hide');
-            });
-
-            submitBtn.on('click', function() {
-                // Add to array
-                // Display to the display area
-                if(id === DV_ID || id === CONDITION_ID) {
-                    let variable = new Variable();
-                    let name = formTemplate.find("input[type='text']").val();
-                    let type = formTemplate.find(".var-type input[type='radio']:checked").val();
-                    variable.setVar(type, name);
-                    let card = addCard(variable.getName());
-
-                    if (id === DV_ID) {
-                        dependentVarLst.push(variable);
-                        card.find(".delete").on("click", function () {
-                            let pos = 0;
-                            for(let i = 0; i < dependentVarLst.length; i++) {
-                                if($(this).parent().parent().find(".col-sm-10 p").text() === dependentVarLst[i].getName()) {
-                                    pos = i;
-                                    break
-                                }
-                            }
-                            $(this).parent().parent().parent().parent().remove();
-                            dependentVarLst.splice(pos, 1);
-                            dvListener.dv = dependentVarLst;
-                        });
-                        dvListener.dv = dependentVarLst;
-                    } else if (id === CONDITION_ID) {
-                        independentVarLst.push(variable);
-                        card.find(".delete").on("click", function () {
-                            $(this).parent().parent().parent().parent().remove();
-                            let pos = 0;
-                            for(let i = 0; i < independentVarLst.length; i++) {
-                                if($(this).parent().parent().find(".col-sm-10 p").text() === independentVarLst[i].getName()) {
-                                    pos = i;
-                                    break
-                                }
-                            }
-                            independentVarLst.splice(pos, 1);
-                            console.log(independentVarLst);
-                            ivListener.iv = independentVarLst;
-                        });
-                        ivListener.iv = independentVarLst;
-                    }
-                    displayArea.append(card);
-                }
-            })
-            return formTemplate;
-        } else if(id === ANALYSIS_ID) {
-            let form = createForm(id, "nominal");
-            // console.log(analysisDV);
-            // form.find(".dv-in-form").append(addhypothesisPopupCard(analysisDV));
-            return form;
-        }
+        //
+        // if(id === DV_ID || id === CONDITION_ID) {
+        //     const formTemplate = createForm(id);
+        //
+        //     formTemplate.find(".var-type input[type='radio']").on("change", function () {
+        //         let selected = $(`#${id + '_form'} input[type='radio']:checked`);
+        //         let nominal_area = formTemplate.find("#nominal-category");
+        //         let ordinal_area = formTemplate.find("#ordinal-category");
+        //
+        //         // handle nominal
+        //         if (selected.val() === "nominal") {
+        //             if (ordinal_area.length !== 0) {
+        //                 ordinal_area.hide();
+        //             }
+        //
+        //             if (nominal_area.length !== 0) {
+        //                 nominal_area.show();
+        //             } else {
+        //                 let addenda = $(`
+        //
+        //             <div class="form-group add-category" id="nominal-category">
+        //                 <label for='name' class='col-form-label'>Categories:</label>
+        //
+        //                 <div class="form-inline">
+        //                     <input type='text' class='form-control'>
+        //                     <button type="submit" class="btn btn-success mb-2">Add</button>
+        //                 </div>
+        //             </div>
+        //         `);
+        //                 addenda.insertAfter(formTemplate.find(".var-type"));
+        //             }
+        //         }
+        //
+        //         if (selected.val() === "ordinal") {
+        //             if (nominal_area.length !== 0) {
+        //                 nominal_area.hide();
+        //             }
+        //
+        //             if (ordinal_area.length !== 0) {
+        //                 ordinal_area.show();
+        //             } else {
+        //                 let addenda = $(`
+        //             <div class="form-group add-category" id="ordinal-category">
+        //                 <label for='name' class='col-form-label'>Categories:</label>
+        //
+        //                 <div class="form-inline">
+        //                     <input type='text' class='form-control'>
+        //                     <button type="submit" class="btn btn-success mb-2">Add</button>
+        //                 </div>
+        //             </div>
+        //         `);
+        //                 addenda.insertAfter(formTemplate.find(".var-type"));
+        //             }
+        //         }
+        //
+        //         if (selected.val() === "interval" || selected.val() === "ratio") {
+        //             nominal_area.hide();
+        //             ordinal_area.hide();
+        //         }
+        //     })
+        //
+        //     // cancel and submit btn
+        //     let cancelBtn = $("<button type='button' class='btn btn-secondary'>Close</button>");
+        //     let submitBtn = $("<button type='button' class='btn btn-success'>Add</button>");
+        //     formTemplate.append(cancelBtn, submitBtn);
+        //     cancelBtn.on('click', function() {
+        //         popoverBtn.popover('hide');
+        //     });
+        //
+        //     submitBtn.on('click', function() {
+        //         // Add to array
+        //         // Display to the display area
+        //         if(id === DV_ID || id === CONDITION_ID) {
+        //             let variable = new Variable();
+        //             let name = formTemplate.find("input[type='text']").val();
+        //             let type = formTemplate.find(".var-type input[type='radio']:checked").val();
+        //             variable.setVar(type, name);
+        //             let card = addCard(variable.getName());
+        //
+        //             if (id === DV_ID) {
+        //                 dependentVarLst.push(variable);
+        //                 card.find(".delete").on("click", function () {
+        //                     let pos = 0;
+        //                     for(let i = 0; i < dependentVarLst.length; i++) {
+        //                         if($(this).parent().parent().find(".col-sm-10 p").text() === dependentVarLst[i].getName()) {
+        //                             pos = i;
+        //                             break
+        //                         }
+        //                     }
+        //                     $(this).parent().parent().parent().parent().remove();
+        //                     dependentVarLst.splice(pos, 1);
+        //                     dvListener.dv = dependentVarLst;
+        //                 });
+        //                 dvListener.dv = dependentVarLst;
+        //             } else if (id === CONDITION_ID) {
+        //                 independentVarLst.push(variable);
+        //                 card.find(".delete").on("click", function () {
+        //                     $(this).parent().parent().parent().parent().remove();
+        //                     let pos = 0;
+        //                     for(let i = 0; i < independentVarLst.length; i++) {
+        //                         if($(this).parent().parent().find(".col-sm-10 p").text() === independentVarLst[i].getName()) {
+        //                             pos = i;
+        //                             break
+        //                         }
+        //                     }
+        //                     independentVarLst.splice(pos, 1);
+        //                     console.log(independentVarLst);
+        //                     ivListener.iv = independentVarLst;
+        //                 });
+        //                 ivListener.iv = independentVarLst;
+        //             }
+        //             displayArea.append(card);
+        //         }
+        //     })
+        //     return formTemplate;
+        // } else if(id === ANALYSIS_ID) {
+        //     let form = createForm(id, "nominal");
+        //     // console.log(analysisDV);
+        //     // form.find(".dv-in-form").append(addhypothesisPopupCard(analysisDV));
+        //     return form;
+        // }
 
 
     }
