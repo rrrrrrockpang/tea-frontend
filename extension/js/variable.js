@@ -1,6 +1,9 @@
 let dependentVarLst = [];
 let independentVarLst = [];
 let constructLst = [];
+let variableLst = []; // included defined and undefined variables
+let varNameSet = new Set(); // set of variable name
+
 
 const hypothesisTextAreaNode = $("[name='text1']");
 const dependentVariableTextAreaNode = $("[name='text2']");

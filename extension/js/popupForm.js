@@ -65,13 +65,21 @@ const handleCancelBtn = (cancelBtn, popoverBtn) => {
     });
 }
 
-const handleSubmitBtn = (submitBtn, id, formTemplate, displayArea, popoverBtn) => {
+const handleSubmitVariableBtn = (submitBtn, id, formTemplate, displayArea, popoverBtn) => {
         submitBtn.on('click', function() {
             let variable = new Variable();
             let name = formTemplate.find("input[type='text']").val();
+
+            if(varNameSet.has(name)) {
+                alert("Please choose a different name for your variable!");
+                return;
+            }
+
+
             let type = formTemplate.find(".var-type input[type='radio']:checked").val();
             variable.setVar(type, name);
             let card = addCard(variable.getName());
+            varNameSet.add(name);
 
             if (id === DV_ID) {
                 dependentVarLst.push(variable);
@@ -110,6 +118,40 @@ const handleSubmitBtn = (submitBtn, id, formTemplate, displayArea, popoverBtn) =
         });
 }
 
+const handleSubmitConstructBtn = (submitBtn, formTemplate, displayArea, popoverbtn) => {
+    submitBtn.on("click", function (){
+        let measureName = formTemplate.find("input[type='text'].measure").val();
+        if(varNameSet.has(measureName)) {
+            alert("Please choose a different name for your variable!");
+            return;
+        }
+
+        let constructName = formTemplate.find("input[type='text'].construct").val();
+        let measure = new Variable();
+        measure.name = measureName;
+        let construct = new Construct(constructName, measure);
+        varNameSet.add(measure.name);
+        let card = addCard(measure.getName());
+
+        constructLst.push(construct);
+        card.find(".delete").on("click", function () {
+            $(this).parent().parent().parent().parent().remove();
+            let pos = 0;
+            for(let i = 0; i < constructLst.length; i++) {
+                if($(this).parent().parent().find(".col-sm-10 p").text() === constructLst[i].name) {
+                    pos = i;
+                    break
+                }
+            }
+            constructLst.splice(pos, 1);
+            constructListener.c = constructLst;
+        })
+        displayArea.append(card);
+        constructListener.c = constructLst;
+        popoverbtn.popover("hide");
+    })
+}
+
 const createForm = (id, popoverbtn, displayArea, type="") => {
     let formtemplate = null;
 
@@ -117,17 +159,25 @@ const createForm = (id, popoverbtn, displayArea, type="") => {
         formtemplate = $(`<form class='extension_popover_form' id='${id + "_form"}'>
                 <div class="form-group">
                     <label for='name' class='col-form-label'>Construct:
-                    <input type='text' class='form-control' id='${id + "_construct"}'>
+                    <input type='text' class='form-control construct' id='${id + "_construct"}' >
                     </label>
                 </div>
 
                 <div class="form-group">
                     <label for='name' class='col-form-label'>Measure:
-                    <input type='text' class='form-control' id='${id + "_measure"}'>
+                    <input type='text' class='form-control measure' id='${id + "_measure"}'>
                     </label>
                 </div>
             </form>`);
+
+        let cancelBtn = $("<button type='button' class='btn btn-secondary'>Close</button>");
+        let submitBtn = $("<button type='button' class='btn btn-success'>Add</button>");
+        formtemplate.append(cancelBtn, submitBtn);
+        handleCancelBtn(cancelBtn, popoverbtn);
+        handleSubmitConstructBtn(submitBtn, formtemplate, displayArea, popoverbtn);
+
     } else if(id === DV_ID || id === CONDITION_ID) {
+        displayArea.find(".row.h-80")
         formtemplate = $(`<form class='extension_popover_form' id='${id + "_form"}'>
                 <div class="form-group">
                     <label for='name' class='col-form-label'>Variable Name:
@@ -164,7 +214,7 @@ const createForm = (id, popoverbtn, displayArea, type="") => {
         let submitBtn = $("<button type='button' class='btn btn-success'>Add</button>");
         formtemplate.append(cancelBtn, submitBtn);
         handleCancelBtn(cancelBtn, popoverbtn);
-        handleSubmitBtn(submitBtn, id, formtemplate, displayArea, popoverbtn);
+        handleSubmitVariableBtn(submitBtn, id, formtemplate, displayArea, popoverbtn);
     } else if(id === ANALYSIS_ID) {
         if(type === "nominal") {
             return $(`

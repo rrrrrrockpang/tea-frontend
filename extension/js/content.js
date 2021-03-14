@@ -11,6 +11,21 @@ $(document).ready(function() {
         });
     });
 
+     constructListener = {
+         cInternal: constructLst,
+         cListener: function(val) {},
+         set c(val) {
+             this.cInternal = val;
+             this.cListener(val);
+         },
+         get c() {
+             return this.cInternal;
+         },
+         registerListener: function(listner) {
+             this.cListener = listner
+         }
+     }
+
     dvListener  = {
         dvInternal: dependentVarLst,
         dvListener: function(val) {},
@@ -40,6 +55,23 @@ $(document).ready(function() {
             this.ivListener = listener;
         }
     }
+
+    constructListener.registerListener(function(val) {
+        alert("?")
+        $(".suggested-area").empty();
+        let cards = [];
+        for(let i = 0; i < val.length; i++) {
+            let construct = val[i];
+            let card = addSuggestedCard(construct.variable.name, "construct_"+construct.variable.name);
+            card.on('click', function() {
+                // TODO: when clicked the users can edit.
+                // TODO: This can be done with other edits.
+            });
+            cards.push(card);
+        }
+
+        $(".suggested-area").append(cards);
+    })
 
     dvListener.registerListener(function(val) {
         $(`.hypothesis-dv`).empty();

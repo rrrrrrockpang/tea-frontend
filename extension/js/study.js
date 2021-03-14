@@ -13,9 +13,10 @@ class Study {
 
 class Variable {
     constructor() {
-        this.type = "nominal";
-        this.name = "abc";
-        this.addenda = "addenda";
+        this.type = null;
+        this.name = null;
+        this.addenda = null;
+        this.isSelected = false;
 //    this.addenda = {};
     }
 
@@ -42,5 +43,20 @@ class Variable {
             "name": this.name,
             "data type": this.type,
         }
+    }
+
+    isDefined() {
+        return this.type != null && this.name != null
+    }
+}
+
+class Construct {
+    constructor(name, variable) {
+        this.construct = name;
+        this.variable = variable; // variable is a Variable()
+    }
+
+    isDefined() {
+        return this.variable.isDefined;
     }
 }

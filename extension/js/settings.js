@@ -37,6 +37,12 @@ const addHypothesisCard = (text, id) => {
     `);
 };
 
+const addSuggestedCard = (text, id) => {
+    return $(`
+    <span class="suggested" id="${id}">${text}</span>
+    `)
+}
+
 const addhypothesisPopupCard = (text) => {
     return $(`
         <p>${text}</p>
