@@ -21,12 +21,21 @@
     * [ ] Improve performance above by avoiding going through the list. can implement later on
  4. [ ] functionality to edit variables
     * [ ] Must add at list two nominal groups
+    * [x] Editable template from formTemplate
+    * [ ] update variable data
  5. [ ] handle nominal and ordinal
     * [ ] add ability to delete categories
     * [ ] check duplicate for categories    
  6. [ ] remove nominal for dependent variable
  7. [ ] analysisCondition switch to `variable` instead of `string`
  construct(construct_name: string, variable: Variable);
+
+
+
+backend 
+1. [ ] poweranalysis from python backend
+    * [ ] add effect size options
+2. [ ] Tea add dummy response given json request
 
 1. hypothesis: 
     1. add construct to construct_lst
