@@ -129,23 +129,30 @@ class Element {
         const displayArea = this.displayArea;
         const id = this.id;
         // const btn_id = button.attr('id');
-        let popoverContentForm = null;
+        let popoverContentForm = null
 
         if(this.id !== ANALYSIS_ID) {
-            popoverContentForm = createForm(id, button, displayArea);
-            button.popover({
-                html: true,
-                sanitize: false,
-                container: 'body',
-                placement: 'top',
-                title: " ",
-                content: function () {
-                    return popoverContentForm;
-                }
+            button.on("click", function() {
+                $(".popover:has(.extension_popover_form)").remove();
+
+                popoverContentForm = createForm(id, button, displayArea);
+                button.popover({
+                    html: true,
+                    sanitize: false,
+                    container: 'body',
+                    placement: 'top',
+                    title: " ",
+                    content: function () {
+                        return popoverContentForm;
+                    }
+                });
+                button.popover("show");
             });
         } else {
             //TODO: Check independent variable type "nominal"/others
             button.on("click", function() {
+                $(".popover").remove();
+
                 const variables = $(".hypothesis-dv").find(".variable-card");
                 if(variables.length <= 0) {
                     alert("Please add variables!");
@@ -186,9 +193,17 @@ class Element {
                             return popoverContentForm;
                         }
                     });
+                    button.popover("show");
                 }
             });
-
         }
+        button.on("hide.bs.popover", function() {
+            $(".popover").remove();
+        })
+    }
+
+    changeState(isOpen) {
+        this.isOpen = isOpen;
+        alert(this.isOpen);
     }
 }

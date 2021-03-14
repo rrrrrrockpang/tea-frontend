@@ -1,3 +1,43 @@
+const cloneFormTemplate = (id, variable, formTemplate, card) => {
+    const editableTemplate = formTemplate.clone();
+
+    editableTemplate.attr('id', `${id}_var_${varNameSet.size}`);
+    editableTemplate.attr('class', 'editable_template');
+    handleNominalandOrdinal(editableTemplate.attr('id'), editableTemplate);
+    // This is why we dictionary. Instead looping to find the variable
+    // we can just call
+    // It's late today. So I'll just use a loop here
+    let pos = 0;
+    for(let i = 0; i < dependentVarLst.length; i++) {
+        const temp = dependentVarLst[i];
+        if(editableTemplate.find('#dv_name').text() === temp.name) {
+            pos = i;
+            break
+        }
+    }
+    editableTemplate.find('.btn-secondary').on("click", function(){
+        card.popover('hide');
+    })
+    editableTemplate.find('.btn-success').text('Change').on("click", function() {
+        let name = editableTemplate.find("input[type='text']").val();
+        if(varNameSet.has(name) && name !== variable.name) {
+            alert("Please choose a different name for your variable!");
+            return;
+        }
+        card.popover('hide');
+        // change the variable in the Study.js
+        // TODO: finish this tomorrow
+        // let type = editableTemplate.find(".var-type input[type='radio']:checked").val();
+        // if(localCategories.length > 0) {
+        //        variable.setVar(type, name, localCategories);
+        //        localCategories = [];
+        // } else {
+        //    variable.setVar(type, name);
+        // }
+    })
+    return editableTemplate;
+}
+
 const addCategoryBtn = (addenda) => {
     addenda.find("button").on("click", function(){
         // add categories
@@ -9,9 +49,8 @@ const addCategoryBtn = (addenda) => {
 
 const handleNominalandOrdinal = (id, formTemplate) => {
     formTemplate.find(".var-type input[type='radio']").on("change", function () {
-            let selected = $(`#${id + '_form'} input[type='radio']:checked`);
+            let selected = $(`#${id} input[type='radio']:checked`);
             // let selected = $(this).find(":checked");
-            console.log(selected[0].outerHTML);
             let nominal_area = formTemplate.find("#nominal-category");
             let ordinal_area = formTemplate.find("#ordinal-category");
 
@@ -83,7 +122,7 @@ const handleSubmitVariableBtn = (submitBtn, id, formTemplate, displayArea, popov
         submitBtn.on('click', function() {
             let variable = new Variable();
             let name = formTemplate.find("input[type='text']").val();
-
+            // TODO: Potential bug. categories is also type='text'
             if(varNameSet.has(name)) {
                 alert("Please choose a different name for your variable!");
                 return;
@@ -99,6 +138,17 @@ const handleSubmitVariableBtn = (submitBtn, id, formTemplate, displayArea, popov
             }
             let card = addCard(variable.getName());
             varNameSet.add(name);
+
+            // add popover to the card
+            const editableTemplate = cloneFormTemplate(id, variable, formTemplate, card)
+            card.popover({
+                html: true,
+                sanitize: false,
+                container: 'body',
+                placement: 'top',
+                title: " ",
+                content: editableTemplate
+            })
 
             if (id === DV_ID) {
                 dependentVarLst.push(variable);
@@ -230,7 +280,7 @@ const createForm = (id, popoverbtn, displayArea, type="") => {
                     </div>
                 </div>
             </form>`);
-        handleNominalandOrdinal(id, formtemplate);
+        handleNominalandOrdinal(id + '_form', formtemplate);
 
         let cancelBtn = $("<button type='button' class='btn btn-secondary'>Close</button>");
         let submitBtn = $("<button type='button' class='btn btn-success'>Add</button>");

@@ -5,11 +5,24 @@ $(document).ready(function() {
         $('.initial_btn').each(function () {
             //the 'is' for buttons that trigger popups
             //the 'has' for icons within a button that triggers a popup
-            if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
-                $(this).popover('hide');
-            }
+            // if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+            //     console.log($(this).attr("id"))
+            //     if($(this).data('bs.popover').tip().is(":visible")){
+            //         $(this).popover('hide');
+            //     }
+            // }
+
         });
     });
+
+     // $('.initial_btn').on('hidden.bs.popover', function() {
+     //     alert("?");
+     //     const btn_id = $(this).id;
+     //     const id = btn_id.substring(0, btn_id.length - 12);
+     //     console.log(id);
+     //     console.log($(`#${id}_form`)[0].outerHTML)
+     //     $(`#${id}_form`).trigger('reset');
+     // })
 
      constructListener = {
          cInternal: constructLst,
