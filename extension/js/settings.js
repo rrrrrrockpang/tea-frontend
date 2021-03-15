@@ -51,10 +51,13 @@ const addhypothesisPopupCard = (text) => {
 
 const addCategoryCard = (text) => {
     return $(`
-        <span>${text}</span>
+        <span>
+            <span class="category-name">${text}</span> &nbsp;
+            <a class="btn btn-light delete-category">x</a>
+        </span>
     `).css({
         border: "solid",
-        "border-color": "red",
+        "border-color": "yellow",
         padding: "2px",
         "margin-left": "2px",
         "margin-right": "2px"

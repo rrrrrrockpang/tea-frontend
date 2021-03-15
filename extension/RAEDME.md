@@ -23,13 +23,15 @@
     * [x] Must add at list two nominal groups
     * [x] Editable template from formTemplate
     * [x] update variable data
- 5. [ ] handle nominal and ordinal
-    * [ ] add ability to delete categories
+ 5. [x] handle nominal and ordinal
+    * [x] add ability to delete categories
     * [ ] check duplicate for categories    
- 6. [ ] remove nominal for dependent variable
+    * [x] categories based on jquery not based on variable
+ 6. [x] remove nominal for dependent variable
  7. [ ] analysisCondition switch to `variable` instead of `string`
  construct(construct_name: string, variable: Variable);
 
+[ ] input must not be empty
 
 
 backend 

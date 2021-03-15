@@ -118,6 +118,8 @@ class Element {
                     </div>
                 </div>
             `);
+        } else if(this.id === SAMPLESIZE_ID) {
+
         }
 
         this.displayArea = displayArea;
@@ -148,8 +150,7 @@ class Element {
                 });
                 button.popover("show");
             });
-        } else {
-            //TODO: Check independent variable type "nominal"/others
+        } else if(this.id === DV_ID || this.id === CONDITION_ID) {
             button.on("click", function() {
                 $(".popover").remove();
 
@@ -196,6 +197,8 @@ class Element {
                     button.popover("show");
                 }
             });
+        } else if(this.id === SAMPLESIZE_ID) {
+            console.log("?");
         }
         button.on("hide.bs.popover", function() {
             $(".popover").remove();

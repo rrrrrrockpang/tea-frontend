@@ -1,9 +1,17 @@
+const cloneFormValues = (formTemplate, editableFormTemplate) => {
+    formTemplate.find('input[type]').each(function() {
+        $(this).attr('value', $(this).val());
+    })
+}
+
 const cloneFormTemplate = (id, variable, formTemplate, card) => {
     const editableTemplate = formTemplate.clone();
 
     editableTemplate.attr('id', `${id}_var_${varNameSet.size}`);
     editableTemplate.attr('class', 'editable_template');
-    handleNominalandOrdinal(editableTemplate.attr('id'), editableTemplate);
+    cloneFormValues(formTemplate, editableTemplate);
+    handleNominalandOrdinal(`${id}_var_${varNameSet.size}`, editableTemplate);
+
     // This is why we dictionary. Instead looping to find the variable
     // we can just call
     // It's late today. So I'll just use a loop here
@@ -15,6 +23,7 @@ const cloneFormTemplate = (id, variable, formTemplate, card) => {
             break
         }
     }
+    handleCancelBtn(editableTemplate.find('.return'), card);
     editableTemplate.find('.submit').text('Change').on("click", function() {
         let name = editableTemplate.find("input[type='text']").val();
         if(varNameSet.has(name) && name !== variable.name) {
@@ -23,12 +32,8 @@ const cloneFormTemplate = (id, variable, formTemplate, card) => {
         }
 
         let type = editableTemplate.find(".var-type input[type='radio']:checked").val();
-        // TODO: create a function to refactor with the handleSubmitVariableBtn
-        let categories = [];
-        editableTemplate.find('.add-category span').each(function(){
-            if($(this).is(":visible")) categories.push($(this).text());
-        })
-        console.log(categories);
+
+        let categories = getCurrentCategories(editableTemplate.find('.add-category'));
 
         let isVariableSuccessfullySet = false;
         if(categories.length > 0) {
@@ -41,25 +46,37 @@ const cloneFormTemplate = (id, variable, formTemplate, card) => {
         console.log(variable);
 
         card.popover('hide');
-        // change the variable in the Study.js
-        // TODO: finish this tomorrow
-        // let type = editableTemplate.find(".var-type input[type='radio']:checked").val();
-        // if(localCategories.length > 0) {
-        //        variable.setVar(type, name, localCategories);
-        //        localCategories = [];
-        // } else {
-        //    variable.setVar(type, name);
-        // }
-    })
+    });
+    addCategoryBtn(editableTemplate.find('.add-category'));
     return editableTemplate;
+}
+
+const getCurrentCategories = (addenda) => {
+    let categories = [];
+    $(addenda).find('span .category-name').each(function() {
+        if($(this).is(":visible")) categories.push($(this).text());
+    })
+    return categories;
 }
 
 const addCategoryBtn = (addenda) => {
     addenda.find("button").on("click", function(){
         // add categories
+        let categories = getCurrentCategories(addenda);
         const text = addenda.find('input[type=text]').val();
-        localCategories.push(text);
-        addenda.find('.categories').append(addCategoryCard(text));
+        categories.push(text);
+        console.log(categories);
+        const card = addCategoryCard(text);
+
+        card.find('.delete-category').on("click", function() {
+            const category = $(this).parent().find('span').text();
+            categories = categories.filter(function(value, index, arr){
+                return value !== category;
+            })
+            $(this).parent().remove();
+        });
+        addenda.find('.input-category').val('');
+        addenda.find('.categories').append(card);
     })
 }
 
@@ -67,8 +84,8 @@ const handleNominalandOrdinal = (id, formTemplate) => {
     formTemplate.find(".var-type input[type='radio']").on("change", function () {
             let selected = $(`#${id} input[type='radio']:checked`);
             // let selected = $(this).find(":checked");
-            let nominal_area = formTemplate.find("#nominal-category");
-            let ordinal_area = formTemplate.find("#ordinal-category");
+            let nominal_area = formTemplate.find(".nominal-category");
+            let ordinal_area = formTemplate.find(".ordinal-category");
 
             // handle nominal
             if (selected.val() === "nominal") {
@@ -80,13 +97,13 @@ const handleNominalandOrdinal = (id, formTemplate) => {
                     nominal_area.show();
                 } else {
                     let addenda = $(`
-                        <div class="form-group add-category" id="nominal-category">
+                        <div class="form-group add-category nominal-category">
                             <div class="container w-100">
                                 <div class="row">
                                     <label for='name' class='col-form-label'>Categories:</label>
                                     
                                     <div class="form-inline">
-                                        <input type='text' class='form-control'>
+                                        <input type='text' class='form-control input-category'>
                                         <button type="button" class="btn btn-success mb-2">Add</button>
                                     </div>
                                 </div>
@@ -108,15 +125,18 @@ const handleNominalandOrdinal = (id, formTemplate) => {
                     ordinal_area.show();
                 } else {
                     let addenda = $(`
-                <div class="form-group add-category" id="ordinal-category">
+                <div class="form-group add-category ordinal-category">
                     <label for='name' class='col-form-label'>Orders:</label>
                     
                     <div class="form-inline">
-                        <input type='text' class='form-control'>
-                        <button type="submit" class="btn btn-success mb-2">Add</button>
+                        <input type='text' class='form-control input-category'>
+                        <button type="button" class="btn btn-success mb-2">Add</button>
                     </div>
+                    
+                    <div class="row categories"></div>
                 </div>
             `);
+                    addCategoryBtn(addenda);
                     addenda.insertAfter(formTemplate.find(".var-type"));
                 }
             }
@@ -137,18 +157,18 @@ const handleCancelBtn = (cancelBtn, popoverBtn) => {
 const handleSubmitVariableBtn = (submitBtn, id, formTemplate, displayArea, popoverBtn) => {
         submitBtn.on('click', function() {
             let variable = new Variable();
-            let name = formTemplate.find("input[type='text']").val();
+            let name = formTemplate.find("input[type='text']").first().val();
             // TODO: Potential bug. categories is also type='text'
             if(varNameSet.has(name)) {
                 alert("Please choose a different name for your variable!");
                 return;
             }
 
-
             let type = formTemplate.find(".var-type input[type='radio']:checked").val();
+            let categories = getCurrentCategories(formTemplate.find('.add-category'));
             let isVariableSuccessfullySet = false;
-            if(localCategories.length > 0) {
-               isVariableSuccessfullySet = variable.setVar(type, name, localCategories);
+            if(categories.length > 0) {
+               isVariableSuccessfullySet = variable.setVar(type, name, categories);
             } else {
                isVariableSuccessfullySet = variable.setVar(type, name);
             }
@@ -156,7 +176,6 @@ const handleSubmitVariableBtn = (submitBtn, id, formTemplate, displayArea, popov
             if(!isVariableSuccessfullySet) {
                 return;
             }
-            localCategories = [];
             let card = addCard(variable.getName());
             varNameSet.add(name);
 
@@ -274,7 +293,7 @@ const createForm = (id, popoverbtn, displayArea, type="") => {
         formtemplate = $(`<form class='extension_popover_form' id='${id + "_form"}'>
                 <div class="form-group">
                     <label for='name' class='col-form-label'>Variable Name:
-                    <input type='text' class='form-control variable-name' id='${id + "_name"}'>
+                    <input type='text' class='form-control variable-name ${id + "_name"}'>
                     </label>
                 </div>
 
@@ -283,15 +302,15 @@ const createForm = (id, popoverbtn, displayArea, type="") => {
 
                     <div class="form-inline type-radio">
                         <label class='form-check-label' for='ordinalRadio'>
-                            <input class='form-check-input' type='radio' name='variableTypeRadios' id='ordinalRadio' value='ordinal'>
+                            <input class='form-check-input' type='radio' name='variableTypeRadios' value='ordinal'>
                             Ordinal
                         </label>
                         <label class='form-check-label' for='intervalRadio'>
-                            <input class='form-check-input' type='radio' name='variableTypeRadios' id='intervalRadio' value='interval'>
+                            <input class='form-check-input' type='radio' name='variableTypeRadios' value='interval'>
                             Interval
                         </label>
                         <label class='form-check-label' for='ratioRadio'>
-                            <input class='form-check-input' type='radio' name='variableTypeRadios' id='ratioRadio' value='ratio'>
+                            <input class='form-check-input' type='radio' name='variableTypeRadios' value='ratio'>
                             Ratio
                         </label>
                     </div>
@@ -301,14 +320,14 @@ const createForm = (id, popoverbtn, displayArea, type="") => {
         if(id === CONDITION_ID) {
             formtemplate.find(".form-inline.type-radio").prepend($(`
                 <label class='form-check-label' for='nominalRadio'>
-                    <input class='form-check-input' type='radio' name='variableTypeRadios' id='nominalRadio' value='nominal'>
+                    <input class='form-check-input' type='radio' name='variableTypeRadios' value='nominal'>
                     Nominal
                 </label>
             `))
         }
         handleNominalandOrdinal(id + '_form', formtemplate);
 
-        let cancelBtn = $("<button type='button' class='btn btn-secondary'>Close</button>");
+        let cancelBtn = $("<button type='button' class='btn btn-secondary return'>Close</button>");
         let submitBtn = $("<button type='button' class='btn btn-success submit'>Add</button>");
         formtemplate.append(cancelBtn, submitBtn);
         handleCancelBtn(cancelBtn, popoverbtn);
