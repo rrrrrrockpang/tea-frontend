@@ -4,6 +4,72 @@ import sys
 import ast
 from io import StringIO
 
+
+def get_variables(data):
+    return data['variables']
+
+
+def get_study_design(data):
+    study_design = dict()
+    study_design['study type'] = 'experiment'
+    study_design['independent variable'] = data['independent variables'][0]['name']  # TODO: Multiple independent variables
+    study_design['dependent variable'] = data['dependent variables'][0]['name']
+    return study_design
+
+
+def get_hypothesis(data):
+    hypothesis = list()
+    relationship = data['hypothesis']['relationship']
+    condition_type = relationship['condition_type']
+    two_side = bool(relationship['two-side'])
+    categories = relationship['categories'] # has to be two categories in this case
+    if len(categories) != 2:
+        logging.error("Has to compare 2 categories... (for now)")
+
+    independent_variable = data['independent variables'][0]['name']
+    dependent_variable = data['dependent variables'][0]['name']
+    hypothesis.append([independent_variable, dependent_variable])
+
+    logging.warning(condition_type)
+    logging.warning(condition_type == 'nominal')
+
+    if condition_type == "nominal":
+        if two_side:
+            hypothesis.append(["%s: %s != %s" % (independent_variable, categories[0], categories[1])])
+            logging.warning("%s: %s != %s" % (independent_variable, categories[0], categories[1]))
+        else:
+            hypothesis.append(["%s: %s > %s" % (independent_variable, categories[0], categories[1])])
+    else:
+        positive = relationship['positive']
+        if positive:
+            hypothesis.append(["%s ~ %s" % (independent_variable, dependent_variable)])
+        else:
+            hypothesis.append(["%s ~ -%s" % (independent_variable, dependent_variable)])
+    return hypothesis
+
+
+def get_test_result(data):
+    variables = get_variables(data)
+    study_design = get_study_design(data)
+    hypothesis = get_hypothesis(data)
+    return "Mann-Whitney U Test"
+    # logging.info(variables)
+    # logging.info(study_design)
+    # logging.info(hypothesis)
+    # return {
+    #     'variable': variables,
+    #     'study_design': study_design,
+    #     'hypothesis': hypothesis
+    # }
+
+    # Ideally that's the result
+    # tea.define_variables(variables)
+    # tea.define_study_design(study_design)
+    # tea.hypothesize(hypothesis[0], hypothesis[1])
+    # # TODO: Interpret the result
+
+
+
 def process_to_tea(study_type, independent_variables, dependent_variables, hypothesis):
     # hard code. wait for Eunice's revision.
     data_path = "http://127.0.0.1:5000/data/df.csv"
