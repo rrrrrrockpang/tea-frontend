@@ -285,6 +285,7 @@ const createForm = (id, popoverbtn, displayArea, type="") => {
         let cancelBtn = $("<button type='button' class='btn btn-secondary'>Close</button>");
         let submitBtn = $("<button type='button' class='btn btn-success'>Add</button>");
         formtemplate.append(cancelBtn, submitBtn);
+        formtemplate.append(cancelBtn, submitBtn);
         handleCancelBtn(cancelBtn, popoverbtn);
         handleSubmitConstructBtn(submitBtn, formtemplate, displayArea, popoverbtn);
 
@@ -333,8 +334,11 @@ const createForm = (id, popoverbtn, displayArea, type="") => {
         handleCancelBtn(cancelBtn, popoverbtn);
         handleSubmitVariableBtn(submitBtn, id, formtemplate, displayArea, popoverbtn);
     } else if(id === ANALYSIS_ID) {
+        let hypothesisSentence;
+        let apiBtn = $("<button type='button' class='btn btn-success submit'>Add</button>");
+
         if(type === "nominal") {
-            return $(`
+             hypothesisSentence = $(`
                 <form class='extension_popover_form' id='${id + "_form"}'>
                     <div class="form-group">
                         <label for='name' class='col-form-label'>Hypothesis:
@@ -347,7 +351,7 @@ const createForm = (id, popoverbtn, displayArea, type="") => {
 <!--                                <option value="PI">PI</option>-->
                             </select>
                             <label>group will be</label>
-                            <select class="custom-select">
+                            <select class="custom-select two-side">
                                 <option value="greater" selected>greater than</option>
                                 <option value="less">less than</option>
                                 <option value="different">different from</option>
@@ -363,7 +367,7 @@ const createForm = (id, popoverbtn, displayArea, type="") => {
                 </form>
             `);
         } else {
-            return $(`
+            hypothesisSentence = $(`
                 <form class='extension_popover_form' id='${id + "_form"}'>
                     <div class="form-group">
                         <label for='name' class='col-form-label'>Hypothesis:
@@ -371,7 +375,7 @@ const createForm = (id, popoverbtn, displayArea, type="") => {
                             <label>The greater value of</label>
                             <label class="iv-in-form mr-sm-2"></label>
                             <label>will lead to</label>
-                            <select class="custom-select my-1 mr-sm-2">
+                            <select class="custom-select positive-negative">
                                 <option value="greater" selected>greater</option>
                                 <option value="less">less</option>
                                 <option value="different">different</option>
@@ -383,6 +387,45 @@ const createForm = (id, popoverbtn, displayArea, type="") => {
                 </form>
             `)
         }
+        apiBtn.on("click", function() {
+            const condition_type = analysisCondition.type; // TODO: transform analysisCondition and analysisDV to Variable
+            let relationship;
+            if(condition_type === 'Nominal') {
+                let two_side = false;
+                const selected = hypothesisSentence.find('.two-side:selected').val();
+                if(selected === 'different') {
+                    two_side = true;
+                }
+
+                // categories
+                let cat1 = hypothesisSentence.find('.iv-group-custom-select-1:selected').val();
+                let cat2 = hypothesisSentence.find('.iv-group-custom-select-2:selected').val();
+                if(selected === 'less') {
+                    let temp = cat2;
+                    cat2 = cat1;
+                    cat1 = temp;
+                }
+
+                relationship = {
+                    'condition_type': 'nominal',
+                    'two-side': two_side,
+                    'categories': [cat1, cat2]
+                }
+            } else {
+                let positive = false;
+                let posNeg = hypothesisSentence.find('.positive-negative:selected').val();
+                if(posNeg === "greater") positive = true;
+
+                relationship = {
+                    'condition_type': condition_type,
+                    'positive': positive
+                }
+            }
+            teaAPI(analysisCondition, analysisDV, relationship);
+            popoverbtn.popover('hide');
+        })
+        hypothesisSentence.append(apiBtn);
+        return hypothesisSentence;
     }
 
     return formtemplate;

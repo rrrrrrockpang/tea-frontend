@@ -62,9 +62,9 @@ const TEXTAREA_NODES = [
 ];
 
 analysisConditionClicked = false;
-analysisCondition = "";
+analysisCondition = null;
 analysisConditionElement = null;
 
 analysisDVClicked = false;
-analysisDV = "";
+analysisDV = null;
 analysisDVElement = null;

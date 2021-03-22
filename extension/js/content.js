@@ -48,7 +48,6 @@ $(document).ready(function() {
     }
 
     constructListener.registerListener(function(val) {
-        alert("?")
         $(".suggested-area").empty();
         let cards = [];
         for(let i = 0; i < val.length; i++) {
@@ -62,6 +61,7 @@ $(document).ready(function() {
         }
 
         $(".suggested-area").append(cards);
+        $('#1').text(`Here is the template for hypothesis. Length: ${val.length}`);
     })
 
     dvListener.registerListener(function(val) {
@@ -74,26 +74,27 @@ $(document).ready(function() {
 
             card.find(".col-sm-12").on("click", function() {
                 $(this).parent().parent().parent().css("background", "grey");
-                if(analysisDV) {
+                if(analysisDVClicked) {
                     analysisDVElement.css("background", "none");
-                    if(analysisDV === variable.getName()) {
+                    if(analysisDV.name === variable.getName()) {
                         analysisDVClicked = false;
                         analysisDVElement = null;
-                        analysisDV = "";
+                        analysisDV = null;
                     } else {
                         analysisDVClicked = true;
                         analysisDVElement = $(this).parent().parent().parent();
-                        analysisDV = variable.getName();
+                        analysisDV = variable;
                     }
                 } else {
                     analysisDVClicked = true;
                     analysisDVElement = $(this).parent().parent().parent();
-                    analysisDV = variable.getName();
+                    analysisDV = variable;
                 }
             });
             hypothesis_dv.push(card);
         }
         $(`.hypothesis-dv`).append(hypothesis_dv);
+        $('#2').text(`Here is the template for dependent variables. Length: ${val.length}`);
     })
 
 
@@ -109,25 +110,26 @@ $(document).ready(function() {
                 $(this).parent().parent().parent().css("background", "grey");
                 if(analysisConditionClicked) {
                     analysisConditionElement.css("background", "none");
-                    if(analysisCondition === variable.getName()) {
+                    if(analysisCondition.name === variable.getName()) {
                         analysisConditionClicked = false;
                         analysisConditionElement = null;
-                        analysisCondition = "";
+                        analysisCondition = null;
                     } else {
                         analysisConditionClicked = true;
                         analysisConditionElement = $(this).parent().parent().parent();
-                        analysisCondition = variable.getName();
+                        analysisCondition = variable;
                     }
                 } else {
                     analysisConditionClicked = true;
                     analysisConditionElement = $(this).parent().parent().parent();
-                    analysisCondition = variable.getName();
+                    analysisCondition = variable;
                 }
             });
 
             hypothesis_iv.push(card);
         }
         $(`.hypothesis-iv`).append(hypothesis_iv);
+        $(`#3`).text(`Here is the template for conditions. Length: ${val.length}`);
     })
 
 

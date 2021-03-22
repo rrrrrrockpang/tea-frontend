@@ -114,14 +114,12 @@ class Element {
                 <div class="container h-100 w-100">
                     <div class="row h-80"></div>
                     <div class="row h-20" style="position: absolute; bottom:0">
+                        
                         <div class="suggested-area"></div>
                     </div>
                 </div>
             `);
-        } else if(this.id === SAMPLESIZE_ID) {
-
         }
-
         this.displayArea = displayArea;
         return displayArea;
     }
@@ -131,9 +129,10 @@ class Element {
         const displayArea = this.displayArea;
         const id = this.id;
         // const btn_id = button.attr('id');
-        let popoverContentForm = null
+        let popoverContentForm = null;
+        console.log(this.id);
 
-        if(this.id !== ANALYSIS_ID) {
+        if(this.id === HYPOTHESIS_ID || this.id === DV_ID || this.id === CONDITION_ID) {
             button.on("click", function() {
                 $(".popover:has(.extension_popover_form)").remove();
 
@@ -150,31 +149,31 @@ class Element {
                 });
                 button.popover("show");
             });
-        } else if(this.id === DV_ID || this.id === CONDITION_ID) {
+        } else if(this.id === ANALYSIS_ID) {
             button.on("click", function() {
-                $(".popover").remove();
+                $(".popover:has(.extension_popover_form)").remove();
 
                 const variables = $(".hypothesis-dv").find(".variable-card");
                 if(variables.length <= 0) {
                     alert("Please add variables!");
-                } else if (analysisDV === "") {
+                } else if (analysisDV === null) {
                     alert("Please select a dependent variable!");
                 } else {
-                    // Determine the dependent variable
+                    // TODO: Determine the dependent variable. using the background color
                     let variable = null;
                     for(let i = 0; i < independentVarLst.length; i++) {
-                        if(analysisCondition === independentVarLst[i].name) {
+                        if(analysisCondition.name === independentVarLst[i].name) {
                             variable = independentVarLst[i];
                             const selectedType = variable.type;
                             popoverContentForm = createForm(id, button, displayArea, selectedType);
                             break;
                         }
                     }
-
                     // populate the form based on the selected variables
                     var categories = [];
                     var categories2 = [];
-                    popoverContentForm.find(".dv-in-form").text(analysisDV);
+                    popoverContentForm.find(".dv-in-form").text(analysisDV.name);
+                    popoverContentForm.find(".iv-in-form").text(analysisCondition.name);
                     for(let i = 0; i < variable.addenda.length; i++) {
                         const option = $(`<option value="${variable.addenda[i]}">${variable.addenda[i]}</option>`);
                         if(i === 0) option.prop("selected", true);
@@ -198,15 +197,10 @@ class Element {
                 }
             });
         } else if(this.id === SAMPLESIZE_ID) {
-            console.log("?");
+            handleSampleSizeArea(this.displayArea);
         }
         button.on("hide.bs.popover", function() {
             $(".popover").remove();
         })
-    }
-
-    changeState(isOpen) {
-        this.isOpen = isOpen;
-        alert(this.isOpen);
     }
 }
