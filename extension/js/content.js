@@ -7,7 +7,7 @@ $(document).ready(function() {
     addConstructPreregistea();
     addDependentVariablePreregistea();
     addConditionPreregistea();
-    // addSampleSizePreregistea();
+    addSampleSizePreregistea();
     //
     // // Add Floating button
     const body = $("body");
