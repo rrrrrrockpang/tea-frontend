@@ -22,6 +22,18 @@ let teaCode = {
     "hypothesis": []
 };
 
+analysisConditionClicked = false;
+analysisCondition = null;
+analysisConditionElement = null;
+
+analysisDVClicked = false;
+analysisDV = null;
+analysisDVElement = null;
+
+constructClicked = false;
+constructObject = null;
+constructElement = null;
+
 class Construct {
     constructor(construct, measure) {
         this.construct = construct.split(' ').join('_');

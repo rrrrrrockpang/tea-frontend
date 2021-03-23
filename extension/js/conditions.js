@@ -21,11 +21,8 @@ ivListener = {
 
 ivListener.registerListener(function (conditions) {
     updateConditionDisplayArea(conditions);
-    // updateConditionInAnalysisSection(conditions);
-    console.log("!!!")
-    console.log(conditions);
-    console.log(dependent_variables);
-    console.log(constructs);
+    updateVariableInAnalysis($(`#${ANALYSIS_PLUGIN_ID} .displayarea .hypothesis-iv`), conditions);
+    updateTeaCodeVariables();
 });
 
 /////////// Layout Code ///////////
@@ -70,6 +67,7 @@ const updateConditions = (variableObject, name, type, categories, studyDesign) =
         variableObject = new Variable(name, type, categories);
         variableObject.study_design = studyDesign;
         variableObject.card_id = CONDITION_ID + "_" + variableObject.name;
+        variableObject.section = CONDITION_ID;
     } else {
         variableObject.set(name, type, categories);
         variableObject.study_design = studyDesign;

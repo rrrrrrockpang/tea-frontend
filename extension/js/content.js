@@ -3,13 +3,15 @@ $(document).ready(function() {
     // handleVariableListeners();
 
     // add plugin sections
+    addAnalysisPreregistea();
     addConstructPreregistea();
     addDependentVariablePreregistea();
     addConditionPreregistea();
-    // addAnalysisPreregistea();
     // addSampleSizePreregistea();
     //
     // // Add Floating button
-    // addTeaFloatingBtn();
-    // addMethodFloatingBtn();
+    const body = $("body");
+    addTeaModal(body);
+    body.append(addTeaFloatingBtn());
+    body.append(addMethodFloatingBtn());
 });

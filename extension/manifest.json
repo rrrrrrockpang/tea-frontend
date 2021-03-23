@@ -33,7 +33,11 @@
         "js/construct.js",
         "js/dependentVariable.js",
         "js/conditions.js",
+        "js/analysis.js",
+        "js/api.js",
+        "js/floating.js",
         "js/layout.js",
+        "js/sampleSize.js",
         "js/content.js"
       ]
     }

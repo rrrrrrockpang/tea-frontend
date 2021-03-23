@@ -21,7 +21,8 @@ dvListener = {
 
 dvListener.registerListener(function (dvs) {
     updateDependentVariableDisplayArea(dvs);
-    // updateDependentVariableInAnalysisSection(dvs); // TODO: !!!
+    updateVariableInAnalysis($(`#${ANALYSIS_PLUGIN_ID} .displayarea .hypothesis-dv`), dvs); // TODO: !!!
+    updateTeaCodeVariables();
 });
 
 /////////// Layout Code ///////////
@@ -67,6 +68,7 @@ const updateDependentVariables = (variableObject, name, type, categories, constr
         variableObject = new Variable(name, type, categories);
         variableObject.construct = construct;
         variableObject.card_id = DEPENDENT_VARIABLE_ID + "_" + variableObject.name;
+        variableObject.section = DEPENDENT_VARIABLE_ID;
     } else {
         variableObject.set(name, type, categories);
         variableObject.construct = construct;
