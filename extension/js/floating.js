@@ -21,7 +21,7 @@ const addTeaModal = (body) => {
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
-              <div class="modal-body">
+              <div class="modal-body" style="word-wrap: break-word;">
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -42,7 +42,7 @@ const addTeaModal = (body) => {
             modal.find('.modal-body').html(`<code>${stringifyTeaCode()}</code>`).css("white-space", "pre");
         } else if(btn_id === "method-floating-btn") {
             modal.find('.modal-title').html("Method Section");
-            modal.find('.modal-body').html("Hi \n Great comments").css("white-space", "pre");
+            modal.find('.modal-body').html(`<div contenteditable="true">${stringifyMethodSection()}</div>`);
         }
     })
 

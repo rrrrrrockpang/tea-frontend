@@ -23,6 +23,7 @@ dvListener.registerListener(function (dvs) {
     updateDependentVariableDisplayArea(dvs);
     updateVariableInAnalysis($(`#${ANALYSIS_PLUGIN_ID} .displayarea .hypothesis-dv`), dvs); // TODO: !!!
     updateTeaCodeVariables();
+    updateMethodSection();
 });
 
 /////////// Layout Code ///////////

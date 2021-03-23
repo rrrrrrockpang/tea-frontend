@@ -7,6 +7,26 @@ let hypothesisPair = {
     iv: ''
 };
 
+let report = {
+    design: {
+        within: false,
+        between: false,
+        analysis: "",
+        dependent: [],
+        independent: [],
+        construct: ""
+    },
+    participants: {
+        number: "",
+        power_analysis: "",
+        alpha: "",
+        effectSize: ""
+    },
+    hypothesis: [],
+    exclusion: ""
+}
+
+
 let constructs = [];
 let constructMap = {};
 let constructMeasureMap = {};

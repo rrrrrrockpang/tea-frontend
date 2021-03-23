@@ -5,6 +5,8 @@ const SAMPLE_SIZE_TEXTAREA_NODE = $("[name='text6']");
 const SAMPLE_SIZE_PARENT_SECTION = SAMPLE_SIZE_TEXTAREA_NODE.parent().parent().parent();
 
 const DEFAULT_EFFECT_SIZE = 0.8;
+let studyEffectSize = null;
+let studySampleSize = null;
 
 // graph defaults
 const margin = {top: 10, right: 30, bottom: 30, left: 60},
@@ -33,6 +35,38 @@ const addSampleSizePreregistea = () => {
         const effect = $(".effect-radio input[type='radio']:checked").val();
         $("#effectSizeNumber").attr("value", effect).trigger("change");
     })
+
+    const inputBtn = createAnalysisBtn();
+    inputarea.append(inputBtn);
+}
+
+const createAnalysisBtn = () => {
+    const initialBtn = createInitialButton(SAMPLE_SIZE_BTN_ID, "OK");
+    initialBtn.on("click", function() {
+        const effectSize = parseFloat($("#effectSizeNumber").val());
+        console.log(effectSize)
+        let sample_size = 0;
+        const powers = power_data.filter(function(d) {
+            return Math.abs(d.effect - effectSize) < Number.EPSILON;
+        })
+
+        console.log(powers);
+
+        for(let i = 0; i < powers.length - 1; i++) {
+            if(powers[i].power < 0.8 && powers[i+1].power > 0.8) {
+                sample_size = powers[i+1].sample;
+                break
+            }
+        }
+
+        if(sample_size === 0) {
+            alert("You might want to change to a bigger the effect size?");
+            return;
+        }
+        studyEffectSize = effectSize;
+        studySampleSize = sample_size;
+    });
+    return initialBtn;
 }
 
 const createPowerInputForm = () => {

@@ -23,6 +23,7 @@ ivListener.registerListener(function (conditions) {
     updateConditionDisplayArea(conditions);
     updateVariableInAnalysis($(`#${ANALYSIS_PLUGIN_ID} .displayarea .hypothesis-iv`), conditions);
     updateTeaCodeVariables();
+    updateMethodSection();
 });
 
 /////////// Layout Code ///////////

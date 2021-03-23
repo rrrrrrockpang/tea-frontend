@@ -29,7 +29,6 @@
         "lib/bootstrap.min.js",
         "js/utils.js",
         "js/variable.js",
-        "js/handle.js",
         "js/construct.js",
         "js/dependentVariable.js",
         "js/conditions.js",
