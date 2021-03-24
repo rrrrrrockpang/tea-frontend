@@ -3,6 +3,9 @@ const CONDITION_PLUGIN_ID = CONDITION_ID + "_preregistea";
 const CONDITION_BTN_ID = CONDITION_ID + "_initial_btn";
 const CONDITION_TEXTAREA_NODE = $("[name='text3']");
 const CONDITION_PARENT_SECTION = CONDITION_TEXTAREA_NODE.parent().parent().parent();
+const CONDITION_DESCRIPTION =
+    "In this section, you might want to define the independent variables (conditions) you will manipulate. Make sure to select whether the variable is a " +
+        "within-subject or between-subject factor. Preregistea will help you generate the preregistea text afterward."
 
 ivListener = {
     ivInternal: conditions,
@@ -24,14 +27,21 @@ ivListener.registerListener(function (conditions) {
     updateVariableInAnalysis($(`#${ANALYSIS_PLUGIN_ID} .displayarea .hypothesis-iv`), conditions);
     updateTeaCodeVariables();
     updateMethodSection();
+
+    if(variableMap.length === 0) {
+        $("#analysis_preregistea").hide();
+    } else {
+        $("#analysis_preregistea").show();
+    }
 });
 
 /////////// Layout Code ///////////
 
 const addConditionPreregistea = () => {
-    const preregistea = createPreregisteaForm(CONDITION_PLUGIN_ID);
+    const preregistea = createPreregisteaForm(CONDITION_PLUGIN_ID, CONDITION_DESCRIPTION);
     const inputArea = preregistea.find(".inputarea");
     addConditionInput(inputArea);
+    preregistea.append(addArrow());
     CONDITION_PARENT_SECTION.prepend(preregistea);
 }
 
@@ -50,7 +60,34 @@ const createConditionBtn = (inputForm) => {
         const categoriesInput = inputForm.find(".add-category .categories");
         const studyDesignInput = inputForm.find(".study-design input[type='radio']:checked");
 
-        updateConditions(null, nameInput.val(), typeInput.val(), getCurrentCategories(categoriesInput), studyDesignInput.val());
+        const name = nameInput.val();
+        const type = typeInput.val();
+        const categories = getCurrentCategories(categoriesInput);
+        const studyDesign = studyDesignInput.val();
+
+        if(name.length === 0) {
+            alert(INDEPENDENT_VARIABLE_NAME_ALERT);
+            return
+        }
+
+        if(studyDesignInput.length === 0) {
+            alert(INDEPENDENT_VARIABLE_STUDY_DESIGN_ALERT);
+            return
+        }
+
+        if(typeInput.length === 0) {
+            alert(INDEPENDENT_VARIABLE_TYPE_ALERT)
+            return
+        }
+
+        if(type === "nominal" || type === "ordinal") {
+            if(categories.length < 2) {
+                alert(CATEGORIES_FOR_NOMINAL_ORDINAL_ALERT);
+                return
+            }
+        }
+
+        updateConditions(null, name, type, categories, studyDesign);
 
         nameInput.val("");
         typeInput.prop("checked", false);
@@ -114,42 +151,41 @@ const deleteCondition = (card_id) => {
 const createConditionForm = () => {
     return $(`<form class="inputarea-form">
                     <div class="form-group">
-                        <label for='name' class='col-form-label'>Variable Name:
+                        <h4 for='name' class='col-form-label'>Variable Name:</h4>
                         <input type='text' class='form-control variable-name'>
-                        </label>
                     </div>
                     
                     <div class="form-group study-design">
-                        <label class="radio control-label">Study Design:</label>
+                        <h4 class="radio control-label">Study Design:</h4>
                         <label class='form-check-label' for='withinSubject'>
-                                <input class='form-check-input' type='radio' name='studyDesignRadio' value='within'>
+                                <input class='form-check-input' type='radio' id="withinSubject" name='studyDesignRadio' value='within'>
                                 Within-Subject
                         </label>
                         <label class='form-check-label' for='betweenSubject'>
-                            <input class='form-check-input' type='radio' name='studyDesignRadio' value='between'>
+                            <input class='form-check-input' type='radio' id="betweenSubject" name='studyDesignRadio' value='between'>
                             Between-Subject
                         </label>
                     </div>
     
                     <div class='form-group var-type'>
-                        <label class="radio control-label">Variable Type:</label>
+                        <h4 class="radio control-label">Variable Type:</h4>
     
                         <div class="form-inline type-radio">
                         
-                            <label class='form-check-label' for='nominalRadio'>
-                                <input class='form-check-input' type='radio' name='variableTypeRadios' value='nominal'>
+                            <label class='form-check-label' for='nominalRadio2'>
+                                <input class='form-check-input' type='radio' id="nominalRadio2" name='variableTypeRadios' value='nominal'>
                                 Nominal
                             </label>
-                            <label class='form-check-label' for='ordinalRadio'>
-                                <input class='form-check-input' type='radio' name='variableTypeRadios' value='ordinal'>
+                            <label class='form-check-label' for='ordinalRadio2'>
+                                <input class='form-check-input' type='radio' id="ordinalRadio2" name='variableTypeRadios' value='ordinal'>
                                 Ordinal
                             </label>
-                            <label class='form-check-label' for='intervalRadio'>
-                                <input class='form-check-input' type='radio' name='variableTypeRadios' value='interval'>
+                            <label class='form-check-label' for='intervalRadio2'>
+                                <input class='form-check-input' type='radio' id="intervalRadio2" name='variableTypeRadios' value='interval'>
                                 Interval
                             </label>
-                            <label class='form-check-label' for='ratioRadio'>
-                                <input class='form-check-input' type='radio' name='variableTypeRadios' value='ratio'>
+                            <label class='form-check-label' for='ratioRadio2'>
+                                <input class='form-check-input' type='radio' id="ratioRadio2" name='variableTypeRadios' value='ratio'>
                                 Ratio
                             </label>
                         </div>

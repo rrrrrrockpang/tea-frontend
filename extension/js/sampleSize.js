@@ -4,6 +4,10 @@ const SAMPLE_SIZE_BTN_ID = SAMPLE_SIZE_ID + "_initial_btn";
 const SAMPLE_SIZE_TEXTAREA_NODE = $("[name='text6']");
 const SAMPLE_SIZE_PARENT_SECTION = SAMPLE_SIZE_TEXTAREA_NODE.parent().parent().parent();
 
+const SAMPLE_SIZE_DESCRIPTION =
+    "In this section, Preregistea offers a power analysis tool. You just need to specify a possible effect size (the higher effect size indicates a stronger effect between the independent variable and dependent variable.)" +
+    "Preregistea will select the sample size that reaches a power &#945=0.8."
+
 const DEFAULT_EFFECT_SIZE = 0.8;
 let studyEffectSize = null;
 let studySampleSize = null;
@@ -22,7 +26,8 @@ const y = d3.scaleLinear()
         .range([ height, 0 ]);
 
 const addSampleSizePreregistea = () => {
-    const preregistea = createPreregisteaForm(SAMPLE_SIZE_PLUGIN_ID);
+    const preregistea = createPreregisteaForm(SAMPLE_SIZE_PLUGIN_ID, SAMPLE_SIZE_DESCRIPTION);
+    preregistea.append("<br />");
     SAMPLE_SIZE_PARENT_SECTION.prepend(preregistea);
 
     const inputarea = preregistea.find(".inputarea");

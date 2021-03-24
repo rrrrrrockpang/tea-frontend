@@ -20,6 +20,10 @@ const addCardDetail = (name, text) => {
     `);
 }
 
+const addArrow = () => {
+    return `<span style="font-size:2em; margin: 5px; text-align: center" class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>`;
+}
+
 const handleCategoricalVariableInputForm = (inputForm) => {
     const nominalArea = createCategoricalVariableInputFormArea("Categories", "nominal-category")
     const ordinalArea = createCategoricalVariableInputFormArea("Orders", "ordinal-category")

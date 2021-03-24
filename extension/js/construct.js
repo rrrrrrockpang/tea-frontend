@@ -4,6 +4,10 @@ const CONSTRUCT_FORM_ID = CONSTRUCT_ID + "_form";
 const CONSTRUCT_BTN_ID = CONSTRUCT_ID + "_initial_btn";
 const CONSTRUCT_TEXTAREA_NODE = $("[name='text1']");
 const CONSTRUCT_PARENT_SECTION = CONSTRUCT_TEXTAREA_NODE.parent().parent().parent();
+const CONSTRUCT_DESCRIPTION =
+    "In this section, you might want to begin with a vague research question. If possible, make sure to " +
+    "define a conceptual idea (construct) with a specific measure (measure) in this step. For example, " +
+    "academic performance is a construct, GPA is a measure. Preregistea will help you generate the preregistea text afterward."
 
 /////////// Listener to constructs ///////////
 
@@ -25,16 +29,18 @@ cListener = {
 cListener.registerListener(function(constructs) {
     updateConstructDisplayArea(constructs);
     updateConstructOptions(constructs);
-    console.log(constructs)
+
+    if(constructs.length > 0)  $(".construct-group").show();
 });
 
 
 /////////// Layout Code ///////////
 
 const addConstructPreregistea = () => {
-    const preregistea = createPreregisteaForm(CONSTRUCT_PLUGIN_ID);
+    const preregistea = createPreregisteaForm(CONSTRUCT_PLUGIN_ID, CONSTRUCT_DESCRIPTION);
     const inputArea = preregistea.find('.inputarea')
     addConstructInput(inputArea);
+    preregistea.append(addArrow());
     CONSTRUCT_PARENT_SECTION.prepend(preregistea);
 }
 
@@ -47,14 +53,13 @@ const addConstructInput = (inputArea) => {
 const createConstructForm = () => {
     return $(`<form class='inputarea-form'>
                         <div class="form-group">
-                            <label for='name' class='col-form-label'>Construct:
-                            <input type='text' class='form-control construct'>
-                            </label>
+                            <h4 for='construct' class='col-form-label'>Construct:</h4>
+                            <input type='text' class='form-control construct' required>
+
                         </div>
                         <div class="form-group">
-                            <label for='name' class='col-form-label'>Measure:
-                            <input type='text' class='form-control measure'>
-                            </label>
+                            <h4 for='measure' class='col-form-label'>Measure:</h4>
+                            <input type='text' class='form-control measure' required>
                         </div>
                     </form>`
               )
@@ -65,11 +70,17 @@ const createConstructBtn = (inputForm) => {
     initialBtn.on("click", function() {
         const constructInput = inputForm.find(".construct");
         const measureInput = inputForm.find(".measure");
-        updateConstruct(constructInput.val(), measureInput.val(), null);
 
-        // clear the form
-        constructInput.val("");
-        measureInput.val("");
+        if(constructInput.val().length > 0 && measureInput.val().length > 0) {
+            updateConstruct(constructInput.val(), measureInput.val(), null);
+
+            // clear the form
+            constructInput.val("");
+            measureInput.val("");
+        } else {
+            alert(CONSTRUCT_ALERT);
+        }
+
     })
     return initialBtn;
 }
@@ -148,11 +159,13 @@ const updateConstructOptions = (constructs) => {
                         constructClicked = true;
                         constructElement = $(this);
                         constructObject = c;
+                        $("#dv_preregistea .variable-name").val(constructObject.display_measure);
                     }
                 } else {
                     constructClicked = true;
                     constructElement = $(this);
                     constructObject = c;
+                    $("#dv_preregistea .variable-name").val(constructObject.display_measure);
                 }
             });
             options.push(optionCard);

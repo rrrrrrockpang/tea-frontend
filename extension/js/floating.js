@@ -42,7 +42,7 @@ const addTeaModal = (body) => {
             modal.find('.modal-body').html(`<code>${stringifyTeaCode()}</code>`).css("white-space", "pre");
         } else if(btn_id === "method-floating-btn") {
             modal.find('.modal-title').html("Method Section");
-            modal.find('.modal-body').html(`<div contenteditable="true">${stringifyMethodSection()}</div>`);
+            modal.find('.modal-body').html(`<div contenteditable="true">${stringifyMethodSection()}</div>`).css("white-space", "normal");
         }
     })
 

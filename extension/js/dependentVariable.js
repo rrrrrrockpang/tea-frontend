@@ -4,6 +4,11 @@ const DEPENDENT_VARIABLE_BTN_ID = DEPENDENT_VARIABLE_ID + "_initial_btn";
 const DEPENDENT_VARIABLE_TEXTAREA_NODE = $("[name='text2']");
 const DEPENDENT_VARIABLE_PARENT_SECTION = DEPENDENT_VARIABLE_TEXTAREA_NODE.parent().parent().parent();
 
+const DEPENDENT_VARIABLE_DESCRIPTION =
+    "In this section, you might want to define the concrete dependent variable you want to measure" +
+    "Make sure to choose the construct the variable is measuring, the variable type, and categories there exist any." +
+    "Preregistea will help you generate the preregistea text afterward."
+
 dvListener = {
     dvInternal: dependent_variables,
     dvListener: function (val) {},
@@ -24,14 +29,21 @@ dvListener.registerListener(function (dvs) {
     updateVariableInAnalysis($(`#${ANALYSIS_PLUGIN_ID} .displayarea .hypothesis-dv`), dvs); // TODO: !!!
     updateTeaCodeVariables();
     updateMethodSection();
+
+    if(variableMap.length === 0) {
+        $("#analysis_preregistea").hide();
+    } else {
+        $("#analysis_preregistea").show();
+    }
 });
 
 /////////// Layout Code ///////////
 
 const addDependentVariablePreregistea = () => {
-    const preregistea = createPreregisteaForm(DEPENDENT_VARIABLE_PLUGIN_ID);
+    const preregistea = createPreregisteaForm(DEPENDENT_VARIABLE_PLUGIN_ID, DEPENDENT_VARIABLE_DESCRIPTION);
     const inputArea = preregistea.find(".inputarea");
     addDependentVariableInput(inputArea);
+    preregistea.append(addArrow());
     DEPENDENT_VARIABLE_PARENT_SECTION.prepend(preregistea);
 }
 
@@ -48,10 +60,33 @@ const createDependentVariableBtn = (inputForm) => {
         const nameInput = inputForm.find(".variable-name");
         const typeInput = inputForm.find(".var-type input[type='radio']:checked");
         const categoriesInput = inputForm.find(".add-category .categories");
-        // const construct = selectedConstruct; // TODO: Add this
-        console.log(nameInput.val(), typeInput.val(), getCurrentCategories(categoriesInput));
+        const construct = constructObject; // TODO: Add this
 
-        updateDependentVariables(null, nameInput.val(), typeInput.val(), getCurrentCategories(categoriesInput));
+        const name = nameInput.val();
+        const type = typeInput.val();
+        const categories = getCurrentCategories(categoriesInput);
+        if(construct === null && constructs.length !== 0) {
+            if(!confirm(CONSTRUCT_DEPENDENT_VARIABLE_ALERT)) return
+        }
+
+        if(name.length === 0) {
+            alert(DEPENDENT_VARIABLE_NAME_ALERT);
+            return
+        }
+
+        if(typeInput.length === 0) {
+            alert(DEPENDENT_VARIABLE_TYPE_ALERT)
+            return
+        }
+
+        if(type === "nominal" || type === "ordinal") {
+            if(categories.length < 2) {
+                alert(CATEGORIES_FOR_NOMINAL_ORDINAL_ALERT);
+                return
+            }
+        }
+
+        updateDependentVariables(null, name, type, categories, construct);
 
         console.log(dependent_variables);
         nameInput.val("");
@@ -83,7 +118,6 @@ const updateDependentVariables = (variableObject, name, type, categories, constr
 const updateDependentVariableDisplayArea = (dvs) => {
     const display = $(`#${DEPENDENT_VARIABLE_PLUGIN_ID} .displayarea`);
     let cards = [];
-    console.log()
     for(let i = 0; i < dvs.length; i++) {
         const variableObject = dvs[i];
         const variableCard = createVariableCard(variableObject);
@@ -114,40 +148,38 @@ const deleteVariable = (card_id) => {
 /// A bunch of forms
 const createDependentVariableForm = () => {
     return $(`<form class="inputarea-form">
+                    <div>
+                        <div class="form-group construct-group" style="display: none"> 
+                              <h4 class="radio control-label construct-label">Construct:</h4>
+                              <div class="construct-card"></div>
+                        </div>
+                    </div>
                     <div class="form-group">
-                        <label for='name' class='col-form-label'>Variable Name:
-                        <input type='text' class='form-control variable-name'>
-                        </label>
+                        <h4 for='variable-name' class='col-form-label'>Variable Name:</h4>
+                        <input type='text' class='form-control variable-name' required>
                     </div>
     
                     <div class='form-group var-type'>
-                        <label class="radio control-label">Variable Type:</label>
+                        <h4 class="radio control-label">Variable Type:</h4>
     
                         <div class="form-inline type-radio">
                         
                             <label class='form-check-label' for='nominalRadio'>
-                                <input class='form-check-input' type='radio' name='variableTypeRadios' value='nominal'>
+                                <input class='form-check-input' type='radio' id="nominalRadio" name='variableTypeRadios' value='nominal'>
                                 Nominal
                             </label>
                             <label class='form-check-label' for='ordinalRadio'>
-                                <input class='form-check-input' type='radio' name='variableTypeRadios' value='ordinal'>
+                                <input class='form-check-input' type='radio' id="ordinalRadio" name='variableTypeRadios' value='ordinal'>
                                 Ordinal
                             </label>
                             <label class='form-check-label' for='intervalRadio'>
-                                <input class='form-check-input' type='radio' name='variableTypeRadios' value='interval'>
+                                <input class='form-check-input' type='radio' id="intervalRadio" name='variableTypeRadios' value='interval'>
                                 Interval
                             </label>
                             <label class='form-check-label' for='ratioRadio'>
-                                <input class='form-check-input' type='radio' name='variableTypeRadios' value='ratio'>
+                                <input class='form-check-input' type='radio' id="ratioRadio" name='variableTypeRadios' value='ratio'>
                                 Ratio
                             </label>
-                        </div>
-                    </div>
-                              
-                    <div>
-                        <div class="form-group construct-group"> 
-                              <label class="radio control-label construct-label">Construct:</label>
-                              <div class="construct-card"></div>
                         </div>
                     </div>
                 </form>`);
@@ -165,7 +197,7 @@ const createVariableCard = (variable) => {
     card.find(".card-header-name").append(`<p>${variable.display_name}</p>`);
     card.append(addCardDetail("Variable Type: ", variable.type));
     if(variable.categories.length > 0) card.append(addCardDetail("Categories: ", variable.categories));
-    if(variable.construct != null) card.append(addCardDetail("Construct: ", variable.construct));
+    if(variable.construct != null) card.append(addCardDetail("Construct: ", variable.construct.display_name));
 
     const cancel = $(`<button type='button' class='delete close' data-dismiss='alert' aria-label='Close' style="position: absolute; top: 0; right: 0">×</button>`)
     card.append(cancel)

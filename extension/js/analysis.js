@@ -4,6 +4,10 @@ const ANALYSIS_BTN_ID = ANALYSIS_ID + "_initial_btn";
 const ANALYSIS_TEXTAREA_NODE = $("[name='text4']");
 const ANALYSIS_PARENT_SECTION = ANALYSIS_TEXTAREA_NODE.parent().parent().parent();
 
+const ANALYSIS_DESCRIPTION =
+    "In this section, you need to select the dependent variable and conditions that you input previously. " +
+    "You need to 'generate a hypothesis', and Preregistea will automatically generates the hypothesis and text afterward."
+
 hypothesisPairListener = {
     pInternal: hypothesisPair,
     pListener: function (val) {},
@@ -33,8 +37,10 @@ hypothesisPairListener.registerListener(function(pair) {
 /////////// Layout Code ///////////
 
 const addAnalysisPreregistea = () => {
-    const preregistea = createPreregisteaForm(ANALYSIS_PLUGIN_ID);
+    const preregistea = createPreregisteaForm(ANALYSIS_PLUGIN_ID, ANALYSIS_DESCRIPTION);
+    preregistea.append(addArrow());
     ANALYSIS_PARENT_SECTION.prepend(preregistea);
+    preregistea.hide();
 
     const displayArea = preregistea.find(".displayarea");
     const container = createAnalysisTwoColumnsForm();
@@ -223,7 +229,7 @@ const createHypothesisConditionIsNotNominal = (dv, iv) => {
 
 const addHypothesisCard = (text, id) => {
     return $(`
-        <div class="variable-card" id="${id}" style="text-align: center" style="border: solid black">
+        <div class="hypothesis-card" id="${id}">
             <p>${text}</p>
         </div>
     `);
@@ -233,9 +239,13 @@ const addHypothesisCard = (text, id) => {
 const createAnalysisTwoColumnsForm = () => {
     return $(`<div class='container'>
                 <div class="row">
-                    <div class="col-xs-6 hypothesis-dv" style="border:teal">
+                    <div class="col-xs-6">
+                        <p style="text-align: center">Dependent Variables</p>
+                        <div class="hypothesis-dv"></div>
                     </div>
-                    <div class="col-xs-6 hypothesis-iv">
+                    <div class="col-xs-6">
+                        <p style="text-align: center">Independent Variables</p>
+                        <div class="hypothesis-iv"></div>
                     </div>
                 </div>
             </div>`);

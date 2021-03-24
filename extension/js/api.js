@@ -25,7 +25,7 @@ const updateMethodSection = () => {
         }
     }
 
-    report.construct = "I need to change the construct!!"
+    // report.construct = constructObject.display_name;
 
     report.participants.number = studySampleSize;
     report.participants.alpha = 0.05;
@@ -108,14 +108,33 @@ const stringifyMethodSection = () => {
     else if(report.design.within) study_design = "within-subjects";
     else if(report.design.between) study_design = "between-subjects";
 
-    let experiment_design = `<b>Study Design</b><br>To understand different ${report.design.independent[0].display_name} impact ${report.construct}, we ` +
-        `designed a ${study_design} study. We considered the ${report.design.dependent[0].display_name} indicating the ${report.construct}.` +
-        `To measure the ${report.design.dependent[0].display_name}, we have users conduct procedures here. Participants were assigned to one of `+
-        `the ${report.design.independent[0].categories.length} conditions: 1) ${report.design.independent[0].categories[0]}, and ${report.design.independent[0].categories[1]}.<br>` +
+    let independent, cat1, cat2, catlength;
+    if(typeof report.design.independent[0] === "undefined") {
+        independent = "<u>independent variable</u>";
+        cat1 = "<u>category 1</u>";
+        cat2 = "<u>category 2</u>";
+        catlength = "<u>Number of categories</u>"
+    } else {
+        independent = report.design.independent[0].display_name;
+        cat1 = report.design.independent[0].categories[0];
+        cat2 = report.design.independent[0].categories[1];
+        catlength = report.design.independent[0].categories.length;
+    }
+
+    const construct = (constructObject === null) ? "<u>conceptual construct your dependent variable measures</u>" : constructObject.display_name;
+    const analysis = (report.design.analysis === 0) ? "<u>Preregistea will determine the statistical tests for you after filling out the form</u>" : report.design.analysis;
+    const dependent = (typeof report.design.dependent[0] === "undefined") ? "<u>dependent variable</u>" : report.design.dependent[0].display_name;
+
+    let experiment_design = `<h3><b>Study Design</b></h3><br>To understand different ${independent} impact ${construct}, we ` +
+        `designed a ${study_design} study. We considered the ${dependent} indicating the ${construct}.` +
+        `To measure the ${dependent}, we have users conduct procedures here. Participants were assigned to one of `+
+        `the ${catlength} conditions: 1) ${cat1}, and ${cat2}.<br>` +
         `<br>` +
         `Before running the experiment, we formulated and preregistered the following hypotheses.<br><br>`;
 
     let hypothesisText = "";
+
+    if(report.hypothesis.length === 0) hypothesisText += "<u>Please specify any hypothesis in Preregistea</u>"
     for(let i = 0; i < report.hypothesis.length; i++) {
         const dv = report.hypothesis[i][0][1];
         const iv = report.hypothesis[i][0][0];
@@ -138,12 +157,15 @@ const stringifyMethodSection = () => {
 
     experiment_design += hypothesisText + "<br>";
 
-    experiment_design += `We will analyze the hypothesis above with ${report.design.analysis}. The hypothesis can be reproduced by the Tea Code.<br><br>`;
+    experiment_design += `<br>We will analyze the hypothesis above with ${analysis}. The hypothesis can be reproduced by the Tea Code.<br><br>`;
 
-    experiment_design += `<b>Participants</b><br>`;
+    experiment_design += `<h3><b>Participants</b></h3><br>`;
+
+    const effectSize = (report.participants.effectSize === null) ? "<u>effect size</u>" : report.participants.effectSize;
+    const number = (report.participants.number) ? "<u>sample size</u>" : report.participants.number;
 
     experiment_design += `A prospective power analysis was performed for sample size determination based on Cohen's conventional effect size ` +
-        `d = ${report.participants.effectSize}. We achieved at least 0.8 under &#945; = 0.05 within ${report.participants.number} participants per condition.`
+        `d = ${effectSize}. We achieved at least 0.8 under &#945; = 0.05 within ${number} participants per condition.`
 
     return experiment_design
 }
