@@ -73,6 +73,7 @@ const createConstructBtn = (inputForm) => {
 
         if(constructInput.val().length > 0 && measureInput.val().length > 0) {
             updateConstruct(constructInput.val(), measureInput.val(), null);
+            updateConstructTextArea();
 
             // clear the form
             constructInput.val("");
@@ -121,6 +122,15 @@ const updateConstruct = (constructInput, measureInput, constructObject) => {
     constructMeasureMap[constructObject.construct] = constructObject.measure;   // key: construct, value: measure
     constructs.push(constructObject);  // a list preserving order of input construct
     if(!constructObject.isEditing) cListener.c = constructs;
+}
+
+const updateConstructTextArea = () => {
+    const original = CONSTRUCT_TEXTAREA_NODE.val();
+    let newText = original.length === 0 ? "Add your research question here. \n" : "\n";
+    for(let i = 0; i < constructs.length; i++) {
+        newText += `We will measure the value of ${constructs[i].display_measure} to represent the concept of ${constructs[i].display_name}.`;
+    }
+    CONSTRUCT_TEXTAREA_NODE.val(original + newText)
 }
 
 const updateConstructDisplayArea = (constructs) => {

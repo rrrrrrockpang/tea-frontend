@@ -87,6 +87,7 @@ const createDependentVariableBtn = (inputForm) => {
         }
 
         updateDependentVariables(null, name, type, categories, construct);
+        updateDependentVariableTextArea();
 
         console.log(dependent_variables);
         nameInput.val("");
@@ -113,6 +114,34 @@ const updateDependentVariables = (variableObject, name, type, categories, constr
     variableMap[variableObject.card_id] = variableObject;
     dependent_variables.push(variableObject);
     if(!variableObject.isEditing) dvListener.dv = dependent_variables;
+}
+
+const updateDependentVariableTextArea = () => {
+    DEPENDENT_VARIABLE_TEXTAREA_NODE.val("");
+
+    if(dependent_variables.length > 0) {
+        let newText = "";
+
+        newText += `There will be ${dependent_variables.length} key dependent variables: `
+        for(let i = 0; i < dependent_variables.length; i++) {
+            if(i === dependent_variables.length - 1) {
+                newText += `${i+1}) ${dependent_variables[i].display_name}: \n `
+            } else {
+                newText += `${i+1}) ${dependent_variables[i].display_name}, `
+            }
+        }
+
+        for(let i = 0; i < dependent_variables.length; i++) {
+            newText += `${i+1}. ${capitalize(dependent_variables[i].display_name)}. `;
+            if(dependent_variables[i].construct !== null) {
+                newText += `${dependent_variables[i].display_name} is used to measure ${dependent_variables[i].construct.display_name}. `
+            }
+            newText += "Please add a little description of this variable.";
+        }
+
+        DEPENDENT_VARIABLE_TEXTAREA_NODE.val(newText);
+    }
+
 }
 
 const updateDependentVariableDisplayArea = (dvs) => {

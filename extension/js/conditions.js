@@ -88,6 +88,7 @@ const createConditionBtn = (inputForm) => {
         }
 
         updateConditions(null, name, type, categories, studyDesign);
+        updateConditionTextArea();
 
         nameInput.val("");
         typeInput.prop("checked", false);
@@ -114,6 +115,46 @@ const updateConditions = (variableObject, name, type, categories, studyDesign) =
     variableMap[variableObject.card_id] = variableObject;
     conditions.push(variableObject);
     if(!variableObject.isEditing) ivListener.iv = conditions;
+}
+
+const updateConditionTextArea = () => {
+    CONDITION_TEXTAREA_NODE.val("");
+    if(conditions.length > 0) {
+        let within = false, between = false;
+        for(let i = 0; i < conditions.length; i++) {
+            const condition = conditions[i];
+            if(condition.study_design === "within") within = true;
+            if(condition.study_design === "between") between = true;
+        }
+
+        let studyDesign, newText;
+        if(within && between) {
+            studyDesign = "mixed factorial design";
+        } else if(within) {
+            studyDesign = "within-subjects design";
+        } else if(between) {
+            studyDesign = "between-subjects design";
+        }
+
+        newText = `This experiment will be a ${studyDesign}. It comprises of the following factors and levels: \n`;
+
+        for(let i = 0; i < conditions.length; i++) {
+            const condition = conditions[i];
+            if(condition.type === "nominal" || condition.type === "ordinal") {
+                newText += `${i+1}. ${capitalize(condition.display_name)} (`;
+                for(let j = 0; j < condition.categories.length; j++) {
+                    if(j === condition.categories.length - 1) {
+                        newText += condition.categories[j] + ") "
+                    } else {
+                        newText += condition.categories[j] + ", "
+                    }
+                }
+                newText += "Please add a little description of this variable."
+            }
+        }
+
+        CONDITION_TEXTAREA_NODE.val(newText);
+    }
 }
 
 const updateConditionDisplayArea = (conditions) => {

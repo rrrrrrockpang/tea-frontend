@@ -155,9 +155,35 @@ const updateHypothesisFormArea = (pair, inputArea) => {
             }
         }
         updateTeaCodeHypothesis(iv, dv, relationship);
+        updateAnalysisTextArea(iv, dv, relationship);
     })
     inputArea.append(hypothesisFormArea);
     inputArea.append(apiBtn);
+}
+
+const updateAnalysisTextArea = (iv, dv, relationship) => {
+    const original = ANALYSIS_TEXTAREA_NODE.val();
+    let newText = (original !== 0) ? "\n" : "";
+    const hypothesis_number = report.hypothesis.length;
+    if(iv.type === "nominal") {
+        let compare;
+        if(relationship["two-side"] === "same") compare = "same as";
+        else if(relationship["two-side"] === true) compare = "greater than";
+        else if(relationship["two-side"] === false) compare = "different from";
+        newText += `H${hypothesis_number}: The median value of ${dv.display_name} in ${iv.categories[0]} group will be ${compare} than that in ${iv.categories[1]}. `;
+    } else {
+        // TODO: Add this
+    }
+
+    if(iv.study_design === "within") {
+        newText += `We will analyze this hypothesis with Wilcoxon signed-rank test. See the reproducible Tea code for analysis.`
+    } else {
+        newText += `We will analyze this hypothesis with Mann-Whitney U test. See the reproducible Tea code for analysis.`
+    }
+
+    newText += "\n";
+
+    ANALYSIS_TEXTAREA_NODE.val(original + newText);
 }
 
 const createHypothesisConditionIsNominal = (dv, iv) => {
@@ -165,7 +191,7 @@ const createHypothesisConditionIsNominal = (dv, iv) => {
                     <div class="form-group">
                         <label for='name' class='col-form-label'>Hypothesis:
                         <div class="form-inline">
-                            <label>The mean value of</label>
+                            <label>The median value of</label>
                             <label class="dv-in-form"></label>
                             <label>in</label>
                             <select class="iv-group-custom-select-1">

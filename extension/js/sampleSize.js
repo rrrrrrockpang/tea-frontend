@@ -49,7 +49,6 @@ const createAnalysisBtn = () => {
     const initialBtn = createInitialButton(SAMPLE_SIZE_BTN_ID, "OK");
     initialBtn.on("click", function() {
         const effectSize = parseFloat($("#effectSizeNumber").val());
-        console.log(effectSize)
         let sample_size = 0;
         const powers = power_data.filter(function(d) {
             return Math.abs(d.effect - effectSize) < Number.EPSILON;
@@ -70,8 +69,18 @@ const createAnalysisBtn = () => {
         }
         studyEffectSize = effectSize;
         studySampleSize = sample_size;
+
+        updateSampleSizeTextArea(studyEffectSize, studySampleSize);
     });
     return initialBtn;
+}
+
+const updateSampleSizeTextArea = (effectSize, sampleSize) => {
+    const original = SAMPLE_SIZE_TEXTAREA_NODE.val();
+    let newText = (original.length === 0) ? "" : "\n";
+
+    newText += `A prospective power analysis was performed for sample size determination based on Cohen's conventional effect size d = ${effectSize}. We achieved at least 0.8 under α = 0.05 within ${sampleSize} participants per condition.`
+    SAMPLE_SIZE_TEXTAREA_NODE.val(newText);
 }
 
 const createPowerInputForm = () => {
