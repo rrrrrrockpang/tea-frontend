@@ -5,8 +5,7 @@ const SAMPLE_SIZE_TEXTAREA_NODE = $("[name='text6']");
 const SAMPLE_SIZE_PARENT_SECTION = SAMPLE_SIZE_TEXTAREA_NODE.parent().parent().parent();
 
 const SAMPLE_SIZE_DESCRIPTION =
-    "In this section, Preregistea offers a power analysis tool. You just need to specify a possible effect size (the higher effect size indicates a stronger effect between the independent variable and dependent variable.)" +
-    "Preregistea will select the sample size that reaches a power &#945=0.8."
+    "Determine Sample Size with a power analysis."
 
 const DEFAULT_EFFECT_SIZE = 0.8;
 let studyEffectSize = null;

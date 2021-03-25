@@ -4,8 +4,7 @@ const CONDITION_BTN_ID = CONDITION_ID + "_initial_btn";
 const CONDITION_TEXTAREA_NODE = $("[name='text3']");
 const CONDITION_PARENT_SECTION = CONDITION_TEXTAREA_NODE.parent().parent().parent();
 const CONDITION_DESCRIPTION =
-    "In this section, you might want to define the independent variables (conditions) you will manipulate. Make sure to select whether the variable is a " +
-        "within-subject or between-subject factor. Preregistea will help you generate the preregistea text afterward."
+    "Define Independent Variable(s). Specify the type of the independent variables you plan to measure. If the type is nominal, the variable will have different conditions (factors). Be sure to specify how you are measure the each condition of the independent variable. (within-in subject or between-subject)\n"
 
 ivListener = {
     ivInternal: conditions,

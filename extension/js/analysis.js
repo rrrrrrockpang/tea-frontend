@@ -5,8 +5,7 @@ const ANALYSIS_TEXTAREA_NODE = $("[name='text4']");
 const ANALYSIS_PARENT_SECTION = ANALYSIS_TEXTAREA_NODE.parent().parent().parent();
 
 const ANALYSIS_DESCRIPTION =
-    "In this section, you need to select the dependent variable and conditions that you input previously. " +
-    "You need to 'generate a hypothesis', and Preregistea will automatically generates the hypothesis and text afterward."
+    "Specify Hypotheses between Dependent and Independent Variables."
 
 hypothesisPairListener = {
     pInternal: hypothesisPair,

@@ -5,9 +5,7 @@ const DEPENDENT_VARIABLE_TEXTAREA_NODE = $("[name='text2']");
 const DEPENDENT_VARIABLE_PARENT_SECTION = DEPENDENT_VARIABLE_TEXTAREA_NODE.parent().parent().parent();
 
 const DEPENDENT_VARIABLE_DESCRIPTION =
-    "In this section, you might want to define the concrete dependent variable you want to measure" +
-    "Make sure to choose the construct the variable is measuring, the variable type, and categories there exist any." +
-    "Preregistea will help you generate the preregistea text afterward."
+    "Define Dependent Variable(s). Specify the type of the dependent variables you plan to measure. They might be a measure of the concept you defined in the previous step."
 
 dvListener = {
     dvInternal: dependent_variables,

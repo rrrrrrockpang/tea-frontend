@@ -5,9 +5,9 @@ const CONSTRUCT_BTN_ID = CONSTRUCT_ID + "_initial_btn";
 const CONSTRUCT_TEXTAREA_NODE = $("[name='text1']");
 const CONSTRUCT_PARENT_SECTION = CONSTRUCT_TEXTAREA_NODE.parent().parent().parent();
 const CONSTRUCT_DESCRIPTION =
-    "In this section, you might want to begin with a vague research question. If possible, make sure to " +
-    "define a conceptual idea (construct) with a specific measure (measure) in this step. For example, " +
-    "academic performance is a construct, GPA is a measure. Preregistea will help you generate the preregistea text afterward."
+    "Specify any concepts with concrete measure in the toolbox. After defining all concepts, write a broad research question." +
+    "For example, I define academic performance (construct) with GPA (measure). Preregistea will generate a template in the textarea. You can fill in a " +
+    "a research question: A month-long academic summer program for disadvantaged kids will reduce the drop in academic performance that occurs during the summer. ";
 
 /////////// Listener to constructs ///////////
 

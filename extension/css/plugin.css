@@ -27,6 +27,11 @@
   min-height: 100% !important;
 }
 
+.playground {
+  display: flex;
+  flex-direction: row;
+}
+
 .displayarea {
   display: flex;
   flex-direction: row;
