@@ -43,7 +43,8 @@
   width: 60px;
   height: 60px;
   bottom: 40px;
-  background-color: #0C9;
+  background-color: #5cb85c;
+  border-color: #4cae4c;
   color: #FFF;
   border-radius: 50px;
   text-align: center;
@@ -97,6 +98,22 @@
 
 #sample_size_preregistea > .preregistea > .container > .row {
   display: flex !important;
+}
+
+/* Description box */
+.description-box {
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  width: 200px;
+  height: 100px;
+  background-color: #5cb85c;
+  border-color: #4cae4c;
+  border-radius: 10px;
+  box-shadow: 2px 2px 3px #999;
+  color: #FFF;
 }
 
 /*# sourceMappingURL=plugin.css.map */
