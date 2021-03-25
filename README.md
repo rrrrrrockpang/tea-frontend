@@ -8,15 +8,15 @@ Clone this repository or download the zip file
 
 * Click `extensions` under `More Tools` on the top right of your Chrome browser.
 
-![More Tools](images/more_tools.png)
+<img src="./images/more_tools.png" width="220">
 
 * Click `Load unpacked` at the top left of the Extension page.
 
-![Load unpacked](images/preregistea.png)
+<img src="./images/preregistea.png" width="220">
 
 * Select the `extension` folder under the repository/zip file you just downloaded.
 
-![Give plugin access](images/access.png)
+<img src="./images/accesss.png" width="220">
 
 # Use the Plugin on AsPredicted.org
 
