@@ -12,11 +12,11 @@ Clone this repository or download the zip file
 
 * Click `Load unpacked` at the top left of the Extension page.
 
-<img src="./images/preregistea.png" width="220">
+<img src="./images/preregistea.png" width="350">
 
 * Select the `extension` folder under the repository/zip file you just downloaded.
 
-<img src="./images/accesss.png" width="220">
+<img src="./images/access.png" width="350">
 
 # Use the Plugin on AsPredicted.org
 
