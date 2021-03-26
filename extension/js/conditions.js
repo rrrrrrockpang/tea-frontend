@@ -191,7 +191,7 @@ const deleteCondition = (card_id) => {
 const createConditionForm = () => {
     return $(`<form class="inputarea-form">
                     <div class="form-group">
-                        <h4 for='name' class='col-form-label'>Variable Name:</h4>
+                        <h4 for='name' class='col-form-label'>What's the exact independent variable name?</h4>
                         <input type='text' class='form-control variable-name'>
                     </div>
                     

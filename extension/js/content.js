@@ -2,7 +2,9 @@ $(document).ready(function() {
     // handle variable listener
     // handleVariableListeners();
 
-    $('[data-toggle="tooltip"]').tooltip();
+    $('[data-toggle="tooltip"]').tooltip({
+        delay: { "show": 0, "hide": 0 }
+    });
 
     addInstruction();
 

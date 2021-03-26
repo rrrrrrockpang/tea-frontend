@@ -180,13 +180,13 @@ const createDependentVariableForm = () => {
                     <div>
                         <div class="form-group construct-group" style="display: none"> 
                               <h4 class="radio control-label construct-label" >Construct:
-                               <span class='glyphicon glyphicon-info-sign' data-toggle="tooltip" data-placement="top" title="A dependent variable does not necessarily need to have a construct from above."></span>
+                               <span class='glyphicon glyphicon-info-sign' data-toggle="tooltip" data-placement="right" title="A dependent variable does not necessarily need to have a construct from above."></span>
                               </h4>
                               <div class="construct-card" style="display: flex;"></div>
                         </div>
                     </div>
                     <div class="form-group">
-                        <h4 for='variable-name' class='col-form-label'>Variable Name:</h4>
+                        <h4 for='variable-name' class='col-form-label'>What's the exact dependent variable name?</h4>
                         <input type='text' class='form-control variable-name' required>
                     </div>
     
@@ -194,22 +194,23 @@ const createDependentVariableForm = () => {
                         <h4 class="radio control-label">Variable Type:</h4>
     
                         <div class="form-inline type-radio">
-                        
                             <label class='form-check-label' for='nominalRadio'>
                                 <input class='form-check-input' type='radio' id="nominalRadio" name='variableTypeRadios' value='nominal'>
-                                Nominal
-                            </label>
+                                Nominal <span class='glyphicon glyphicon-info-sign' data-toggle="tooltip" data-placement="top" title="Nominal data has discrete categories. (e.g. gender or race)"></span>
+                            </label> 
                             <label class='form-check-label' for='ordinalRadio'>
                                 <input class='form-check-input' type='radio' id="ordinalRadio" name='variableTypeRadios' value='ordinal'>
-                                Ordinal
+                                Ordinal <span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="top" title="Ordinal data has an order but no specific meaning to the values. (e.g. responses in a Likert scale, strongly disagree to strongly agree)"></span>
                             </label>
+                        </div>
+                        <div class="form-inline type-radio">
                             <label class='form-check-label' for='intervalRadio'>
                                 <input class='form-check-input' type='radio' id="intervalRadio" name='variableTypeRadios' value='interval'>
-                                Interval
+                                Interval <span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="top" title="Interval data has an order and the value is meaningful. (e.g. time or number of tasks)" ></span>
                             </label>
                             <label class='form-check-label' for='ratioRadio'>
                                 <input class='form-check-input' type='radio' id="ratioRadio" name='variableTypeRadios' value='ratio'>
-                                Ratio
+                                Ratio <span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="top" title="Ratio data is similar to interval data but can't fall below 0. (e.g. error rate or response rate)"></span>
                             </label>
                         </div>
                     </div>
