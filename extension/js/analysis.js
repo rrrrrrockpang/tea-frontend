@@ -29,7 +29,7 @@ hypothesisPairListener.registerListener(function(pair) {
     if(pair['dv'] !== null && pair['iv'] !== null) {
         updateHypothesisFormArea(pair, inputArea);
     } else {
-        inputArea.append("Please choose one dependent variable and a condition.");
+        inputArea.append("Please choose a dependent variable and a condition.");
     }
 })
 

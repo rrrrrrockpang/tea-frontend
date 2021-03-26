@@ -7,7 +7,7 @@ const CONSTRUCT_PARENT_SECTION = CONSTRUCT_TEXTAREA_NODE.parent().parent().paren
 const CONSTRUCT_DESCRIPTION =
     "Specify any constructs. You will define how to measure the construct later on. For example, academic performance is a construct, " +
     "GPA is a measure. \n You may have a broad research question at this stage. Write it in the textarea below after inputting the construct! " +
-        "Preregistea will generate specific hypotheses for you later."
+        "Preregistea will generate specific hypotheses and how to test them for you in Question 5."
     // "For example, I define a construct of academic performance with a measure GPA. Preregistea will generate a template in the textarea. You can fill in " +
     // "a research question: A month-long academic summer program for disadvantaged kids will reduce the drop in academic performance that occurs during the summer. ";
 
@@ -155,7 +155,7 @@ const updateConstructTextArea = () => {
     CONSTRUCT_TEXTAREA_NODE.val("");
 
     let newText = "Write your broad research question here. \n";
-    newText += `We will evaluate the concepts of `;
+    newText += `We will evaluate the concept of `;
     for(let i = 0; i < constructs.length; i++) {
         if(i === constructs.length - 1) newText += `${constructs[i].display_name}. `;
         else newText += `${constructs[i].display_name}, `;

@@ -18,10 +18,14 @@ const updateMethodSection = () => {
     for(let i = 0; i < conditions.length; i++) {
         if(conditions[i].study_design === "within") {
             report.design.within = true;
-            report.design.analysis = "paired-samples t-tests"
+            if(!report.design.analysis.includes("Wilcoxon signed-rank test")){
+                report.design.analysis.push("Wilcoxon signed-rank test");
+            }
         } else {
             report.design.between = true;
-            report.design.analysis = "independent t-test"
+            if(!report.design.analysis.includes("Mann-Whitney U-test")) {
+                report.design.analysis.push("Mann-Whitney U-test");
+            }
         }
     }
 
@@ -131,24 +135,28 @@ const stringifyMethodSection = () => {
         catlength = report.design.independent[0].categories.length;
     }
 
+    console.log(report)
+
     const construct = (constructObject === null) ? "<u>conceptual construct your dependent variable measures</u>" : constructObject.display_name;
     const analysis = (report.design.analysis === 0) ? "<u>Preregistea will determine the statistical tests for you after filling out the form</u>" : report.design.analysis;
     const dependent = (typeof report.design.dependent[0] === "undefined") ? "<u>dependent variable</u>" : report.design.dependent[0].display_name;
 
     let experiment_design = `<h3><b>Study Design</b></h3><br>To understand different ${independent} impact ${construct}, we ` +
         `designed a ${study_design} study. We considered the ${dependent} indicating the ${construct}.` +
-        `To measure the ${dependent}, we have users conduct procedures here. Participants were assigned to one of `+
+        `To measure the ${dependent}, we have users conduct <u>(you can add detailed experimental procedure here)</u>. Participants were assigned to one of `+
         `the ${catlength} conditions: 1) ${cat1}, and ${cat2}.<br>` +
         `<br>` +
         `Before running the experiment, we formulated and preregistered the following hypotheses.<br><br>`;
 
     let hypothesisText = "";
 
-    if(report.hypothesis.length === 0) hypothesisText += "<u>Please specify any hypothesis in Preregistea</u>"
-    for(let i = 0; i < report.hypothesis.length; i++) {
-        const dv = report.hypothesis[i][0][1];
-        const iv = report.hypothesis[i][0][0];
-        const compare = report.hypothesis[i][1][0];
+    const hypothesis_from_tea = teaCode["hypothesis"];
+
+    if(hypothesis_from_tea.length === 0) hypothesisText += "<u>Please specify any hypothesis in Preregistea</u>"
+    for(let i = 0; i < hypothesis_from_tea.length; i++) {
+        const dv = hypothesis_from_tea[i][0][1];
+        const iv = hypothesis_from_tea[i][0][0];
+        const compare = hypothesis_from_tea[i][1][0];
 
         if(compare.includes("!=")) {
             let cat1 = compare.substring(compare.indexOf(": ") + 2, compare.indexOf(" !="));
@@ -167,15 +175,22 @@ const stringifyMethodSection = () => {
 
     experiment_design += hypothesisText + "<br>";
 
-    experiment_design += `<br>We will analyze the hypothesis above with ${analysis}. The hypothesis can be reproduced by the Tea Code.<br><br>`;
+    experiment_design += `<br>We will analyze the hypothesis above with `;
+    if(analysis.length > 1) {
+        experiment_design += "the Wilcoxon signed-rank test and the Mann-Whitney U Test. "
+    } else {
+        experiment_design += `the ${analysis[0]}. `;
+    }
+
+    experiment_design += `The statistical analysis code can be reproduced by the Tea.`
 
     experiment_design += `<h3><b>Participants</b></h3><br>`;
 
-    const effectSize = (report.participants.effectSize === null) ? "<u>effect size</u>" : report.participants.effectSize;
-    const number = (report.participants.number) ? "<u>sample size</u>" : report.participants.number;
+    // const effectSize = (report.participants.effectSize === null) ? "<u>effect size</u>" : report.participants.effectSize;
+    // const number = (report.participants.number) ? "<u>sample size</u>" : report.participants.number;
 
     experiment_design += `A prospective power analysis was performed for sample size determination based on Cohen's conventional effect size ` +
-        `d = ${effectSize}. We achieved at least 0.8 under &#945; = 0.05 within ${number} participants per condition.`
+        `d = ${studyEffectSize}. We achieved at least 0.8 under &#945; = 0.05 within ${studySampleSize} participants per condition.`
 
     return experiment_design
 }

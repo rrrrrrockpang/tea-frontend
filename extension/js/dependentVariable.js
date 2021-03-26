@@ -133,7 +133,7 @@ const updateDependentVariableTextArea = () => {
             if(dependent_variables[i].construct !== null) {
                 newText += `${capitalize(dependent_variables[i].display_name)} is used to measure ${dependent_variables[i].construct.display_name}. `
             }
-            newText += "Please add a little description of this variable. \n";
+            newText += "Please add a little description of this variable if necessary. \n";
         }
 
         DEPENDENT_VARIABLE_TEXTAREA_NODE.val(newText);

@@ -9,7 +9,7 @@ const SAMPLE_SIZE_DESCRIPTION =
 
 const DEFAULT_EFFECT_SIZE = 0.8;
 let studyEffectSize = 0.4;
-let studySampleSize = null;
+let studySampleSize = 13;
 let confidenceInterval = 0.05;
 
 // graph defaults
@@ -61,25 +61,10 @@ const addSampleSizePreregistea = () => {
 const createAnalysisBtn = () => {
     const initialBtn = createInitialButton(SAMPLE_SIZE_BTN_ID, "OK");
     initialBtn.on("click", function() {
-        const effectSize = parseFloat($("#effectSizeNumber").val());
-        let sample_size = 0;
-        const powers = power_data.filter(function(d) {
-            return Math.abs(d.effect - effectSize) < Number.EPSILON;
-        })
-
-        for(let i = 0; i < powers.length - 1; i++) {
-            if(powers[i].power < 0.8 && powers[i+1].power > 0.8) {
-                sample_size = powers[i+1].sample;
-                break
-            }
-        }
-
-        if(sample_size === 0) {
-            alert("You might want to change to a bigger the effect size?");
+        if(studySampleSize === 0) {
+            alert("You might want to avoid effect size that's too big or too small.");
             return;
         }
-        studyEffectSize = effectSize;
-        studySampleSize = sample_size;
 
         updateSampleSizeTextArea(studyEffectSize, studySampleSize);
     });
@@ -87,10 +72,10 @@ const createAnalysisBtn = () => {
 }
 
 const updateSampleSizeTextArea = (effectSize, sampleSize) => {
-    const original = SAMPLE_SIZE_TEXTAREA_NODE.val();
-    let newText = (original.length === 0) ? "" : "\n";
+    // const original = SAMPLE_SIZE_TEXTAREA_NODE.val();
+    // let newText = (original.length === 0) ? "" : "\n";
 
-    newText += `A prospective power analysis was performed for sample size determination based on Cohen's conventional effect size d = ${effectSize}. We achieved at least 0.8 under α = 0.05 within ${sampleSize} participants per condition.`
+    newText = `A prospective power analysis was performed for sample size determination based on Cohen's conventional effect size f = ${effectSize}. We achieved at least 0.8 under α = 0.05 within ${sampleSize} participants per condition.`
     SAMPLE_SIZE_TEXTAREA_NODE.val(newText);
 }
 
@@ -105,17 +90,19 @@ const createPowerInputForm = () => {
                                     <input type="number" id="confidenceInterval" name="confidenceInterval" min="0" value="0.05" size="3">
                                 </label>
                                 <label class='form-check-label'><input class='form-check-input' type='radio' name='effectSizeRadios' value='0.10'>
-                                    Small Effect (0.2)
+                                    Small Effect (0.1)
                                 </label>
                                 <label class='form-check-label'><input class='form-check-input' type='radio' name='effectSizeRadios' value='0.25'>
-                                    Medium Effect (0.5)
+                                    Medium Effect (0.25)
                                 </label>
                                 <label class='form-check-label'><input class='form-check-input' type='radio' name='effectSizeRadios' value='0.40' checked>
-                                    Large Effect (0.8)
+                                    Large Effect (0.4)
                                 </label>
                             </div>
                             
-                            <div class="sample-size-text-display" style="border-top: 1px solid black; display: none"></div>
+                            <div class="sample-size-text-display" style="border-top: 1px solid black">
+                            13 participants yield at least a power of 0.80 at the effect size Cohen's <i>f</i> = 0.4.
+                            </div>
                         </div>
                     </form>`);
 }

@@ -11,7 +11,7 @@ let report = {
     design: {
         within: false,
         between: false,
-        analysis: "",
+        analysis: [],
         dependent: [],
         independent: [],
         construct: ""
