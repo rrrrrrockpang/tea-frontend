@@ -97,7 +97,6 @@ const updateSampleSizeTextArea = (effectSize, sampleSize) => {
 const createPowerInputForm = () => {
     return $(`<form class='inputarea-form'>
                         <div class="form-group">
-                            <label class="radio control-label">Effect Size:</label>
     
                             <div class="form-inline effect-radio">
                                 <label for="effectSizeNumber">Cohen's <i>f</i> &nbsp;
