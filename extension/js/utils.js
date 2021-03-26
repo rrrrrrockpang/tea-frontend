@@ -30,6 +30,27 @@ const addArrow = () => {
 }
 
 const handleCategoricalVariableInputForm = (inputForm) => {
+    const form_id = inputForm.attr("id");
+    let study_design = null;
+    if(form_id === CONDITION_ID + "_form") {
+        study_design = $(`<div class="form-group study-design">
+                        <h4 class="radio control-label">How do you plan to assign the conditions?</h4>
+                        <label class='form-check-label' for='withinSubject'>
+                                <input class='form-check-input' type='radio' id="withinSubject" name='studyDesignRadio' value='within'>
+                                Within-Subject
+                                <span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="top" title="Different participant test each condition." ></span>
+                            
+                        </label>
+                        <label class='form-check-label' for='betweenSubject'>
+                            <input class='form-check-input' type='radio' id="betweenSubject" name='studyDesignRadio' value='between'>
+                            Between-Subject
+                            <span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="top" title="The same participant tests all the conditions." ></span>
+                        </label>
+                    </div>`);
+        study_design.insertAfter(inputForm.find(".var-type"));
+        study_design.hide();
+    }
+
     const nominalArea = createCategoricalVariableInputFormArea("Categories", "nominal-category")
     const ordinalArea = createCategoricalVariableInputFormArea("Orders", "ordinal-category")
     nominalArea.insertAfter(inputForm.find(".var-type"));
@@ -45,14 +66,17 @@ const handleCategoricalVariableInputForm = (inputForm) => {
         if(selected.val() === "nominal") {
             if(ordinalArea.is(":visible")) ordinalArea.hide();
             nominalArea.show();
+            if(study_design !== null) study_design.show();
             handleCategoryBtn(nominalArea.find(".add-category-btn")); // Manipulate Add category button
         } else if(selected.val() === "ordinal"){
             if(nominalArea.is(":visible")) nominalArea.hide();
             ordinalArea.show();
+            if(study_design !== null) study_design.show();
             handleCategoryBtn(ordinalArea.find(".add-category-btn"));
         } else {
             nominalArea.hide();
             ordinalArea.hide();
+            if(study_design !== null) study_design.hide();
         }
     })
 }
@@ -103,8 +127,8 @@ const createCategoryCard = (text) => {
             <a class="btn btn-light delete-category">x</a>
         </span>
     `).css({
-        border: "solid",
-        "border-color": "yellow",
+        border: "solid 1px",
+        "border-color": "black",
         padding: "2px",
         "margin-left": "2px",
         "margin-right": "2px"

@@ -179,7 +179,7 @@ const updateConstructOptions = (constructs) => {
     options = [];
     for(let i = 0; i < constructs.length; i++) {
         const c = constructs[i];
-        const optionCard = $(`<div class="construct-card" style="border: solid; max-width: fit-content"><span style="margin-left: 5px; margin-right: 5px">${c.display_name}</span></div>`);
+        const optionCard = $(`<div class="construct-card" style="border: 1px solid black; max-width: fit-content"><span style="padding: 2px; margin-left: 2px; margin-right: 2px">${c.display_name}</span></div>`);
         optionCard.on("click", function () {
             $(this).css("background", "grey");
             if(constructClicked) {

@@ -5,7 +5,7 @@ const ANALYSIS_TEXTAREA_NODE = $("[name='text4']");
 const ANALYSIS_PARENT_SECTION = ANALYSIS_TEXTAREA_NODE.parent().parent().parent();
 
 const ANALYSIS_DESCRIPTION =
-    "Specify Hypotheses between Dependent and Independent Variables."
+    "Specify Hypotheses between Dependent and Independent Variables by clicking the variables of your interest."
 
 hypothesisPairListener = {
     pInternal: hypothesisPair,

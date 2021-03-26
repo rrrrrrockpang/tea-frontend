@@ -189,44 +189,33 @@ const deleteCondition = (card_id) => {
 
 // A bunch of forms
 const createConditionForm = () => {
-    return $(`<form class="inputarea-form">
+    return $(`<form class="inputarea-form" id="${CONDITION_ID + "_form"}">
                     <div class="form-group">
                         <h4 for='name' class='col-form-label'>What's the exact independent variable name?</h4>
                         <input type='text' class='form-control variable-name'>
-                    </div>
-                    
-                    <div class="form-group study-design">
-                        <h4 class="radio control-label">Study Design:</h4>
-                        <label class='form-check-label' for='withinSubject'>
-                                <input class='form-check-input' type='radio' id="withinSubject" name='studyDesignRadio' value='within'>
-                                Within-Subject
-                        </label>
-                        <label class='form-check-label' for='betweenSubject'>
-                            <input class='form-check-input' type='radio' id="betweenSubject" name='studyDesignRadio' value='between'>
-                            Between-Subject
-                        </label>
                     </div>
     
                     <div class='form-group var-type'>
                         <h4 class="radio control-label">Variable Type:</h4>
     
                         <div class="form-inline type-radio">
-                        
-                            <label class='form-check-label' for='nominalRadio2'>
-                                <input class='form-check-input' type='radio' id="nominalRadio2" name='variableTypeRadios' value='nominal'>
-                                Nominal
+                            <label class='form-check-label' for='nominalRadio'>
+                                <input class='form-check-input' type='radio' id="nominalRadio" name='variableTypeRadios' value='nominal'>
+                                Nominal <span class='glyphicon glyphicon-info-sign' data-toggle="tooltip" data-placement="top" title="Nominal data has discrete categories. (e.g. gender or race)"></span>
+                            </label> 
+                            <label class='form-check-label' for='ordinalRadio'>
+                                <input class='form-check-input' type='radio' id="ordinalRadio" name='variableTypeRadios' value='ordinal'>
+                                Ordinal <span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="top" title="Ordinal data has an order but no specific meaning to the values. (e.g. responses in a Likert scale, strongly disagree to strongly agree)"></span>
                             </label>
-                            <label class='form-check-label' for='ordinalRadio2'>
-                                <input class='form-check-input' type='radio' id="ordinalRadio2" name='variableTypeRadios' value='ordinal'>
-                                Ordinal
+                        </div>
+                        <div class="form-inline type-radio">
+                            <label class='form-check-label' for='intervalRadio'>
+                                <input class='form-check-input' type='radio' id="intervalRadio" name='variableTypeRadios' value='interval'>
+                                Interval <span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="top" title="Interval data has an order and the value is meaningful. (e.g. time or number of tasks)" ></span>
                             </label>
-                            <label class='form-check-label' for='intervalRadio2'>
-                                <input class='form-check-input' type='radio' id="intervalRadio2" name='variableTypeRadios' value='interval'>
-                                Interval
-                            </label>
-                            <label class='form-check-label' for='ratioRadio2'>
-                                <input class='form-check-input' type='radio' id="ratioRadio2" name='variableTypeRadios' value='ratio'>
-                                Ratio
+                            <label class='form-check-label' for='ratioRadio'>
+                                <input class='form-check-input' type='radio' id="ratioRadio" name='variableTypeRadios' value='ratio'>
+                                Ratio <span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="top" title="Ratio data is similar to interval data but can't fall below 0. (e.g. error rate or response rate)"></span>
                             </label>
                         </div>
                     </div>

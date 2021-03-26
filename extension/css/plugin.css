@@ -75,17 +75,10 @@
 .card-details {
   padding-left: 8px;
   padding-right: 8px;
+  margin-bottom: 0 !important;
 }
 
 /* Form group style */
-.form-group {
-  margin-bottom: 2px !important;
-}
-
-.form-group label {
-  margin-bottom: 1px !important;
-}
-
 .form-group .container {
   max-width: 100%;
 }
