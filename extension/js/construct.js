@@ -5,9 +5,11 @@ const CONSTRUCT_BTN_ID = CONSTRUCT_ID + "_initial_btn";
 const CONSTRUCT_TEXTAREA_NODE = $("[name='text1']");
 const CONSTRUCT_PARENT_SECTION = CONSTRUCT_TEXTAREA_NODE.parent().parent().parent();
 const CONSTRUCT_DESCRIPTION =
-    "Specify any concepts with concrete measure in the toolbox. After defining all concepts, write a broad research question. " +
-    "For example, I define a construct of academic performance with a measure GPA. Preregistea will generate a template in the textarea. You can fill in " +
-    "a research question: A month-long academic summer program for disadvantaged kids will reduce the drop in academic performance that occurs during the summer. ";
+    "Specify any constructs. You will define how to measure the construct later on. For example, academic performance is a construct, " +
+    "GPA is a measure. \n You may have a broad research question at this stage. Write it in the textarea below after inputting the construct! " +
+        "Preregistea will generate specific hypotheses and how to test them for you in Question 5."
+    // "For example, I define a construct of academic performance with a measure GPA. Preregistea will generate a template in the textarea. You can fill in " +
+    // "a research question: A month-long academic summer program for disadvantaged kids will reduce the drop in academic performance that occurs during the summer. ";
 
 /////////// Listener to constructs ///////////
 
@@ -57,10 +59,10 @@ const createConstructForm = () => {
                             <input type='text' class='form-control construct' required>
 
                         </div>
-                        <div class="form-group">
-                            <h4 for='measure' class='col-form-label'>Measure:</h4>
-                            <input type='text' class='form-control measure' required>
-                        </div>
+<!--                        <div class="form-group">-->
+<!--                            <h4 for='measure' class='col-form-label'>Measure:</h4>-->
+<!--                            <input type='text' class='form-control measure' required>-->
+<!--                        </div>-->
                     </form>`
               )
 }
@@ -69,43 +71,55 @@ const createConstructBtn = (inputForm) => {
     const initialBtn = createInitialButton(CONSTRUCT_BTN_ID, "Add Construct");
     initialBtn.on("click", function() {
         const constructInput = inputForm.find(".construct");
-        const measureInput = inputForm.find(".measure");
+        // const measureInput = inputForm.find(".measure");
 
         if(constructInput.val().trim() in constructMeasureMap) {
             alert("Construct has already defined.")
             return;
         }
 
-        if(constructInput.val().length > 0 && measureInput.val().length > 0) {
-            updateConstruct(constructInput.val(), measureInput.val(), null);
+        if(constructInput.val().length > 0) {
+            // updateConstruct(constructInput.val(), measureInput.val(), null);
+            // updateConstructTextArea();
+            updateConstructLst(constructInput.val());
             updateConstructTextArea();
 
             // clear the form
             constructInput.val("");
-            measureInput.val("");
+            // measureInput.val("");
         } else {
             alert(CONSTRUCT_ALERT);
         }
 
+        // if(constructInput.val().length > 0 && measureInput.val().length > 0) {
+        //     updateConstruct(constructInput.val(), measureInput.val(), null);
+        //     updateConstructTextArea();
+        //
+        //     // clear the form
+        //     constructInput.val("");
+        //     measureInput.val("");
+        // } else {
+        //     alert(CONSTRUCT_ALERT);
+        // }
     })
     return initialBtn;
 }
 
 const addConstructCard = (construct) => {
     let card = $(`
-        <div class="uml-card" id="${construct.card_id}" style="width: 200px; height: 150px; position: relative">
-            <div class="form-group mb-1" style="border-bottom: 1px solid #0f0f0f; text-align: center">
+        <div class="uml-card" id="${construct.card_id}" style="width: 200px; height: 60px; position: relative; display: flex; align-items: center; justify-content: center">
+            <div class="form-group mb-1" style="text-align: center">
                 <label class="card-header-name"></label>
             </div>
         </div>
     `);
 
     card.find(".card-header-name").text(construct.display_name);
-    card.append(`
-        <div class="form-group mb-0 card-details">
-             <label>Measure: ${construct.display_measure}</label>
-        </div>
-    `);
+    // card.append(`
+    //     <div class="form-group mb-0 card-details">
+    //          <label>Measure: ${construct.display_measure}</label>
+    //     </div>
+    // `);
 
     const cancel = $(`<button type='button' class='delete close' data-dismiss='alert' aria-label='Close' style="position: absolute; top: 0; right: 0">×</button>`);
     card.append(cancel);
@@ -113,28 +127,38 @@ const addConstructCard = (construct) => {
     return card;
 }
 
-/// Update Constructs
-const updateConstruct = (constructInput, measureInput, constructObject) => {
-    if(constructObject === null) {
-        // Creating a new construct
-        constructObject = new Construct(constructInput, measureInput);
-        constructObject.card_id = CONSTRUCT_ID + "_" + constructObject.construct;
-    } else {
-        constructObject.set(constructInput, measureInput)
-    }
-
-    constructMap[constructObject.card_id] = constructObject;    // key: card_id, value: Construct. A map to find the card
-    constructMeasureMap[constructObject.construct] = constructObject.measure;   // key: construct, value: measure
-    constructs.push(constructObject);  // a list preserving order of input construct
-    if(!constructObject.isEditing) cListener.c = constructs;
+const updateConstructLst = (construct_name) => {
+    const constructObject = new Construct(construct_name);
+    constructObject.card_id = CONSTRUCT_ID + "_" + constructObject.name;
+    constructMap[constructObject.card_id] = constructObject;
+    constructs.push(constructObject);
+    cListener.c = constructs;
 }
+
+/// Update Constructs
+// const updateConstruct = (constructInput, measureInput, constructObject) => {
+//     if(constructObject === null) {
+//         // Creating a new construct
+//         constructObject = new Construct(constructInput, measureInput);
+//         constructObject.card_id = CONSTRUCT_ID + "_" + constructObject.construct;
+//     } else {
+//         constructObject.set(constructInput, measureInput)
+//     }
+//
+//     constructMap[constructObject.card_id] = constructObject;    // key: card_id, value: Construct. A map to find the card
+//     constructMeasureMap[constructObject.construct] = constructObject.measure;   // key: construct, value: measure
+//     constructs.push(constructObject);  // a list preserving order of input construct
+//     if(!constructObject.isEditing) cListener.c = constructs;
+// }
 
 const updateConstructTextArea = () => {
     CONSTRUCT_TEXTAREA_NODE.val("");
 
-    let newText = "Add your research question here. \n";
+    let newText = "Write your broad research question here. \n";
+    newText += `We will evaluate the concept of `;
     for(let i = 0; i < constructs.length; i++) {
-        newText += `We will measure the value of ${constructs[i].display_measure} to represent the concept of ${constructs[i].display_name}.\n`;
+        if(i === constructs.length - 1) newText += `${constructs[i].display_name}. `;
+        else newText += `${constructs[i].display_name}, `;
     }
     CONSTRUCT_TEXTAREA_NODE.val(newText)
 }
@@ -148,6 +172,7 @@ const updateConstructDisplayArea = (constructs) => {
         const constructCard = addConstructCard(constructObject);
         constructCard.find(".delete").on("click", function() {
             deleteConstruct(constructCard.attr("id"));
+            updateConstructTextArea();
             constructCard.remove();
         })
         cards.push(constructCard);
@@ -156,36 +181,32 @@ const updateConstructDisplayArea = (constructs) => {
 }
 
 const updateConstructOptions = (constructs) => {
-    let options = [];
-
+    options = [];
     for(let i = 0; i < constructs.length; i++) {
         const c = constructs[i];
-        if (!c.selected) {
-            const optionCard = $(`<div class="construct-card" style="border: solid; max-width: fit-content"><span style="margin-left: 5px; margin-right: 5px">${c.construct}</span></div>`);
-            optionCard.on("click", function () {
-                $(this).css("background", "grey");
-
-                if (constructClicked) {
-                    constructElement.css("background", "none");
-                    if (constructObject.construct === c.construct) {
-                        constructClicked = false;
-                        constructElement = null;
-                        constructObject = null;
-                    } else {
-                        constructClicked = true;
-                        constructElement = $(this);
-                        constructObject = c;
-                        $("#dv_preregistea .variable-name").val(constructObject.display_measure);
-                    }
+        const optionCard = $(`<div class="construct-card" style="border: 1px solid black; margin-left: 2px; margin-right: 2px; max-width: fit-content"><span style="padding: 2px;">${c.display_name}</span></div>`);
+        optionCard.on("click", function () {
+            $(this).css("background", "grey");
+            if(constructClicked) {
+                constructElement.css("background", "none");
+                if(constructObject.name === c.name) {
+                    constructClicked = false;
+                    constructElement = null;
+                    constructObject = null;
                 } else {
                     constructClicked = true;
                     constructElement = $(this);
                     constructObject = c;
-                    $("#dv_preregistea .variable-name").val(constructObject.display_measure);
                 }
-            });
-            options.push(optionCard);
-        }
+            } else {
+                constructClicked = true;
+                constructElement = $(this);
+                constructObject = c;
+            }
+            console.log(constructObject);
+        });
+
+        options.push(optionCard);
     }
 
     $(".construct-card").html(options);
@@ -203,7 +224,6 @@ const deleteConstruct = (card_id) => {
             break
         }
     }
-    console.log(pos);
     constructs.splice(pos, 1);
     cListener.c = constructs;
 }

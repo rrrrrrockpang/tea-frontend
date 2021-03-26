@@ -75,17 +75,10 @@
 .card-details {
   padding-left: 8px;
   padding-right: 8px;
+  margin-bottom: 0 !important;
 }
 
 /* Form group style */
-.form-group {
-  margin-bottom: 2px !important;
-}
-
-.form-group label {
-  margin-bottom: 1px !important;
-}
-
 .form-group .container {
   max-width: 100%;
 }
@@ -119,6 +112,16 @@
   border-radius: 10px;
   box-shadow: 2px 2px 3px #999;
   color: #FFF;
+}
+
+input[type=number] {
+  width: 60px;
+  padding: 2px;
+  margin: 2px;
+}
+
+.add_category .row {
+  margin-bottom: 0 !important;
 }
 
 /*# sourceMappingURL=plugin.css.map */

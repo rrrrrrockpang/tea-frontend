@@ -4,7 +4,7 @@ const CONDITION_BTN_ID = CONDITION_ID + "_initial_btn";
 const CONDITION_TEXTAREA_NODE = $("[name='text3']");
 const CONDITION_PARENT_SECTION = CONDITION_TEXTAREA_NODE.parent().parent().parent();
 const CONDITION_DESCRIPTION =
-    "Define Independent Variable(s). Specify the type of the independent variables you plan to measure. If the type is nominal, the variable will have different conditions (factors). Be sure to specify how you are measure the each condition of the independent variable. (within-in subject or between-subject)\n"
+    "Define independent variable(s). Specify independent variable type you plan to measure. If the type is nominal, the variable has different conditions (categories). Be sure to specify \"how\" you plan to measure the each condition of the independent variable. (within-in subject or between-subject)\n"
 
 ivListener = {
     ivInternal: conditions,
@@ -68,8 +68,9 @@ const createConditionBtn = (inputForm) => {
             alert(INDEPENDENT_VARIABLE_NAME_ALERT);
             return
         }
-
-        if(studyDesignInput.length === 0) {
+        console.log("???")
+        console.log($(".study-design").is(":visible"))
+        if(studyDesignInput.length === 0 && $(".study-design").is(":visible")) {
             alert(INDEPENDENT_VARIABLE_STUDY_DESIGN_ALERT);
             return
         }
@@ -137,6 +138,7 @@ const updateConditionTextArea = () => {
 
         newText = `This experiment will be a ${studyDesign}. It comprises of the following factors and levels: \n`;
 
+        console.log(conditions);
         for(let i = 0; i < conditions.length; i++) {
             const condition = conditions[i];
             if(condition.type === "nominal" || condition.type === "ordinal") {
@@ -148,7 +150,9 @@ const updateConditionTextArea = () => {
                         newText += condition.categories[j] + ", "
                     }
                 }
-                newText += "Please add a little description of this variable."
+                newText += "Please add a little description of this variable if necessary. \n"
+            } else {
+                newText += `${i+1}. ${capitalize(condition.display_name)}. Please add a little description of this variable if necessary. \n`
             }
         }
 
@@ -165,6 +169,7 @@ const updateConditionDisplayArea = (conditions) => {
 
         variableCard.find(".delete").on("click", function() {
             deleteCondition(variableCard.attr("id"));
+            updateConditionTextArea();
             variableCard.remove();
         });
         cards.push(variableCard);
@@ -189,44 +194,33 @@ const deleteCondition = (card_id) => {
 
 // A bunch of forms
 const createConditionForm = () => {
-    return $(`<form class="inputarea-form">
+    return $(`<form class="inputarea-form" id="${CONDITION_ID + "_form"}">
                     <div class="form-group">
-                        <h4 for='name' class='col-form-label'>Variable Name:</h4>
+                        <h4 for='name' class='col-form-label'>What's the exact independent variable name?</h4>
                         <input type='text' class='form-control variable-name'>
-                    </div>
-                    
-                    <div class="form-group study-design">
-                        <h4 class="radio control-label">Study Design:</h4>
-                        <label class='form-check-label' for='withinSubject'>
-                                <input class='form-check-input' type='radio' id="withinSubject" name='studyDesignRadio' value='within'>
-                                Within-Subject
-                        </label>
-                        <label class='form-check-label' for='betweenSubject'>
-                            <input class='form-check-input' type='radio' id="betweenSubject" name='studyDesignRadio' value='between'>
-                            Between-Subject
-                        </label>
                     </div>
     
                     <div class='form-group var-type'>
                         <h4 class="radio control-label">Variable Type:</h4>
     
                         <div class="form-inline type-radio">
-                        
                             <label class='form-check-label' for='nominalRadio2'>
                                 <input class='form-check-input' type='radio' id="nominalRadio2" name='variableTypeRadios' value='nominal'>
-                                Nominal
-                            </label>
+                                Nominal <span class='glyphicon glyphicon-info-sign' data-toggle="tooltip" data-placement="top" title="Nominal data has discrete categories. (e.g. gender or race)"></span>
+                            </label> 
                             <label class='form-check-label' for='ordinalRadio2'>
                                 <input class='form-check-input' type='radio' id="ordinalRadio2" name='variableTypeRadios' value='ordinal'>
-                                Ordinal
+                                Ordinal <span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="top" title="Ordinal data has an order but no specific meaning to the values. (e.g. responses in a Likert scale, strongly disagree to strongly agree)"></span>
                             </label>
+                        </div>
+                        <div class="form-inline type-radio">
                             <label class='form-check-label' for='intervalRadio2'>
                                 <input class='form-check-input' type='radio' id="intervalRadio2" name='variableTypeRadios' value='interval'>
-                                Interval
+                                Interval <span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="top" title="Interval data has an order and the value is meaningful. (e.g. time or number of tasks)" ></span>
                             </label>
                             <label class='form-check-label' for='ratioRadio2'>
                                 <input class='form-check-input' type='radio' id="ratioRadio2" name='variableTypeRadios' value='ratio'>
-                                Ratio
+                                Ratio <span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="top" title="Ratio data is similar to interval data but can't fall below 0. (e.g. error rate or response rate)"></span>
                             </label>
                         </div>
                     </div>
@@ -244,7 +238,7 @@ const createConditionCard = (variable) => {
 
     card.find(".card-header-name").append(`<p>${variable.display_name}</p>`);
     card.append(addCardDetail("Variable Type: ", variable.type));
-    card.append(addCardDetail("Study Design: ", variable.study_design));
+    if(variable.study_design.length > 0) card.append(addCardDetail("Study Design: ", variable.study_design));
     if(variable.categories.length > 0) card.append(addCardDetail("Categories: ", variable.categories));
 
     const cancel = $(`<button type='button' class='delete close' data-dismiss='alert' aria-label='Close' style="position: absolute; top: 0; right: 0">×</button>`)

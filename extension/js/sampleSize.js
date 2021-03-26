@@ -8,8 +8,9 @@ const SAMPLE_SIZE_DESCRIPTION =
     "Determine Sample Size with a power analysis."
 
 const DEFAULT_EFFECT_SIZE = 0.8;
-let studyEffectSize = null;
-let studySampleSize = null;
+let studyEffectSize = 0.4;
+let studySampleSize = 13;
+let confidenceInterval = 0.05;
 
 // graph defaults
 const margin = {top: 10, right: 30, bottom: 30, left: 60},
@@ -24,6 +25,19 @@ const y = d3.scaleLinear()
         .domain([0, 1])
         .range([ height, 0 ]);
 
+let zval = normal_quantile(0.05/2) + 0.4*Math.sqrt(5);
+console.log(normal_quantile(0.05/2) + 0.4*Math.sqrt(5))
+console.log(normal_cdf(zval))
+// // zval = normal_quantile(alpha/sides) + nonctr*Math.sqrt(ss)
+// // power =normal_cdf(zval)
+// // form.power.value = format(power,2)
+const calcPower = (sample, effect, alpha=0.05, two_side=2.0) => {
+    // console.log(alpha, two_side, effect, sample);
+    effect = 2 * effect.toFixed(3)
+    let zval = normal_quantile(alpha/two_side) + effect*Math.sqrt(sample);
+    return normal_cdf(zval);
+}
+
 const addSampleSizePreregistea = () => {
     const preregistea = createPreregisteaForm(SAMPLE_SIZE_PLUGIN_ID, SAMPLE_SIZE_DESCRIPTION);
     preregistea.append("<br />");
@@ -37,7 +51,7 @@ const addSampleSizePreregistea = () => {
 
     inputarea.find(".effect-radio input[type='radio']").on("change", function() {
         const effect = $(".effect-radio input[type='radio']:checked").val();
-        $("#effectSizeNumber").attr("value", effect).trigger("change");
+        $("#effectSizeNumber").val(effect);
     })
 
     const inputBtn = createAnalysisBtn();
@@ -47,27 +61,10 @@ const addSampleSizePreregistea = () => {
 const createAnalysisBtn = () => {
     const initialBtn = createInitialButton(SAMPLE_SIZE_BTN_ID, "OK");
     initialBtn.on("click", function() {
-        const effectSize = parseFloat($("#effectSizeNumber").val());
-        let sample_size = 0;
-        const powers = power_data.filter(function(d) {
-            return Math.abs(d.effect - effectSize) < Number.EPSILON;
-        })
-
-        console.log(powers);
-
-        for(let i = 0; i < powers.length - 1; i++) {
-            if(powers[i].power < 0.8 && powers[i+1].power > 0.8) {
-                sample_size = powers[i+1].sample;
-                break
-            }
-        }
-
-        if(sample_size === 0) {
-            alert("You might want to change to a bigger the effect size?");
+        if(studySampleSize === 0) {
+            alert("You might want to avoid effect size that's too big or too small.");
             return;
         }
-        studyEffectSize = effectSize;
-        studySampleSize = sample_size;
 
         updateSampleSizeTextArea(studyEffectSize, studySampleSize);
     });
@@ -75,32 +72,36 @@ const createAnalysisBtn = () => {
 }
 
 const updateSampleSizeTextArea = (effectSize, sampleSize) => {
-    const original = SAMPLE_SIZE_TEXTAREA_NODE.val();
-    let newText = (original.length === 0) ? "" : "\n";
+    // const original = SAMPLE_SIZE_TEXTAREA_NODE.val();
+    // let newText = (original.length === 0) ? "" : "\n";
 
-    newText += `A prospective power analysis was performed for sample size determination based on Cohen's conventional effect size d = ${effectSize}. We achieved at least 0.8 under α = 0.05 within ${sampleSize} participants per condition.`
+    newText = `A prospective power analysis was performed for sample size determination based on Cohen's conventional effect size f = ${effectSize}. We achieved at least 0.8 under α = 0.05 within ${sampleSize} participants per condition.`
     SAMPLE_SIZE_TEXTAREA_NODE.val(newText);
 }
 
 const createPowerInputForm = () => {
     return $(`<form class='inputarea-form'>
                         <div class="form-group">
-                            <label class="radio control-label">Effect Size:</label>
     
                             <div class="form-inline effect-radio">
-                                <label for="effectSizeNumber">Cohen's d
-                                    <input type="number" id="effectSizeNumber" name="effectSizeNumber" min="0" max="0.95" step="0.05" value="0.8">
-                                    with a margin of 0.05
+                                <label for="effectSizeNumber">Cohen's <i>f</i> &nbsp;
+                                    <input type="number" id="effectSizeNumber" name="effectSizeNumber" min="0" max="0.99" step="0.05" value="0.4" size="4">
+                                    with a margin of &#177;
+                                    <input type="number" id="confidenceInterval" name="confidenceInterval" min="0" value="0.05" size="3">
                                 </label>
-                                <label class='form-check-label'><input class='form-check-input' type='radio' name='effectSizeRadios' value='0.2'>
-                                    Small Effect (0.2)
+                                <label class='form-check-label'><input class='form-check-input' type='radio' name='effectSizeRadios' value='0.10'>
+                                    Small Effect (0.1)
                                 </label>
-                                <label class='form-check-label'><input class='form-check-input' type='radio' name='effectSizeRadios' value='0.4'>
-                                    Medium Effect (0.5)
+                                <label class='form-check-label'><input class='form-check-input' type='radio' name='effectSizeRadios' value='0.25'>
+                                    Medium Effect (0.25)
                                 </label>
-                                <label class='form-check-label'><input class='form-check-input' type='radio' name='effectSizeRadios' value='0.8' checked>
-                                    Large Effect (0.8)
+                                <label class='form-check-label'><input class='form-check-input' type='radio' name='effectSizeRadios' value='0.40' checked>
+                                    Large Effect (0.4)
                                 </label>
+                            </div>
+                            
+                            <div class="sample-size-text-display" style="border-top: 1px solid black">
+                            13 participants yield at least a power of 0.80 at the effect size Cohen's <i>f</i> = 0.4.
                             </div>
                         </div>
                     </form>`);
@@ -163,7 +164,7 @@ const createPowerChart = () => {
             .on('mousemove', mousemove)
             .on('mouseout', mouseout);
 
-        const filtered = filterNumber(number);
+        const filtered = df(number);
         svg.append("path") // Confidence Interval
             .datum(filtered)
             .attr("class", "power-line")
@@ -222,8 +223,30 @@ const createPowerChart = () => {
         }
     }
 
-    update(0.8);
+    update(0.4);
     d3.select("#effectSizeNumber").on("change", function(d) {
+        const effectSize = parseFloat($("#effectSizeNumber").val());
+        const powers = df(effectSize, confidenceInterval);
+        let sample_size = 0;
+        for(let i = 0; i < powers.length - 1; i++) {
+            if(powers[i].power < 0.8 && powers[i+1].power > 0.8) {
+                sample_size = powers[i+1].sample;
+                break
+            }
+        }
+        studySampleSize = sample_size;
+        studyEffectSize = effectSize;
+
+        if(powers[0].power > 0.8) {
+           $(".sample-size-text-display").html("The effect size is too big.");
+        } else if(studySampleSize === 0) {
+            $(".sample-size-text-display").html("You might want to change to a bigger effect size.");
+        } else {
+            $(".sample-size-text-display").html(`${studySampleSize} participants yield at least a power of 0.80 at the effect size Cohen's <i>f</i> = ${studyEffectSize}.`)
+        }
+
+        $(".sample-size-text-display").show();
+
         let number = d3.select("#effectSizeNumber").property("value");
         update(parseFloat(number));
     })
@@ -239,36 +262,48 @@ const createPowerChart = () => {
 }
 
 // helper to find the data and confidence interval
-const filterNumber = (number) => {
-    let lower = power_data.filter(function(d) {
-        const n = number - 0.05;
-        return Math.abs(d.effect - n) < Number.EPSILON;
-    })
-
-    let higher = power_data.filter(function(d) {
-        const n = number + 0.05;
-        return Math.abs(d.effect - n) < Number.EPSILON;
-    })
-
-    let dataFilter = power_data.filter(function(d) {
-        return d.effect === number;
-    });
-
-    dataFilter = dataFilter.map(function(d, i) {
-        d.lower = lower[i].power;
-        d.higher = higher[i].power;
-        return d
-    })
-
-    return dataFilter;
-}
+// const filterNumber = (number) => {
+//     let lower = power_data.filter(function(d) {
+//         const n = number - 0.05;
+//         return Math.abs(d.effect - n) < Number.EPSILON;
+//     })
+//
+//     let higher = power_data.filter(function(d) {
+//         const n = number + 0.05;
+//         return Math.abs(d.effect - n) < Number.EPSILON;
+//     })
+//
+//     let dataFilter = power_data.filter(function(d) {
+//         return d.effect === number;
+//     });
+//
+//     dataFilter = dataFilter.map(function(d, i) {
+//         d.lower = lower[i].power;
+//         d.higher = higher[i].power;
+//         return d
+//     })
+//
+//     return dataFilter;
+// }
 
 
 // helper
 var bisect = d3.bisector(function(d) { return d.sample; }).left;
 
 
-
+const df = (effectSize, confidence = 0.05, alpha=0.05) => {
+    const lower_sample = 5, higher_sample = 100;
+    let data = [];
+    for(let i = lower_sample; i < higher_sample; i++) {
+        let obj = {};
+        obj.sample = i;
+        obj.power = calcPower(i, effectSize, alpha);
+        obj.lower = calcPower(i, effectSize - confidence, alpha);
+        obj.higher = calcPower(i, effectSize + confidence, alpha);
+        data.push(obj);
+    }
+    return data;
+}
 
 
 

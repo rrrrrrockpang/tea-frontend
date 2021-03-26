@@ -5,7 +5,7 @@ const DEPENDENT_VARIABLE_TEXTAREA_NODE = $("[name='text2']");
 const DEPENDENT_VARIABLE_PARENT_SECTION = DEPENDENT_VARIABLE_TEXTAREA_NODE.parent().parent().parent();
 
 const DEPENDENT_VARIABLE_DESCRIPTION =
-    "Define Dependent Variable(s). Specify the type of the dependent variables you plan to measure. They might be a measure of the concept you defined in the previous step."
+    "Define dependent variable(s). Specify variable type you plan to measure. They might be a measure of the construct from the previous step."
 
 dvListener = {
     dvInternal: dependent_variables,
@@ -87,7 +87,6 @@ const createDependentVariableBtn = (inputForm) => {
         updateDependentVariables(null, name, type, categories, construct);
         updateDependentVariableTextArea();
 
-        console.log(dependent_variables);
         nameInput.val("");
         typeInput.prop("checked", false);
         categoriesInput.empty();
@@ -123,7 +122,7 @@ const updateDependentVariableTextArea = () => {
         newText += `There will be ${dependent_variables.length} key dependent variables: `
         for(let i = 0; i < dependent_variables.length; i++) {
             if(i === dependent_variables.length - 1) {
-                newText += `${i+1}) ${dependent_variables[i].display_name}: \n `
+                newText += `${i+1}) ${dependent_variables[i].display_name}. \n `
             } else {
                 newText += `${i+1}) ${dependent_variables[i].display_name}, `
             }
@@ -132,9 +131,9 @@ const updateDependentVariableTextArea = () => {
         for(let i = 0; i < dependent_variables.length; i++) {
             newText += `${i+1}. ${capitalize(dependent_variables[i].display_name)}. `;
             if(dependent_variables[i].construct !== null) {
-                newText += `${dependent_variables[i].display_name} is used to measure ${dependent_variables[i].construct.display_name}. `
+                newText += `${capitalize(dependent_variables[i].display_name)} is used to measure ${dependent_variables[i].construct.display_name}. `
             }
-            newText += "Please add a little description of this variable.";
+            newText += "Please add a little description of this variable if necessary. \n";
         }
 
         DEPENDENT_VARIABLE_TEXTAREA_NODE.val(newText);
@@ -150,6 +149,7 @@ const updateDependentVariableDisplayArea = (dvs) => {
         const variableCard = createVariableCard(variableObject);
         variableCard.find(".delete").on("click", function () {
             deleteVariable(variableCard.attr("id"));
+            updateDependentVariableTextArea();
             variableCard.remove();
         })
         cards.push(variableCard);
@@ -168,24 +168,23 @@ const deleteVariable = (card_id) => {
         }
     }
 
-    console.log(dependent_variables);
-    console.log(pos);
     dependent_variables.splice(pos, 1);
     dvListener.dv = dependent_variables;
 }
-
 
 /// A bunch of forms
 const createDependentVariableForm = () => {
     return $(`<form class="inputarea-form">
                     <div>
                         <div class="form-group construct-group" style="display: none"> 
-                              <h4 class="radio control-label construct-label">Construct:</h4>
+                              <h4 class="radio control-label construct-label" >Construct:
+                               <span class='glyphicon glyphicon-info-sign' data-toggle="tooltip" data-placement="right" title="A dependent variable does not necessarily need to have a construct from above."></span>
+                              </h4>
                               <div class="construct-card" style="display: flex;"></div>
                         </div>
                     </div>
                     <div class="form-group">
-                        <h4 for='variable-name' class='col-form-label'>Variable Name:</h4>
+                        <h4 for='variable-name' class='col-form-label'>What's the exact dependent variable name?</h4>
                         <input type='text' class='form-control variable-name' required>
                     </div>
     
@@ -193,22 +192,23 @@ const createDependentVariableForm = () => {
                         <h4 class="radio control-label">Variable Type:</h4>
     
                         <div class="form-inline type-radio">
-                        
                             <label class='form-check-label' for='nominalRadio'>
                                 <input class='form-check-input' type='radio' id="nominalRadio" name='variableTypeRadios' value='nominal'>
-                                Nominal
-                            </label>
+                                Nominal <span class='glyphicon glyphicon-info-sign' data-toggle="tooltip" data-placement="top" title="Nominal data has discrete categories. (e.g. gender or race)"></span>
+                            </label> 
                             <label class='form-check-label' for='ordinalRadio'>
                                 <input class='form-check-input' type='radio' id="ordinalRadio" name='variableTypeRadios' value='ordinal'>
-                                Ordinal
+                                Ordinal <span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="top" title="Ordinal data has an order but no specific meaning to the values. (e.g. responses in a Likert scale, strongly disagree to strongly agree)"></span>
                             </label>
+                        </div>
+                        <div class="form-inline type-radio">
                             <label class='form-check-label' for='intervalRadio'>
                                 <input class='form-check-input' type='radio' id="intervalRadio" name='variableTypeRadios' value='interval'>
-                                Interval
+                                Interval <span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="top" title="Interval data has an order and the value is meaningful. (e.g. temperature)" ></span>
                             </label>
                             <label class='form-check-label' for='ratioRadio'>
                                 <input class='form-check-input' type='radio' id="ratioRadio" name='variableTypeRadios' value='ratio'>
-                                Ratio
+                                Ratio <span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="top" title="Ratio data is similar to interval data but can't fall below 0. (e.g. error rate or time)"></span>
                             </label>
                         </div>
                     </div>
@@ -225,9 +225,9 @@ const createVariableCard = (variable) => {
     `);
 
     card.find(".card-header-name").append(`<p>${variable.display_name}</p>`);
-    card.append(addCardDetail("Variable Type: ", variable.type));
-    if(variable.categories.length > 0) card.append(addCardDetail("Categories: ", variable.categories));
-    if(variable.construct != null) card.append(addCardDetail("Construct: ", variable.construct.display_name));
+    card.append(addCardDetail("Variable Type", variable.type));
+    if(variable.categories.length > 0) card.append(addCardDetail("Categories", variable.categories));
+    if(variable.construct != null) card.append(addCardDetail("Construct", variable.construct.display_name));
 
     const cancel = $(`<button type='button' class='delete close' data-dismiss='alert' aria-label='Close' style="position: absolute; top: 0; right: 0">×</button>`)
     card.append(cancel)
