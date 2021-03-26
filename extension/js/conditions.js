@@ -4,7 +4,7 @@ const CONDITION_BTN_ID = CONDITION_ID + "_initial_btn";
 const CONDITION_TEXTAREA_NODE = $("[name='text3']");
 const CONDITION_PARENT_SECTION = CONDITION_TEXTAREA_NODE.parent().parent().parent();
 const CONDITION_DESCRIPTION =
-    "Define independent variable(s). Specify independent variable type you plan to measure. If the type is nominal, the variable has different conditions (categories). Be sure to specify \"how\" you plan to measure the each condition of the independent variable. (within-in subject or between-subject)\n"
+    "Define independent variable(s). Specify the type of the independent variable you plan to measure. If the type is nominal, the variable has different conditions (categories). Be sure to specify \"how\" you plan to measure the each condition of the independent variable. (within-in subject or between-subject)\n"
 
 ivListener = {
     ivInternal: conditions,
@@ -216,11 +216,11 @@ const createConditionForm = () => {
                         <div class="form-inline type-radio">
                             <label class='form-check-label' for='intervalRadio2'>
                                 <input class='form-check-input' type='radio' id="intervalRadio2" name='variableTypeRadios' value='interval'>
-                                Interval <span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="top" title="Interval data has an order and the value is meaningful. (e.g. time or number of tasks)" ></span>
+                                Interval <span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="top" title="Interval data has an order and the value is meaningful. (e.g. temperature)" ></span>
                             </label>
                             <label class='form-check-label' for='ratioRadio2'>
                                 <input class='form-check-input' type='radio' id="ratioRadio2" name='variableTypeRadios' value='ratio'>
-                                Ratio <span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="top" title="Ratio data is similar to interval data but can't fall below 0. (e.g. error rate or response rate)"></span>
+                                Ratio <span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="top" title="Ratio data is similar to interval data but can't fall below 0. (e.g. error rate or time)"></span>
                             </label>
                         </div>
                     </div>

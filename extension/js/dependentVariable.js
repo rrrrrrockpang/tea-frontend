@@ -5,7 +5,7 @@ const DEPENDENT_VARIABLE_TEXTAREA_NODE = $("[name='text2']");
 const DEPENDENT_VARIABLE_PARENT_SECTION = DEPENDENT_VARIABLE_TEXTAREA_NODE.parent().parent().parent();
 
 const DEPENDENT_VARIABLE_DESCRIPTION =
-    "Define dependent variable(s). Specify variable type you plan to measure. They might be a measure of the construct from the previous step."
+    "Define dependent variable(s). Specify the type of the dependent variable you plan to measure. They might be a measure of the construct from the previous step."
 
 dvListener = {
     dvInternal: dependent_variables,
