@@ -62,15 +62,16 @@ const createConditionBtn = (inputForm) => {
         const name = nameInput.val();
         const type = typeInput.val();
         const categories = getCurrentCategories(categoriesInput);
-        const studyDesign = studyDesignInput.val();
+        const studyDesign = (typeof studyDesignInput.val() === "undefined") ? "" : studyDesignInput.val();
+        console.log(studyDesign);
 
         if(name.length === 0) {
             alert(INDEPENDENT_VARIABLE_NAME_ALERT);
             return
         }
         console.log("???")
-        console.log($(".study-design").is(":visible"))
-        if(studyDesignInput.length === 0 && $(".study-design").is(":visible")) {
+        console.log(inputForm.find(".study-design").is(":visible"))
+        if(studyDesignInput.length === 0 && inputForm.find(".study-design").is(":visible")) {
             alert(INDEPENDENT_VARIABLE_STUDY_DESIGN_ALERT);
             return
         }
