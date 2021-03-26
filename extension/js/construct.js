@@ -5,7 +5,8 @@ const CONSTRUCT_BTN_ID = CONSTRUCT_ID + "_initial_btn";
 const CONSTRUCT_TEXTAREA_NODE = $("[name='text1']");
 const CONSTRUCT_PARENT_SECTION = CONSTRUCT_TEXTAREA_NODE.parent().parent().parent();
 const CONSTRUCT_DESCRIPTION =
-    "Specify any concepts of your interest in the toolbox. You will define how to measure the construct later on. You may have a broad idea of your research question at this stage. Write it in the textarea below after inputting the construct! " +
+    "Specify any constructs. You will define how to measure the construct later on. For example, academic performance is a construct, " +
+    "GPA is a measure. \n You may have a broad research question at this stage. Write it in the textarea below after inputting the construct! " +
         "Preregistea will generate specific hypotheses for you later."
     // "For example, I define a construct of academic performance with a measure GPA. Preregistea will generate a template in the textarea. You can fill in " +
     // "a research question: A month-long academic summer program for disadvantaged kids will reduce the drop in academic performance that occurs during the summer. ";
@@ -81,6 +82,7 @@ const createConstructBtn = (inputForm) => {
             // updateConstruct(constructInput.val(), measureInput.val(), null);
             // updateConstructTextArea();
             updateConstructLst(constructInput.val());
+            updateConstructTextArea();
 
             // clear the form
             constructInput.val("");
@@ -152,9 +154,11 @@ const updateConstructLst = (construct_name) => {
 const updateConstructTextArea = () => {
     CONSTRUCT_TEXTAREA_NODE.val("");
 
-    let newText = "Add your research question here. \n";
+    let newText = "Write your broad research question here. \n";
+    newText += `We will evaluate the concepts of `;
     for(let i = 0; i < constructs.length; i++) {
-        newText += `We will measure the value of ${constructs[i].display_measure} to represent the concept of ${constructs[i].display_name}.\n`;
+        if(i === constructs.length - 1) newText += `${constructs[i].display_name}. `;
+        else newText += `${constructs[i].display_name}, `;
     }
     CONSTRUCT_TEXTAREA_NODE.val(newText)
 }
@@ -168,6 +172,7 @@ const updateConstructDisplayArea = (constructs) => {
         const constructCard = addConstructCard(constructObject);
         constructCard.find(".delete").on("click", function() {
             deleteConstruct(constructCard.attr("id"));
+            updateConstructTextArea();
             constructCard.remove();
         })
         cards.push(constructCard);
@@ -179,7 +184,7 @@ const updateConstructOptions = (constructs) => {
     options = [];
     for(let i = 0; i < constructs.length; i++) {
         const c = constructs[i];
-        const optionCard = $(`<div class="construct-card" style="border: 1px solid black; max-width: fit-content"><span style="padding: 2px; margin-left: 2px; margin-right: 2px">${c.display_name}</span></div>`);
+        const optionCard = $(`<div class="construct-card" style="border: 1px solid black; margin-left: 2px; margin-right: 2px; max-width: fit-content"><span style="padding: 2px;">${c.display_name}</span></div>`);
         optionCard.on("click", function () {
             $(this).css("background", "grey");
             if(constructClicked) {

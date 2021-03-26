@@ -5,7 +5,7 @@ const ANALYSIS_TEXTAREA_NODE = $("[name='text4']");
 const ANALYSIS_PARENT_SECTION = ANALYSIS_TEXTAREA_NODE.parent().parent().parent();
 
 const ANALYSIS_DESCRIPTION =
-    "Specify Hypotheses between Dependent and Independent Variables by clicking the variables of your interest."
+    "Specify Hypotheses between dependent and independent Variables by clicking the variables of your interest."
 
 hypothesisPairListener = {
     pInternal: hypothesisPair,
@@ -26,7 +26,7 @@ hypothesisPairListener.registerListener(function(pair) {
     const inputArea = $(`#analysis_preregistea .inputarea`);
     inputArea.empty();
 
-    if(pair['dv'] !== '' && pair['iv'] !== '') {
+    if(pair['dv'] !== null && pair['iv'] !== null) {
         updateHypothesisFormArea(pair, inputArea);
     } else {
         inputArea.append("Please choose one dependent variable and a condition.");
@@ -73,7 +73,7 @@ const addHypothesisCardEventListener = (card, variable) => {
                 analysisDVClicked = false;
                 analysisDVElement = null;
                 analysisDV = null;
-                hypothesisPair['dv'] = '';
+                hypothesisPair['dv'] = null;
             } else {
                 analysisDVClicked = true;
                 analysisDVElement = card;
@@ -94,7 +94,7 @@ const addHypothesisCardEventListener = (card, variable) => {
                 analysisConditionClicked = false;
                 analysisConditionElement = null;
                 analysisCondition = null;
-                hypothesisPair['iv'] = '';
+                hypothesisPair['iv'] = null;
             } else {
                 analysisConditionClicked = true;
                 analysisConditionElement = card;
@@ -153,6 +153,7 @@ const updateHypothesisFormArea = (pair, inputArea) => {
                 'positive': positive
             }
         }
+        console.log(relationship)
         updateTeaCodeHypothesis(iv, dv, relationship);
         updateAnalysisTextArea(iv, dv, relationship);
     })
@@ -160,29 +161,39 @@ const updateHypothesisFormArea = (pair, inputArea) => {
     inputArea.append(apiBtn);
 }
 
-const updateAnalysisTextArea = (iv, dv, relationship) => {
-    const original = ANALYSIS_TEXTAREA_NODE.val();
-    let newText = (original !== 0) ? "\n" : "";
-    const hypothesis_number = report.hypothesis.length;
-    if(iv.type === "nominal") {
-        let compare;
-        if(relationship["two-side"] === "same") compare = "same as";
-        else if(relationship["two-side"] === true) compare = "greater than";
-        else if(relationship["two-side"] === false) compare = "different from";
-        newText += `H${hypothesis_number}: The median value of ${dv.display_name} in ${iv.categories[0]} group will be ${compare} than that in ${iv.categories[1]}. `;
-    } else {
-        // TODO: Add this
+const updateAnalysisTextArea = () => {
+    let newText = "";
+
+    for(let i = 0; i < report.hypothesis.length; i++) {
+        const iv = report.hypothesis[i][0][0], dv = report.hypothesis[i][0][1];
+
+        if(iv.type === 'nominal') {
+            let compare;
+            if(report.hypothesis[i][1][0] === "!=") compare = "different from";
+            else if(report.hypothesis[i][1][0] === ">") compare = "greater than";
+            else compare = "same as";
+
+            newText += `H${i}: The median value of ${dv.display_name} in ${report.hypothesis[i][1][1]} group will be ${compare} than that in ${report.hypothesis[i][1][2]}. `;
+
+            if(iv.study_design === "within") {
+                newText += `We will analyze this hypothesis with Wilcoxon signed-rank test. See the reproducible Tea code for analysis.`
+            } else {
+                newText += `We will analyze this hypothesis with Mann-Whitney U test. See the reproducible Tea code for analysis.`
+            }
+        } else {
+            const pos = report.hypothesis[i][1][0];
+            if(pos === "~") {
+                newText += `H${i}: The greater value of ${iv.display_name} will lead to greater value of ${dv.display_name}.`;
+            } else {
+                newText += `H${i}: The greater value of ${iv.display_name} will lead to less value of ${dv.display_name}.`;
+            }
+
+            newText += `We will analyze this hypothesis with a linear regression model. See the reproducible Tea code for anlaysis. `
+        }
+        newText += "\n";
     }
 
-    if(iv.study_design === "within") {
-        newText += `We will analyze this hypothesis with Wilcoxon signed-rank test. See the reproducible Tea code for analysis.`
-    } else {
-        newText += `We will analyze this hypothesis with Mann-Whitney U test. See the reproducible Tea code for analysis.`
-    }
-
-    newText += "\n";
-
-    ANALYSIS_TEXTAREA_NODE.val(original + newText);
+    ANALYSIS_TEXTAREA_NODE.val(newText);
 }
 
 const createHypothesisConditionIsNominal = (dv, iv) => {
@@ -221,8 +232,8 @@ const createHypothesisConditionIsNominal = (dv, iv) => {
     categoryOptions[0].prop("selected", true);
     categoryOptions2[1].prop("selected", true);
 
-    template.find(".iv-group-custom-select-1").append(categoryOptions);
-    template.find(".iv-group-custom-select-2").append(categoryOptions2);
+    template.find(".iv-group-custom-select-1").html(categoryOptions);
+    template.find(".iv-group-custom-select-2").html(categoryOptions2);
 
     return template;
 }

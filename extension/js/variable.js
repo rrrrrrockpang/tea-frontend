@@ -3,8 +3,8 @@ let conditions = [];
 let suggested = [];
 let variableMap = {};
 let hypothesisPair = {
-    dv: '',
-    iv: ''
+    dv: null,
+    iv: null
 };
 
 let report = {

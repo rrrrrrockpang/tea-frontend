@@ -120,4 +120,8 @@ input[type=number] {
   margin: 2px;
 }
 
+.add_category .row {
+  margin-bottom: 0 !important;
+}
+
 /*# sourceMappingURL=plugin.css.map */

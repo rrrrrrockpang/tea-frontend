@@ -31,37 +31,47 @@ const updateMethodSection = () => {
     report.participants.alpha = 0.05;
     report.participants.effectSize = studyEffectSize;
 
-    report.hypothesis = teaCode["hypothesis"];
+    // report.hypothesis = teaCode["hypothesis"];
     report.exclusion = $("[name='text5']").val();
 }
 
 const updateTeaCodeHypothesis = (iv, dv, relationship) => {
+    const report_hypothesis = [];
     const condition_type = relationship['condition_type'];
-    const two_side = relationship['two-side'];
-    const categories = relationship['categories'];
     let hypothesis = [];
 
-    if(categories.length !== 2) console.error("Has to compare 2 categories.");
+
 
     hypothesis.push([iv.name, dv.name]);
+    report_hypothesis.push([iv, dv]);
 
     if(condition_type === "nominal" || condition_type === "ordinal") {
+        const two_side = relationship['two-side'];
+        const categories = relationship['categories'];
+        if(categories.length !== 2) console.error("Has to compare 2 categories.");
+
         if(two_side === true) {
             hypothesis.push([`${iv.name}: ${categories[0]} != ${categories[1]}`]);
+            report_hypothesis.push(['!=', categories[0], categories[1]])
         } else if(two_side === false) {
             hypothesis.push([`${iv.name}: ${categories[0]} > ${categories[1]}`]);
+            report_hypothesis.push(['>', categories[0], categories[1]])
         } else {
             hypothesis.push([`${iv.name}: ${categories[0]} = ${categories[1]}`]);
+            report_hypothesis.push(['=', categories[0], categories[1]])
         }
     } else {
         const positive = relationship['positive'];
         if(positive) {
             hypothesis.push([`${iv.name} ~ ${dv.name}`]);
+            report_hypothesis.push(['~'])
         } else {
             hypothesis.push([`${iv.name} ~ -${dv.name}`]);
+            report_hypothesis.push([`-~`])
         }
     }
     teaCode["hypothesis"].push(hypothesis);
+    report.hypothesis.push(report_hypothesis);
 }
 
 const updateVariableLst = (dvOrIv, variableTea, studyDesignVar) => {
