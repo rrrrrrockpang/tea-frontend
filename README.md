@@ -10,7 +10,7 @@ Clone this repository or download the zip file
 
 <img src="./images/more_tools.png" width="220">
 
-* Click `Load unpacked` at the top left of the Extension page. Select the `extension` folder under the repository/zip file you just downloaded.
+* Click `Load unpacked` at the top left of the Extension page. Then select the `extension` folder under the repository/zip file you just downloaded.
 
 <img src="./images/preregistea.png" width="350">
 
