@@ -173,7 +173,7 @@ const updateAnalysisTextArea = () => {
             else if(report.hypothesis[i][1][0] === ">") compare = "greater than";
             else compare = "same as";
 
-            newText += `H${i}: The median value of ${dv.display_name} in ${report.hypothesis[i][1][1]} group will be ${compare} than that in ${report.hypothesis[i][1][2]}. `;
+            newText += `H${i}: The median value of ${dv.display_name} in ${report.hypothesis[i][1][1]} group will be ${compare} that in ${report.hypothesis[i][1][2]}. `;
 
             if(iv.study_design === "within") {
                 newText += `We will analyze this hypothesis with Wilcoxon signed-rank test. See the reproducible Tea code for analysis.`

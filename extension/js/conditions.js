@@ -68,8 +68,7 @@ const createConditionBtn = (inputForm) => {
             alert(INDEPENDENT_VARIABLE_NAME_ALERT);
             return
         }
-        console.log("???")
-        console.log($(".study-design").is(":visible"))
+
         if(studyDesignInput.length === 0 && $(".study-design").is(":visible")) {
             alert(INDEPENDENT_VARIABLE_STUDY_DESIGN_ALERT);
             return
