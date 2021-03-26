@@ -20,5 +20,6 @@ Clone this repository or download the zip file
 * Create an AsPredicted account if you don't have one.
 * Go to https://aspredicted.org/create.php.
 * Give access to Preregistea extension on Chrome. 
+
   <img src="./images/access.png" width="350">
 * Start use Preregistea to preregister your first study
