@@ -114,4 +114,10 @@
   color: #FFF;
 }
 
+input[type=number] {
+  width: 60px;
+  padding: 2px;
+  margin: 2px;
+}
+
 /*# sourceMappingURL=plugin.css.map */
