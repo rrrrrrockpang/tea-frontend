@@ -54,37 +54,49 @@ constructClicked = false;
 constructObject = null;
 constructElement = null;
 
+// class Construct {
+//     constructor(untrimmed_construct, untrimmed_measure) {
+//         // construct = construct.trim();
+//         // measure = measure.trim();
+//         console.log(untrimmed_construct + "saffda");
+//         let construct = untrimmed_construct.trim();
+//         let measure = untrimmed_measure.trim();
+//
+//
+//
+//         this.construct = construct.split(' ').join('_');
+//         this.measure = measure.split(' ').join('_');
+//
+//         this.display_name = construct;
+//         this.display_measure = measure;
+//         this.isEditing = false;
+//         this.selected = false;
+//         this.card_id = null;
+//     }
+//
+//     set(construct, measure) {
+//         this.construct = construct;
+//         this.measure = measure;
+//     }
+//
+//     isEditing() {
+//         this.isEditing = true;
+//     }
+//
+//     addMeasure(measure) {
+//         this.measure = measure;
+//     }
+// }
+
 class Construct {
-    constructor(untrimmed_construct, untrimmed_measure) {
-        // construct = construct.trim();
-        // measure = measure.trim();
-        console.log(untrimmed_construct + "saffda");
-        let construct = untrimmed_construct.trim();
-        let measure = untrimmed_measure.trim();
-
-
-
-        this.construct = construct.split(' ').join('_');
-        this.measure = measure.split(' ').join('_');
-
-        this.display_name = construct;
-        this.display_measure = measure;
-        this.isEditing = false;
-        this.selected = false;
-        this.card_id = null;
+    constructor(name) {
+        this.name = name.split(' ').join('_');
+        this.display_name = name;
+        this.measures = [];
     }
 
-    set(construct, measure) {
-        this.construct = construct;
-        this.measure = measure;
-    }
-
-    isEditing() {
-        this.isEditing = true;
-    }
-
-    addMeasure(measure) {
-        this.measure = measure;
+    addMeasure(variable) {
+        this.measures.push(variable);
     }
 }
 
