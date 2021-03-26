@@ -235,7 +235,7 @@ const createConditionForm = () => {
 
 const createConditionCard = (variable) => {
     let card = $(`
-        <div class="uml-card" id="${variable.name}" style="width: 200px; height: 150px; position: relative">
+        <div class="uml-card" id="${variable.card_id}" style="width: 200px; height: 150px; position: relative">
             <div class="form-group mb-1" style="border-bottom: 1px solid #0f0f0f; text-align: center">
                 <label class="card-header-name"></label>
             </div>

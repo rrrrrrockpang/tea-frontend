@@ -167,6 +167,9 @@ const deleteVariable = (card_id) => {
             break;
         }
     }
+
+    console.log(dependent_variables);
+    console.log(pos);
     dependent_variables.splice(pos, 1);
     dvListener.dv = dependent_variables;
 }
@@ -214,7 +217,7 @@ const createDependentVariableForm = () => {
 
 const createVariableCard = (variable) => {
     let card = $(`
-        <div class="uml-card" id="${variable.name}" style="width: 200px; height: 150px; position: relative">
+        <div class="uml-card" id="${variable.card_id}" style="width: 200px; height: 150px; position: relative">
             <div class="form-group mb-1" style="border-bottom: 1px solid #0f0f0f; text-align: center">
                 <label class="card-header-name"></label>
             </div>
