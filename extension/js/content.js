@@ -19,8 +19,8 @@ $(document).ready(function() {
 });
 
 const STEP_1_DESCRIPTION = "Step 1: Define your study in Preregistea";
-const STEP_2_DESCRIPTION = "Step 2: Adjust the automatically-generated preregistration";
-const STEP_3_DESCRIPTION = "Step 3: Preview analysis code, “method” section, and Preregistration";
+const STEP_2_DESCRIPTION = "Step 2: Adjust the automatically-generated preregistration text";
+const STEP_3_DESCRIPTION = "Step 3: Preview analysis code, “method” section, and submit preregistration";
 const STEP_4_DESCRIPTION = "Step 4: Submit Preregistration and Push your Analysis Code to Github";
 
 const addInstruction = () => {

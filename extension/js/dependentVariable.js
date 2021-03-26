@@ -178,7 +178,7 @@ const createDependentVariableForm = () => {
                     <div>
                         <div class="form-group construct-group" style="display: none"> 
                               <h4 class="radio control-label construct-label">Construct:</h4>
-                              <div class="construct-card"></div>
+                              <div class="construct-card" style="display: flex;"></div>
                         </div>
                     </div>
                     <div class="form-group">

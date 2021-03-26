@@ -5,8 +5,8 @@ const CONSTRUCT_BTN_ID = CONSTRUCT_ID + "_initial_btn";
 const CONSTRUCT_TEXTAREA_NODE = $("[name='text1']");
 const CONSTRUCT_PARENT_SECTION = CONSTRUCT_TEXTAREA_NODE.parent().parent().parent();
 const CONSTRUCT_DESCRIPTION =
-    "Specify any concepts with concrete measure in the toolbox. After defining all concepts, write a broad research question." +
-    "For example, I define academic performance (construct) with GPA (measure). Preregistea will generate a template in the textarea. You can fill in a " +
+    "Specify any concepts with concrete measure in the toolbox. After defining all concepts, write a broad research question. " +
+    "For example, I define a construct of academic performance with a measure GPA. Preregistea will generate a template in the textarea. You can fill in " +
     "a research question: A month-long academic summer program for disadvantaged kids will reduce the drop in academic performance that occurs during the summer. ";
 
 /////////// Listener to constructs ///////////
@@ -71,6 +71,11 @@ const createConstructBtn = (inputForm) => {
         const constructInput = inputForm.find(".construct");
         const measureInput = inputForm.find(".measure");
 
+        if(constructInput.val().trim() in constructMeasureMap) {
+            alert("Construct has already defined.")
+            return;
+        }
+
         if(constructInput.val().length > 0 && measureInput.val().length > 0) {
             updateConstruct(constructInput.val(), measureInput.val(), null);
             updateConstructTextArea();
@@ -125,12 +130,13 @@ const updateConstruct = (constructInput, measureInput, constructObject) => {
 }
 
 const updateConstructTextArea = () => {
-    const original = CONSTRUCT_TEXTAREA_NODE.val();
-    let newText = original.length === 0 ? "Add your research question here. \n" : "\n";
+    CONSTRUCT_TEXTAREA_NODE.val("");
+
+    let newText = "Add your research question here. \n";
     for(let i = 0; i < constructs.length; i++) {
-        newText += `We will measure the value of ${constructs[i].display_measure} to represent the concept of ${constructs[i].display_name}.`;
+        newText += `We will measure the value of ${constructs[i].display_measure} to represent the concept of ${constructs[i].display_name}.\n`;
     }
-    CONSTRUCT_TEXTAREA_NODE.val(original + newText)
+    CONSTRUCT_TEXTAREA_NODE.val(newText)
 }
 
 const updateConstructDisplayArea = (constructs) => {
@@ -192,11 +198,12 @@ const deleteConstruct = (card_id) => {
 
     let pos = 0;
     for(let i = 0; i < constructs.length; i++) {
-        if(card_id === constructs[i].name) {
+        if(card_id === constructs[i].card_id) {
             pos = i;
             break
         }
     }
+    console.log(pos);
     constructs.splice(pos, 1);
     cListener.c = constructs;
 }

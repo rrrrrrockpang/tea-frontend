@@ -55,7 +55,15 @@ constructObject = null;
 constructElement = null;
 
 class Construct {
-    constructor(construct, measure) {
+    constructor(untrimmed_construct, untrimmed_measure) {
+        // construct = construct.trim();
+        // measure = measure.trim();
+        console.log(untrimmed_construct + "saffda");
+        let construct = untrimmed_construct.trim();
+        let measure = untrimmed_measure.trim();
+
+
+
         this.construct = construct.split(' ').join('_');
         this.measure = measure.split(' ').join('_');
 
