@@ -174,13 +174,14 @@ const deleteVariable = (card_id) => {
     dvListener.dv = dependent_variables;
 }
 
-
 /// A bunch of forms
 const createDependentVariableForm = () => {
     return $(`<form class="inputarea-form">
                     <div>
                         <div class="form-group construct-group" style="display: none"> 
-                              <h4 class="radio control-label construct-label">Construct:</h4>
+                              <h4 class="radio control-label construct-label" >Construct:
+                               <span class='glyphicon glyphicon-info-sign' data-toggle="tooltip" data-placement="top" title="A dependent variable does not necessarily need to have a construct from above."></span>
+                              </h4>
                               <div class="construct-card" style="display: flex;"></div>
                         </div>
                     </div>

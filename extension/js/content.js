@@ -2,6 +2,8 @@ $(document).ready(function() {
     // handle variable listener
     // handleVariableListeners();
 
+    $('[data-toggle="tooltip"]').tooltip();
+
     addInstruction();
 
     // add plugin sections
