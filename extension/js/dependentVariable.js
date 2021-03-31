@@ -28,6 +28,8 @@ dvListener.registerListener(function (dvs) {
     updateTeaCodeVariables();
     updateMethodSection();
 
+    console.log(dvs);
+
     if(variableMap.length === 0) {
         $("#analysis_preregistea").hide();
     } else {
@@ -84,7 +86,7 @@ const createDependentVariableBtn = (inputForm) => {
             }
         }
 
-        updateDependentVariables(null, name, type, categories, construct);
+        updateDependentVariables(name, type, categories, construct);
         updateDependentVariableTextArea();
 
         nameInput.val("");
@@ -97,20 +99,15 @@ const createDependentVariableBtn = (inputForm) => {
 
 /// Update DVS
 
-const updateDependentVariables = (variableObject, name, type, categories, construct = null) => {
-    if(variableObject === null) {
-        variableObject = new Variable(name, type, categories);
-        variableObject.construct = construct;
-        variableObject.card_id = DEPENDENT_VARIABLE_ID + "_" + variableObject.name;
-        variableObject.section = DEPENDENT_VARIABLE_ID;
-    } else {
-        variableObject.set(name, type, categories);
-        variableObject.construct = construct;
-    }
+const updateDependentVariables = (name, type, categories, construct = null) => {
+    let dependentVariableObject = new DependentVariable(name, type, categories);
+    dependentVariableObject.setConstruct(construct);
+    dependentVariableObject.setCardId(DEPENDENT_VARIABLE_ID + "_" + dependentVariableObject.name);
+    dependentVariableObject.setSection(DEPENDENT_VARIABLE_ID);
 
-    variableMap[variableObject.card_id] = variableObject;
-    dependent_variables.push(variableObject);
-    if(!variableObject.isEditing) dvListener.dv = dependent_variables;
+    variableMap[dependentVariableObject.card_id] = dependentVariableObject;
+    dependent_variables.push(dependentVariableObject);
+    dvListener.dv = dependent_variables;
 }
 
 const updateDependentVariableTextArea = () => {
