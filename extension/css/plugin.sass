@@ -124,3 +124,35 @@ input[type=number]
 
 .add_category .row
   margin-bottom: 0 !important
+
+
+//tooltip
+
+.hovercard
+  position: absolute
+  opacity: 0
+  z-index: 1
+  left: 50%
+  top: -90px
+  transform: translateX(-50%)
+
+.hover-item
+  position: relative
+  cursor: pointer
+
+.hover-item:hover .hovercard
+  opacity: 1
+  transition: 0.5s
+  transition-delay: 0.1s
+
+.tooltiptext
+  display: flex
+  flex-direction: column
+  justify-content: flex-start
+  background-color: #0366d6
+  padding: 18px
+  border-radius: 5px
+  color: white
+  line-height: 15px
+  transition: 1s
+  width: 200px

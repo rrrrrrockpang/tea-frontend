@@ -122,12 +122,22 @@ class Variable {
 }
 
 class DependentVariable extends Variable {
+    constructor(name, type="", categories=[], construct=null) {
+        super(name, type, categories);
+        this.construct = construct;
+    }
+
     setConstruct(construct) {
         this.construct = construct;
     }
 }
 
 class IndependentVariable extends Variable {
+    constructor(name, type="", categories=[], study_design=null) {
+        super(name, type, categories);
+        this.study_design = study_design;
+    }
+
     setAssumptions(dependent, isNormal=false, isIndependent=false, isEqualVariance=false) {
         this.assumption = {};
         this.assumption[dependent] = {

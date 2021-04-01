@@ -62,7 +62,7 @@ const createConditionBtn = (inputForm) => {
         const name = nameInput.val();
         const type = typeInput.val();
         const categories = getCurrentCategories(categoriesInput);
-        const studyDesign = studyDesignInput.val();
+        const studyDesign = (studyDesignInput.length === 0) ? null : studyDesignInput.val();
 
         if(name.length === 0) {
             alert(INDEPENDENT_VARIABLE_NAME_ALERT);
@@ -86,7 +86,7 @@ const createConditionBtn = (inputForm) => {
             }
         }
 
-        updateConditions(null, name, type, categories, studyDesign);
+        updateConditions(name, type, categories, studyDesign);
         updateConditionTextArea();
 
         nameInput.val("");
@@ -99,21 +99,15 @@ const createConditionBtn = (inputForm) => {
 }
 
 
-const updateConditions = (variableObject, name, type, categories, studyDesign) => {
-    if(variableObject === null) {
-        // Add new variable
-        variableObject = new Variable(name, type, categories);
-        variableObject.study_design = studyDesign;
-        variableObject.card_id = CONDITION_ID + "_" + variableObject.name;
-        variableObject.section = CONDITION_ID;
-    } else {
-        variableObject.set(name, type, categories);
-        variableObject.study_design = studyDesign;
-    }
+const updateConditions = (name, type, categories, studyDesign) => {
+    console.log(name, type, categories, studyDesign)
+    let conditionObject = new IndependentVariable(name, type, categories, studyDesign);
+    conditionObject.card_id = CONDITION_ID + "_" + conditionObject.name;
+    conditionObject.section = CONDITION_ID;
 
-    variableMap[variableObject.card_id] = variableObject;
-    conditions.push(variableObject);
-    if(!variableObject.isEditing) ivListener.iv = conditions;
+    variableMap[conditionObject.card_id] = conditionObject;
+    conditions.push(conditionObject);
+    ivListener.iv = conditions;
 }
 
 const updateConditionTextArea = () => {
@@ -237,7 +231,7 @@ const createConditionCard = (variable) => {
 
     card.find(".card-header-name").append(`<p>${variable.display_name}</p>`);
     card.append(addCardDetail("Variable Type: ", variable.type));
-    if(variable.study_design.length > 0) card.append(addCardDetail("Study Design: ", variable.study_design));
+    if(variable.study_design !== null) card.append(addCardDetail("Study Design: ", variable.study_design));
     if(variable.categories.length > 0) card.append(addCardDetail("Categories: ", variable.categories));
 
     const cancel = $(`<button type='button' class='delete close' data-dismiss='alert' aria-label='Close' style="position: absolute; top: 0; right: 0">×</button>`)

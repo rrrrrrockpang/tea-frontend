@@ -111,10 +111,58 @@ const addHypothesisCardEventListener = (card, variable) => {
     }
 }
 
+const createAssumptionForms = () => {
+    const independenceAssumption = $(`
+            <span class="assumption-item hover-item independence-assumption">
+                <p style="border: 1px black solid">Independence</p>
+                <span class="hovercard">
+                    <div class="tooltiptext">
+                        The measures are independent of one another
+                    </div>
+                  </span>
+            </span>`);
+    const normalityAssumption = $(`
+        <span class="assumption-item hover-item normality-assumption">
+                <p style="border: 1px black solid">Normality</p>
+                <span class="hovercard">
+                    <div class="tooltiptext">
+                        The distribution of the dependent variable within each group is normally distributed.
+                    </div>
+                </span>
+        </span>
+    `);
+
+    const homoscedasticity = $(`
+            <span class="assumption-item hover-item homo-assumption">
+                <p style="border: 1px black solid">Equal Variances</p>
+                <span class="hovercard">
+                    <div class="tooltiptext">
+                        The variance of each group is about the same.
+                    </div>
+                  </span>
+            </span>`);
+
+    const form = $(`
+        <form class='assumptions'>
+            <label>Assumptions</label>
+            <div class="form-group" style="display: flex; flex-direction: row">
+            </div>
+        </form>
+    `);
+
+
+    form.find(".form-group").append([independenceAssumption, normalityAssumption, homoscedasticity]);
+
+    return form;
+}
+
 const updateHypothesisFormArea = (pair, inputArea) => {
     let dv = hypothesisPair['dv'];
     let iv = hypothesisPair['iv'];
     let hypothesisFormArea;
+
+    const assumptions = createAssumptionForms();
+
     if(iv.type === 'nominal') hypothesisFormArea = createHypothesisConditionIsNominal(dv, iv);
     else hypothesisFormArea = createHypothesisConditionIsNotNominal(dv, iv);
 
@@ -157,6 +205,7 @@ const updateHypothesisFormArea = (pair, inputArea) => {
         updateTeaCodeHypothesis(iv, dv, relationship);
         updateAnalysisTextArea(iv, dv, relationship);
     })
+    inputArea.append(assumptions);
     inputArea.append(hypothesisFormArea);
     inputArea.append(apiBtn);
 }

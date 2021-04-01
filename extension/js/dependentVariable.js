@@ -86,6 +86,7 @@ const createDependentVariableBtn = (inputForm) => {
             }
         }
 
+
         updateDependentVariables(name, type, categories, construct);
         updateDependentVariableTextArea();
 
@@ -100,8 +101,7 @@ const createDependentVariableBtn = (inputForm) => {
 /// Update DVS
 
 const updateDependentVariables = (name, type, categories, construct = null) => {
-    let dependentVariableObject = new DependentVariable(name, type, categories);
-    dependentVariableObject.setConstruct(construct);
+    let dependentVariableObject = new DependentVariable(name, type, categories, construct);
     dependentVariableObject.setCardId(DEPENDENT_VARIABLE_ID + "_" + dependentVariableObject.name);
     dependentVariableObject.setSection(DEPENDENT_VARIABLE_ID);
 
