@@ -136,16 +136,31 @@ class IndependentVariable extends Variable {
     constructor(name, type="", categories=[], study_design=null) {
         super(name, type, categories);
         this.study_design = study_design;
+        this.assumption = {};
     }
 
     setAssumptions(dependent, isNormal=false, isIndependent=false, isEqualVariance=false) {
-        this.assumption = {};
-        this.assumption[dependent] = {
+        this.assumption[dependent.name] = {
             normality: isNormal,
             independence: isIndependent,
-            homoscedasticity: isEqualVariance
+            homoscedasticity: isEqualVariance,
+            dependent: dependent
         }
     }
+
+    setNormal(dependent, isNormal) {
+        this.assumption[dependent].normality = isNormal;
+    }
+
+    setIndependent(dependent, isIndependent) {
+        this.assumption[dependent].independence = isIndependent;
+    }
+
+    setEqualVariance(dependent, isEqualVariance) {
+        this.assumption[dependent].homoscedasticity = isEqualVariance;
+    }
+
+
 
     setStudyDesign(study_design) {
         this.study_design = study_design;

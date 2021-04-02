@@ -27,6 +27,7 @@ hypothesisPairListener.registerListener(function(pair) {
     inputArea.empty();
 
     if(pair['dv'] !== null && pair['iv'] !== null) {
+        pair['iv'].setAssumptions(pair['dv']);
         updateHypothesisFormArea(pair, inputArea);
     } else {
         inputArea.append("Please choose a dependent variable and a condition.");
@@ -161,7 +162,9 @@ const updateHypothesisFormArea = (pair, inputArea) => {
     let iv = hypothesisPair['iv'];
     let hypothesisFormArea;
 
-    const assumptions = createAssumptionForms();
+    console.log(iv);
+
+    // const assumptions = createAssumptionForms(iv);
 
     if(iv.type === 'nominal') hypothesisFormArea = createHypothesisConditionIsNominal(dv, iv);
     else hypothesisFormArea = createHypothesisConditionIsNotNominal(dv, iv);
@@ -205,7 +208,7 @@ const updateHypothesisFormArea = (pair, inputArea) => {
         updateTeaCodeHypothesis(iv, dv, relationship);
         updateAnalysisTextArea(iv, dv, relationship);
     })
-    inputArea.append(assumptions);
+    // inputArea.append(assumptions);
     inputArea.append(hypothesisFormArea);
     inputArea.append(apiBtn);
 }
