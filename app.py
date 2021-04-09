@@ -185,7 +185,7 @@ def createRecord():
     return jsonify({'status': http.HTTPStatus.OK})
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
 #
 # @app.route('/', methods=['GET'])
 # def query_records():
